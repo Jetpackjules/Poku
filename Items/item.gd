@@ -1,24 +1,29 @@
 extends RigidBody2D
 #head script
-var new_desired_angle = 0 
+var new_desired_angle := 0.0
 #what you want as the desired angle of your rigid body.
 #here its 0 to keep the head straight
-var locked = false
-var snap = false
+var locked := false
+var snap := false
+var held := false
+export var usable := true
 
-export var sharp = false
 
-signal done
-var done = false
+export var sharp := false
+export var directional := false
 
-var force = 1
-var cooltime_wait = 0
-var cooldown = false
-var cooltime = 1.3
+signal done(item)
 
-var impaled = false
+var done := false
 
-var speed = 500 
+var force := 1.0
+var cooltime_wait := 0.0
+var cooldown := false
+var cooltime := 1.3
+
+var impaled := false
+
+var speed := 500 
 onready var target_node: Node2D 
 
 
@@ -26,7 +31,7 @@ onready var pin = get_node("PinJoint2D")
 onready var visual = get_node("Polygon2D")
 
 	
-var available = false
+var available := false
 
 func _ready():
 	if sharp:
@@ -37,33 +42,26 @@ func _ready():
 #		snap = true
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	pin.position = Vector2(0,0)
 	
-#	if target_node:
-##		scale.x = target_node.owner.spin_dir
-#		print(target_node.owner.spin_dir)
-#		if target_node.owner.spin_dir != 1:
-#			new_desired_angle = deg2rad(180)
-#		else:
-#			new_desired_angle = deg2rad(0)
 	
 	if cooldown == true and !impaled:
-		cooltime_wait += delta
-		if cooltime_wait >= 0.05:
-			set_collision_mask_bit(1, true)
-			visual.color = Color.black
-			
-			
+		cooltime_wait += _delta
+		
 		if cooltime_wait >= cooltime:
 			cooldown = false
 			cooltime_wait = 0
-			
+		
+		elif cooltime_wait >= 0.05:
+			set_collision_mask_bit(1, true)
+#			visual.color = Color.black
 	
-	var current_angle = get_global_transform().get_rotation()
+
 	if locked:
-		angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* delta)
+		var current_angle = get_global_transform().get_rotation()
+		angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
 
 
 	if is_stationary() and pin.get_node_b()=="" and !cooldown and !impaled:
@@ -73,6 +71,7 @@ func _physics_process(delta):
 		weight = 0.01
 		
 		visual.color = Color.green
+		
 	else:
 		visual.color = Color.red
 			
@@ -82,7 +81,7 @@ func _physics_process(delta):
 	if locked == true:
 		visual.color = Color.purple
 		
-	if snap:
+	if snap and usable:
 		if target_node:
 			available = false
 			
@@ -122,6 +121,8 @@ func _physics_process(delta):
 
 func grab():
 	locked = true
+	held = true
+#	available = false
 	friction = 1
 	bounce = 0.0
 	
@@ -129,6 +130,7 @@ func release():
 	pin.set_node_b("")
 	cooldown = true
 	locked = false
+	held = false
 	friction = 1
 	bounce = 0.3
 	mass = 1
@@ -137,7 +139,7 @@ func release():
 	
 func is_stationary() -> bool:
 #	print(linear_velocity.length())
-	var linear_threshold = 200
+	var linear_threshold = 500
 	var angular_threshold = deg2rad(50)
 
 	if linear_velocity.length() <= linear_threshold and angular_velocity <= angular_threshold:
@@ -147,7 +149,8 @@ func is_stationary() -> bool:
 
 func impale(body, colliding_point, direction):
 	impaled = true
-
+	locked = false
+	
 #	var penetration_vector = -self.linear_velocity.normalized() * 10
 #	self.position -= direction*10
 
@@ -172,13 +175,13 @@ func impale(body, colliding_point, direction):
 
 
 func _on_body_entered(body):
-	if sharp and !available and !locked and !snap:
-		var me = target_node.owner
-		var hitted = body.owner
-		var same = false
-		if hitted == me:
-			same = true
-#		var same = (hitted==me)
+	if sharp and !available and !snap and !held:
+#		var me = target_node.owner
+#		var hitted = body.owner
+#		var same = false
+#		if hitted == me:
+#			same = true
+##		var same = (hitted==me)
 		if body.is_in_group("stabb-able") and (target_node.owner != body.owner) and (target_node.owner != body):
 			if !impaled:
 				var result = Physics2DTestMotionResult.new()
@@ -202,12 +205,12 @@ func _on_body_entered(body):
 	
 				if self.test_motion(Vector2(0,0), false, 0.01, result):
 					impale(body, result.collision_point, result.collision_normal)
-					emit_signal("done")
+					emit_signal("done", self)
 					done = true
 					
 				elif self.test_motion(Vector2(0,0), false, 10, result):
 					impale(body, result.collision_point, result.collision_normal)
-					emit_signal("done")
+					emit_signal("done", self)
 					done = true
 					
 				else:
@@ -218,13 +221,13 @@ func _on_body_entered(body):
 						if self.test_motion(-offset, false, 0.08, result):
 							global_position -= offset
 							impale(body, result.collision_point, result.collision_normal)
-							emit_signal("done")
+							emit_signal("done", self)
 							found = true
 							done = true
 						elif self.test_motion(offset, false, 0.08, result):
 							global_position += offset
 							impale(body, result.collision_point, result.collision_normal)
-							emit_signal("done")
+							emit_signal("done", self)
 							found = true
 							done = true
 #
@@ -234,10 +237,14 @@ func _on_body_entered(body):
 #					set_collision_mask_bit(1, true)
 					set_collision_layer_bit(1, true)
 				else:
-					if "Player" in body.owner.name:
-						body.owner.stabbed(self)
-					else:
+					print("-----")
+#					print(body)
+#					print(body.owner)
+#					print(body.owner.name)
+					if "Body" in body.name:
 						body.stabbed(self)
+					else:
+						body.owner.stabbed(self)
 						
 					set_collision_mask_bit(1, false)
 					set_collision_layer_bit(1, false)
@@ -258,3 +265,7 @@ func _on_body_entered(body):
 				
 						
 
+func reverse(dir) -> void:
+	breakpoint
+#	NO REVERSE FUNCTION HERE!
+	pass

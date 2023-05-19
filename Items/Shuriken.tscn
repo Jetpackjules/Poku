@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Items/item.gd" type="Script" id=1]
+
+[sub_resource type="PhysicsMaterial" id=13]
+friction = 0.0
+
+[node name="Shuriken" type="RigidBody2D" groups=["tool"]]
+position = Vector2( -137, 261 )
+collision_layer = 16
+collision_mask = 17
+mass = 0.00102041
+physics_material_override = SubResource( 13 )
+continuous_cd = 2
+contacts_reported = 2
+contact_monitor = true
+can_sleep = false
+script = ExtResource( 1 )
+sharp = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PoolVector2Array( -2, -30, 12, -10, 32, 0, 11, 10, 0, 32, -10, 9, -33, 0, -10, -11 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -1, 32, 10, 10, 31, 0, 12, -11, -2, -30, -10, -12, -33, -1, -10, 9 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+node_a = NodePath("..")

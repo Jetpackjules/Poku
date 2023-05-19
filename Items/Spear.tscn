@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Items/Spear.gd" type="Script" id=1]
+
+[sub_resource type="PhysicsMaterial" id=13]
+friction = 0.0
+
+[sub_resource type="ConvexPolygonShape2D" id=16]
+points = PoolVector2Array( 0, -10, 0, 10, 25, 0 )
+
+[sub_resource type="RectangleShape2D" id=15]
+custom_solver_bias = 1.0
+extents = Vector2( 91.5, 3.5 )
+
+[node name="Spear" type="RigidBody2D" groups=["tool"]]
+physics_interpolation_mode = 2
+position = Vector2( -224.956, 81.5755 )
+collision_layer = 16
+collision_mask = 17
+mass = 0.00102041
+physics_material_override = SubResource( 13 )
+contacts_reported = 2
+contact_monitor = true
+can_sleep = false
+script = ExtResource( 1 )
+sharp = true
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+position = Vector2( 45.8422, 0 )
+node_a = NodePath("..")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( 91, 0 )
+shape = SubResource( 16 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -91.0
+margin_top = -4.0
+margin_right = 92.0
+margin_bottom = 4.0
+color = Color( 0.227451, 0.156863, 0.0862745, 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2( 91, 0 )
+color = Color( 0.631373, 0.631373, 0.631373, 1 )
+polygon = PoolVector2Array( -0.00939941, -10.0412, -0.045105, 9.93271, 24.967, -0.000656128 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 15 )

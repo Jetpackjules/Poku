@@ -4,16 +4,30 @@ onready var tools = load("res://Items/Tools.tscn").instance().get_children()
 
 var loaded_tools = []
 
+var ball_count := 0
+
 func _ready():
-#	for thing in get_children():
-#		thing.connect("done", self, "_spawn_new_tool")
+	_spawn_new_tool()
 	_spawn_new_tool()
 	_spawn_new_tool()
 	_spawn_new_tool()
 
 
-func _spawn_new_tool():
+func _spawn_new_tool(item = null):
+	if item:
+		var name = item.name
+		if "Ball" in item.name:
+			ball_count -= 1
+
 	var new_tool = tools[randi() % tools.size()].duplicate() 
+	if "Ball" in new_tool.name:
+		ball_count += 1
+		if ball_count > 2:
+			new_tool.queue_free()
+			_spawn_new_tool()
+			ball_count -= 1
+			return
+		
 	new_tool.connect("done", self, "_spawn_new_tool") 
 	
 	var x_range_start = -1000 
@@ -28,7 +42,6 @@ func _spawn_new_tool():
 	
 	new_tool.global_position = Vector2(random_x, y_height) 
 	
-#	loaded_tools.append(new_tool)
 	if get_children().size() >= 7:
 		for curr_tool in get_children():
 			if curr_tool.done == true:

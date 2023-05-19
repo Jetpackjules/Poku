@@ -10,8 +10,12 @@ config_version=4
 
 [application]
 
-config/name="Activa Ragdoll Lab"
-run/main_scene="res://Main.tscn"
+config/name="Active Ragdoll Lab"
+run/main_scene="res://Maps/Scene_Manager.tscn"
+
+[autoload]
+
+SceneSwitcher="*res://Maps/SceneSwitcher.gd"
 
 [display]
 
@@ -25,6 +29,30 @@ window/stretch/aspect="keep"
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 1,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
 
 [input]
 
@@ -138,8 +166,7 @@ arrow_spin={
 2d/time_before_sleep=0.0
 2d/default_gravity_vector=Vector2( 0, 10 )
 3d/default_gravity_vector=Vector3( 0, 1000, 0 )
-common/physics_interpolation=true
 
 [rendering]
 
-environment/default_clear_color=Color( 0.447059, 0.74902, 0.729412, 1 )
+environment/default_clear_color=Color( 0.615686, 0.901961, 0.921569, 1 )

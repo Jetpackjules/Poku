@@ -1,17 +1,13 @@
 extends "res://Items/item.gd"
 
 
-func release():
+func release() -> void:
 	pin.set_node_b("")
 	cooldown = true
-	locked = false
+	locked = true
 	friction = 1
-	bounce = 0.3
+	bounce = 0.0
 	mass = 1
 	weight = 9.8
+	held = false
 	apply_central_impulse(Vector2(linear_velocity.x/275,linear_velocity.x/1000))
-
-#
-#
-#func _on_Spear_body_entered(body):
-#

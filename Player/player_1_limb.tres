@@ -1,7 +1,8 @@
 [gd_resource type="StyleBoxFlat" format=2]
 
 [resource]
-bg_color = Color( 0.988235, 0.580392, 0.0235294, 1 )
+resource_local_to_scene = true
+bg_color = Color( 0.94902, 0.886275, 0, 1 )
 border_color = Color( 0.862745, 0, 0, 1 )
 border_blend = true
 corner_radius_top_left = 25

@@ -1,0 +1,429 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=1]
+[ext_resource path="res://Maps/Basketball/Bouncy_End_Bits.tres" type="StyleBox" id=2]
+[ext_resource path="res://Items/item.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 191.936, 1295.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 191.936, 1295.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 20, 50 )
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 50.0
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1875, 250 )
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 3, 1000 )
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 1500, 3 )
+
+[sub_resource type="PhysicsMaterial" id=13]
+
+[sub_resource type="CapsuleShape2D" id=14]
+radius = 30.0
+height = 0.0
+
+[node name="Volleyball" type="Node2D"]
+
+[node name="Left_Background" type="ColorRect" parent="."]
+margin_top = -1935.0
+margin_right = 1530.0
+margin_bottom = 44.0
+color = Color( 0.615686, 0.901961, 0.921569, 1 )
+
+[node name="Right_Background" type="ColorRect" parent="."]
+margin_left = -1530.0
+margin_top = -1935.0
+margin_bottom = 44.0
+color = Color( 0.717647, 0.913725, 0.933333, 1 )
+
+[node name="Walls" type="StaticBody2D" parent="." groups=["stabb-able"]]
+position = Vector2( 0, -370 )
+
+[node name="Wall_right" type="CollisionShape2D" parent="Walls"]
+position = Vector2( 1683.06, -925.5 )
+shape = SubResource( 2 )
+
+[node name="ColorRect2" type="ColorRect" parent="Walls/Wall_right"]
+margin_left = -192.064
+margin_top = -1295.5
+margin_right = 191.936
+margin_bottom = 1577.5
+size_flags_horizontal = 5
+size_flags_vertical = 3
+color = Color( 0.407843, 0.529412, 0.74902, 1 )
+
+[node name="Wall_left" type="CollisionShape2D" parent="Walls"]
+position = Vector2( -1683, -925 )
+shape = SubResource( 3 )
+
+[node name="ColorRect2" type="ColorRect" parent="Walls/Wall_left"]
+margin_left = -192.0
+margin_top = -1296.0
+margin_right = 192.0
+margin_bottom = 1577.0
+size_flags_horizontal = 5
+size_flags_vertical = 3
+color = Color( 0.407843, 0.529412, 0.74902, 1 )
+
+[node name="Net" type="Node2D" parent="."]
+position = Vector2( 0, 250 )
+
+[node name="Net" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -801 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net2")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net2")
+bias = 0.145
+softness = 1.0
+
+[node name="Net2" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -710 )
+collision_mask = 0
+mass = 2.0
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net2"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net3")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net2"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net3")
+bias = 0.145
+softness = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net2"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net2"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="Net3" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -619 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net3"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net3"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net3"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net4")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net3"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net4")
+bias = 0.145
+softness = 1.0
+
+[node name="Net4" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -527 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net4"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net4"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net4"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net5")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net4"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net5")
+bias = 0.145
+softness = 1.0
+
+[node name="Net5" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -436 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net5"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net5"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net5"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net6")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net5"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net6")
+bias = 0.145
+softness = 1.0
+
+[node name="Net6" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -345 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net6"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net6"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net6"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../../Floor")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net6"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../../Floor")
+bias = 0.145
+softness = 1.0
+
+[node name="Net7" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -254 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net7"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net7"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net7"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net8")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net7"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net8")
+bias = 0.145
+softness = 1.0
+
+[node name="Net8" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -163 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net8"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net8"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net8"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net9")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net8"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../Net9")
+bias = 0.145
+softness = 1.0
+
+[node name="Net9" type="RigidBody2D" parent="Net"]
+position = Vector2( 0, -72 )
+collision_mask = 0
+mass = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/Net9"]
+position = Vector2( 0, 50 )
+shape = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="Net/Net9"]
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 100.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/Net9"]
+position = Vector2( 0, 97 )
+node_a = NodePath("..")
+node_b = NodePath("../../../Floor")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Net/Net9"]
+position = Vector2( 0, 86 )
+node_a = NodePath("..")
+node_b = NodePath("../../../Floor")
+bias = 0.145
+softness = 1.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Net"]
+position = Vector2( 0, -797 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Net/StaticBody2D"]
+node_a = NodePath("..")
+node_b = NodePath("../../Net")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net/StaticBody2D"]
+shape = SubResource( 5 )
+
+[node name="Panel" type="Panel" parent="Net/StaticBody2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="Floor" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 0, 250 )
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -1875.0
+margin_right = 1875.0
+margin_bottom = 500.0
+color = Color( 1, 0.824, 0.78, 1 )
+
+[node name="Seperator" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="Vertical_Boundary" type="CollisionShape2D" parent="Seperator"]
+position = Vector2( 0, -751 )
+shape = SubResource( 15 )
+
+[node name="Horizontal_Boundary4" type="StaticBody2D" parent="Seperator"]
+collision_layer = 0
+collision_mask = 24
+
+[node name="Horizontal_Boundary3" type="CollisionShape2D" parent="Seperator/Horizontal_Boundary4"]
+position = Vector2( 0, -1716 )
+shape = SubResource( 16 )
+
+[node name="Spawns" type="Node2D" parent="."]
+position = Vector2( 0, 490 )
+
+[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( -900, -752 )
+scale = Vector2( -1, 1 )
+
+[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 900, -752 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -0.229736, -798 )
+current = true
+zoom = Vector2( 1.7, 1.7 )
+
+[node name="Ball" type="RigidBody2D" parent="." groups=["score-able", "tool"]]
+position = Vector2( -240, -588 )
+collision_layer = 19
+collision_mask = 19
+mass = 0.00102041
+physics_material_override = SubResource( 13 )
+gravity_scale = 0.5
+can_sleep = false
+script = ExtResource( 3 )
+usable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+scale = Vector2( 5, 5 )
+shape = SubResource( 14 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Ball"]
+scale = Vector2( 5, 5 )
+color = Color( 0.301961, 0.8, 0.427451, 0.670588 )
+polygon = PoolVector2Array( -2, -30, 11, -28, 21.6444, -21.242, 26.2445, -14.8019, 29.6617, -5.99603, 29.2674, 5.30699, 25.9817, 14.77, 20.9873, 21.6044, 10.3414, 28.4388, -4, 29, -14.2361, 26.4673, -23.042, 18.9758, -29.0878, 7.27844, -29, -8, -25, -18, -16, -26 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Ball"]
+node_a = NodePath("..")
+
+[node name="Polygon2D2" type="Polygon2D" parent="Ball"]
+scale = Vector2( 5, 5 )
+polygon = PoolVector2Array( -13.5911, -27.1139, 0.0990753, -30.7231, 15.1583, -25.7449, 1.13023, -0.725815, 29.5952, 6.36485, 26.2349, 16.0724, 20.7588, 22.4197, 15.4072, 25.4066, 0.0658569, 1.15967, -16.5781, 25.2822, -25.6634, 15.948, -29.1481, 4.62247, -0.937698, -0.756226 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 0, -547 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 54.5002, -1070 )
+scale = Vector2( 13.6305, 11.8477 )
+polygon = PoolVector2Array( 99.006, -22.9581, 133.267, 95.6305, 112.1, 96, 107, 82.8, 104.4, 75, 95.4, 49, 80.8, 28, 62, 12, 47.2, 2, 23.1, -8, 7.10001, -11, -14, -11, -30, -8.2, -54, 0.599998, -71, 11.4, -87, 28.1, -96, 39, -105, 54.8, -112, 74.7, -117.3, 95, -138.403, 95, -98.5658, -24.5618 )
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
+position = Vector2( 54.5, -1070 )
+scale = Vector2( 13.63, 11.848 )
+color = Color( 0.407843, 0.529412, 0.74902, 1 )
+polygon = PoolVector2Array( 99.006, -22.9581, 133.267, 95.6305, 112.1, 96, 107, 82.8, 104.4, 75, 95.4, 49, 80.8, 28, 62, 12, 47.2, 2, 23.1, -8, 7.10001, -11, -14, -11, -30, -8.2, -54, 0.599998, -71, 11.4, -87, 28.1, -96, 39, -100.917, 45.9993, -105, 54.8, -108.621, 63.2174, -112, 74.7, -112.876, 77.3126, -113.463, 80.0979, -117.3, 95, -138.403, 95, -98.5658, -24.5618 )

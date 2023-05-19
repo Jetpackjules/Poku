@@ -35,7 +35,6 @@ onready var spine6 = get_node("Spine6")
 #onready var waist = get_node("../Body")
 export var controllable = true
 
-onready var chest_polygon = get_node("Polygon2D")
 
 var body = []
 
@@ -88,15 +87,17 @@ func flip():
 		part.new_desired_angle *= -1
 	
 	arm_collision_recovering = true
+
+
+
+func set_color(body_color, limbs_color):
+	var limb_style = spine1.get_node("Panel").get("custom_styles/panel")
+	var body_style = get_node("Panel").get("custom_styles/panel")
 	
-#		if abs(part.current_angle - part.new_desired_angle) > proximity_threshold:
-#			part.set_collision_mask_bit(2, false)
-#			part.set_collision_layer_bit(1, false)
-#			part.set_collision_layer_bit(2, false) 
-#		else:
-#			part.set_collision_mask_bit(2, true)
-#			part.set_collision_layer_bit(1, true)
-#			part.set_collision_layer_bit(2, true) 
+	limb_style.set_bg_color(limbs_color)
+	body_style.set_bg_color(body_color)
+
+
 
 func _ready():
 	
@@ -105,6 +106,7 @@ func _ready():
 	body = [spine1, spine2, spine3, spine4, spine5, spine6, self, Leg_L_up, Leg_L_down, Leg_R_up, Leg_R_down]
 	spine = [spine1, spine2, spine3, spine4, spine5, spine6]
 	legs = [Leg_L_up, Leg_L_down, Leg_R_up, Leg_R_down]
+	
 
 	if flip:
 		flip()	
@@ -125,25 +127,26 @@ func _input(event):
 		
 		for part in spine:
 			part.locked = false
-			part.get_node("PinJoint2D").softness = 1
+#			part.get_node("PinJoint2D").softness = 1
+			part.get_node("PinJoint2D").softness = 0
 			part.set_collision_mask_bit(2, true)
 			part.set_collision_layer_bit(1, true)
 			part.set_collision_layer_bit(2, true) 
 
 		spin_dir = run_dir*-1
 		
-#		if grabbed_item:
-#			grabbed_item.set_scale(Vector2(10,10))
+
 #			print(grabbed_item)
 #			scale.x = 2
 		
 
 	if event.is_action_released(spin) and controllable:
 		self.mode = RigidBody2D.MODE_CHARACTER
-		if grabbed_item:
+		if grabbed_item != null:
 			grabbed_item.release()
 			grabbed_item = null
 			holding_something = false
+			
 			
 		locked = true
 		
@@ -169,10 +172,19 @@ func _input(event):
 		variant = 1
 		mult = 1
 		run_dir = 1
+		
+		if grabbed_item:
+#			grabbed_item.rotation = deg2rad(180)
+			grabbed_item.new_desired_angle = deg2rad(180)
+			
+		
 	if event.is_action_pressed(move_right):
 		variant = 1
 		mult = 1
 		run_dir = -1
+		
+		if grabbed_item != null:
+			grabbed_item.new_desired_angle = deg2rad(0)
 	
 	
 	if event.is_action_released(jump) and raycast.is_colliding() and controllable:
@@ -335,10 +347,11 @@ func ragdoll():
 
 
 func _on_Area2D_body_entered(body):
-	if body.available and !holding_something:
-		body.target_node = grabber
-		body.snap = true
-		holding_something = true
+	if body.usable:
+		if body.available and !holding_something and !body.held:
+			body.target_node = grabber
+			body.snap = true
+			holding_something = true
 
 
 

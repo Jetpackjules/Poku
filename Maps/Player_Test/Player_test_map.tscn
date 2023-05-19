@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1875, 250 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 3, 1000 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 0, 250 )
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -1875.0
+margin_right = 1875.0
+margin_bottom = 500.0
+color = Color( 1, 0.824, 0.78, 1 )
+
+[node name="Floor2" type="StaticBody2D" parent="."]
+position = Vector2( 0, -757.036 )
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
+position = Vector2( 0, 250 )
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Floor2"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -1875.0
+margin_right = 1875.0
+margin_bottom = 500.0
+color = Color( 1, 0.824, 0.78, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 76.5367, -166.194 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="Spawns" type="Node2D" parent="."]
+position = Vector2( 0, 490 )
+
+[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( -735.046, -643.866 )
+scale = Vector2( -1, 1 )
+
+[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 181.723, -645.536 )
+
+[node name="Seperator" type="StaticBody2D" parent="."]
+position = Vector2( 557.872, -36.9075 )
+collision_layer = 0
+collision_mask = 8
+
+[node name="Vertical_Boundary" type="CollisionShape2D" parent="Seperator"]
+position = Vector2( 0, -751 )
+shape = SubResource( 2 )
