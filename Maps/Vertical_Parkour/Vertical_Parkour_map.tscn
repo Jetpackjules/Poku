@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Maps/Vertical_Parkour/Platform_Generator.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1875, 250 )
+
+[node name="Vertical_Parkour" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 0, 250 )
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -1875.0
+margin_right = 1875.0
+margin_bottom = 500.0
+color = Color( 1, 0.824, 0.78, 1 )
+
+[node name="Spawns" type="Node2D" parent="."]
+position = Vector2( 0, 490 )
+
+[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( -900, -752 )
+scale = Vector2( -1, 1 )
+
+[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 900, -752 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -0.229736, -798 )
+current = true
+zoom = Vector2( 1.7, 1.7 )
+
+[node name="Platform_Generator" type="Node2D" parent="."]
+script = ExtResource( 2 )

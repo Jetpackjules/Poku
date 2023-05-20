@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxFlat" format=2]
+
+[resource]
+resource_local_to_scene = true
+bg_color = Color( 0.94902, 0.886275, 0, 1 )
+border_color = Color( 0.862745, 0, 0, 1 )
+border_blend = true
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+corner_detail = 7
+anti_aliasing = false

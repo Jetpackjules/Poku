@@ -133,7 +133,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton4" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Vertical_Parkour" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 870.0
 margin_right = 1120.0
 margin_bottom = 250.0
@@ -228,7 +228,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="Back_Button" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 1160.0
 margin_top = 580.0
 margin_right = 1410.0
@@ -240,4 +240,4 @@ expand = true
 [node name="Tween" type="Tween" parent="MenuRoot"]
 
 [connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Games" to="MenuRoot" method="_on_Games_pressed"]
-[connection signal="pressed" from="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer/Back_Button" to="MenuRoot" method="_on_Back_Button_pressed"]
+[connection signal="pressed" from="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer/Back" to="MenuRoot" method="_on_Back_Button_pressed"]
