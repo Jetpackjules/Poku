@@ -1,23 +1,25 @@
 extends RigidBody2D
 
-var speed = 400
+var speed := 400.0
 
-var jump_power=1000
+var jump_power := 1000.0
 
 
-var bad_spines = 0
-var spin_power = 50
+var bad_spines := 0
+
+#var spin_power := 50
+
 #again the varaible to store desired angle
-var new_desired_angle = 0
+var new_desired_angle := 0.0
 
 var locked: bool = true
 
 var spin_dir: int
-var holding_something = false
+var holding_something := false
 #onready var head = get_node("Head")
 var grabbed_item = null
 
-var spin_multiplier = 1
+var spin_multiplier := 1.0
 #var added_up_velocity = 0
 onready var Leg_L_up = get_node("Leg_L_up")
 onready var Leg_L_down = get_node("Leg_L_down")
@@ -33,51 +35,51 @@ onready var spine5 = get_node("Spine6/Spine5")
 onready var spine6 = get_node("Spine6")
 
 #onready var waist = get_node("../Body")
-export var controllable = true
+export var controllable := true
 
 
-var body = []
+var body := []
 
-var variant = 1
+var variant := 1.0
 
-var auto_balance_timeout = 0
+var auto_balance_timeout := 0.0
 
-onready var raycast = self.get_node("RayCast2D")
+onready var raycast = get_node("RayCast2D")
 onready var pickup_zone = get_node("Pickup_range")
 
-var float_height = 100 # The height at which the character should float
-var float_force = 1000  # The force to apply when floating
+var float_height := 100.0 # The height at which the character should float
+var float_force := 1000.0  # The force to apply when floating
 
-var velocity = Vector2(0,0)
+var velocity := Vector2(0,0)
 
 var stride
-var stride_length = 0.5
-var mult = 1
-var run_dir = 1
-var running  = false
-var spine = []
-var legs = []
+var stride_length := 0.5
+var mult := 1.0
+var run_dir := 1
+var running  := false
+var spine := []
+var legs := []
 
 
 var grabber
-var upper_leg_keyframes = [
+var upper_leg_keyframes := [
 -1.0, 0, 2.4, 0
 ]
 
-var lower_leg_keyframes = [
+var lower_leg_keyframes := [
 2.0, 1.0, 2.0, -1
 ]
 
-var arm_collision_recovering = false
+var arm_collision_recovering := false
 
-var jump = "arrow_up"
-var crouch = "arrow_down"
-var move_right = "arrow_right"
-var move_left = "arrow_left"
-var spin = "arrow_spin"
+var jump := "arrow_up"
+var crouch := "arrow_down"
+var move_right := "arrow_right"
+var move_left := "arrow_left"
+var spin := "arrow_spin"
 
-var proximity_threshold = deg2rad(45)
-export var flip = false
+var proximity_threshold := deg2rad(45)
+export var flip := false
 
 func flip():
 	
@@ -229,7 +231,7 @@ func _physics_process(_delta):
 		running = true
 	else:
 		running = false
-	self.linear_velocity.x = velocity.x
+	
 	
 
 	if locked:
@@ -269,6 +271,7 @@ func _physics_process(_delta):
 	if raycast.is_colliding() and auto_balance_timeout <= 0 and controllable:
 
 
+#		Blimp code:
 		var distance_to_ground = raycast.get_collision_point().distance_to(raycast.global_position)
 
 		if (distance_to_ground < float_height) and !Input.is_action_pressed(crouch) and !Input.is_action_pressed(jump) and controllable:
@@ -294,7 +297,7 @@ func _physics_process(_delta):
 #		print(auto_balance_timeout)
 	
 	if Input.is_action_pressed(jump) and controllable and raycast.is_colliding():
-		self.mode = RigidBody2D.MODE_RIGID
+#		self.mode = RigidBody2D.MODE_RIGID
 		float_height = max(0, float_height-1)
 		
 
@@ -310,15 +313,25 @@ func _physics_process(_delta):
 		if bad_spines <= 0:
 			arm_collision_recovering = false
 
-var stabbed_bodies = []
-var health = 1
+	var ground_velocity := 0.0
+	if raycast.is_colliding():
+		var collider = raycast.get_collider()
+		if collider.is_in_group("move_player"):
+			ground_velocity = collider.linear_velocity.x
+
+
+	self.linear_velocity.x = velocity.x + ground_velocity
+	
+var stabbed_bodies := []
+var health := 1
 
 func stabbed(body):
 	stabbed_bodies.append(body)
 	if stabbed_bodies.size() >= health:
 		body.weight = 500
-		ragdoll()
 		get_node("Respawn_timer").start()
+		ragdoll(5)
+		
 	
 func _on_Respawn_timer_timeout():
 	for body in stabbed_bodies:
@@ -335,7 +348,10 @@ func _on_Respawn_timer_timeout():
 	
 
 
-func ragdoll():
+func ragdoll(timeout):
+	auto_balance_timeout = timeout
+
+	
 	for part in body:
 		locked = false
 

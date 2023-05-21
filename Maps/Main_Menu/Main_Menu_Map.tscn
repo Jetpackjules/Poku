@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Maps/Main_Menu/MenuRoot.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Menu_Fonts/Title_Font.tres" type="DynamicFont" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Maps/Main_Menu/back_placeholder.png" type="Texture" id=5]
 [ext_resource path="res://Maps/Main_Menu/Map_Select.gd" type="Script" id=6]
 [ext_resource path="res://Maps/Main_Menu/Logos/Volleyball.webp" type="Texture" id=7]
+[ext_resource path="res://Maps/Main_Menu/Logos/test.png" type="Texture" id=8]
+[ext_resource path="res://Maps/Main_Menu/Logos/doodle.jpeg" type="Texture" id=9]
 
 [sub_resource type="StyleBoxLine" id=1]
 thickness = 0
@@ -126,11 +128,12 @@ texture_normal = ExtResource( 7 )
 expand = true
 
 [node name="Player_test" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+modulate = Color( 0.670588, 0.662745, 0.662745, 1 )
 margin_left = 580.0
 margin_right = 830.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 250, 250 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 8 )
 expand = true
 
 [node name="Vertical_Parkour" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
@@ -138,7 +141,7 @@ margin_left = 870.0
 margin_right = 1120.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 250, 250 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 9 )
 expand = true
 
 [node name="TextureButton5" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
