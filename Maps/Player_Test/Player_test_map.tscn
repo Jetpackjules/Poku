@@ -23,27 +23,6 @@ margin_right = 1875.0
 margin_bottom = 500.0
 color = Color( 1, 0.824, 0.78, 1 )
 
-[node name="Floor2" type="StaticBody2D" parent="."]
-position = Vector2( 0, -757.036 )
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
-position = Vector2( 0, 250 )
-shape = SubResource( 1 )
-
-[node name="ColorRect" type="ColorRect" parent="Floor2"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -1875.0
-margin_right = 1875.0
-margin_bottom = 500.0
-color = Color( 1, 0.824, 0.78, 1 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 76.5367, -166.194 )
-current = true
-zoom = Vector2( 0.5, 0.5 )
-
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2( 0, 490 )
 

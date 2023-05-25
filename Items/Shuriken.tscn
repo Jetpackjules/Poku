@@ -6,7 +6,6 @@
 friction = 0.0
 
 [node name="Shuriken" type="RigidBody2D" groups=["tool"]]
-position = Vector2( -137, 261 )
 collision_layer = 16
 collision_mask = 17
 mass = 0.00102041

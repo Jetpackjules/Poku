@@ -9,6 +9,8 @@ var bad_spines := 0
 
 #var spin_power := 50
 
+var power := 500.0
+
 #again the varaible to store desired angle
 var new_desired_angle := 0.0
 
@@ -36,7 +38,6 @@ onready var spine6 = get_node("Spine6")
 
 #onready var waist = get_node("../Body")
 export var controllable := true
-
 
 var body := []
 
@@ -96,6 +97,12 @@ func set_color(body_color, limbs_color):
 	var limb_style = spine1.get_node("Panel").get("custom_styles/panel")
 	var body_style = get_node("Panel").get("custom_styles/panel")
 	
+	var eye_left_cover = get_node("Eye_Right/Whites/Eye_Cover")
+	var eye_right_cover = get_node("Eye_Left/Whites/Eye_Cover")
+	
+	eye_right_cover.color = body_color
+	eye_left_cover.color = body_color
+	
 	limb_style.set_bg_color(limbs_color)
 	body_style.set_bg_color(body_color)
 
@@ -143,7 +150,7 @@ func _input(event):
 		
 
 	if event.is_action_released(spin) and controllable:
-		self.mode = RigidBody2D.MODE_CHARACTER
+#		self.mode = RigidBody2D.MODE_CHARACTER
 		if grabbed_item != null:
 			grabbed_item.release()
 			grabbed_item = null
@@ -175,7 +182,7 @@ func _input(event):
 		mult = 1
 		run_dir = 1
 		
-		if grabbed_item:
+		if grabbed_item and grabbed_item != null:
 #			grabbed_item.rotation = deg2rad(180)
 			grabbed_item.new_desired_angle = deg2rad(180)
 			
@@ -191,12 +198,12 @@ func _input(event):
 	
 	if event.is_action_released(jump) and raycast.is_colliding() and controllable:
 		auto_balance_timeout = 0.5
-		var power = (110-float_height)
+		var change_power = (110-float_height)
 		linear_velocity.y = 0
 		
 
 			
-		self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(power/20, 5))))
+		self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
 		float_height = 100
 		
 	elif event.is_action_pressed(crouch) and controllable:
@@ -209,6 +216,10 @@ func _input(event):
 				
 	
 func _physics_process(_delta):
+	
+#	print(mode)
+#	print('-')
+	
 	if Input.is_action_pressed(move_right) and controllable:
 		variant += 0.001
 		velocity.x = speed*variant
@@ -233,10 +244,20 @@ func _physics_process(_delta):
 		running = false
 	
 	
+	power = 300
+#	if locked:
+#		var current_angle = get_global_transform().get_rotation() 
+#		angular_velocity = lerp_angle(current_angle, new_desired_angle, (power) *_delta)
+
 
 	if locked:
-		var current_angle = get_global_transform().get_rotation() 
-		angular_velocity = lerp_angle(current_angle, new_desired_angle, (500) *_delta)
+		var current_angle = get_global_transform().get_rotation()
+		var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
+		if angle_difference > deg2rad(2.5):  # Adjust this value to change the size of the dead zone
+			angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
+		else:
+			angular_velocity = 0
+
 
 	if running:
 		# Upper Leg power
@@ -313,14 +334,18 @@ func _physics_process(_delta):
 		if bad_spines <= 0:
 			arm_collision_recovering = false
 
-	var ground_velocity := 0.0
+	var ground_velocity = Vector2.ZERO
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		if collider.is_in_group("move_player"):
-			ground_velocity = collider.linear_velocity.x
+			ground_velocity = Vector2(collider.linear_velocity.x, -collider.linear_velocity.y)
 
 
-	self.linear_velocity.x = velocity.x + ground_velocity
+	self.linear_velocity.x = velocity.x + ground_velocity.x
+	
+#	self.linear_velocity.x = velocity.x + ground_velocity.x
+	self.linear_velocity.y += ground_velocity.y
+
 	
 var stabbed_bodies := []
 var health := 1
@@ -335,8 +360,9 @@ func stabbed(body):
 	
 func _on_Respawn_timer_timeout():
 	for body in stabbed_bodies:
-		body.queue_free()
-		yield(body, "tree_exited")
+		if body != null:
+			body.queue_free()
+			yield(body, "tree_exited")
 	stabbed_bodies.clear()
 	
 	for part in body:

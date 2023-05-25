@@ -95,10 +95,10 @@ position = Vector2( 1683.06, -925.5 )
 shape = SubResource( 17 )
 
 [node name="ColorRect2" type="ColorRect" parent="Walls/Wall_right"]
-margin_left = -192.064
-margin_top = -1295.5
-margin_right = 191.936
-margin_bottom = 1577.5
+margin_left = -193.06
+margin_top = -1291.5
+margin_right = 190.94
+margin_bottom = 1581.5
 size_flags_horizontal = 5
 size_flags_vertical = 3
 color = Color( 0.407843, 0.529412, 0.74902, 1 )
@@ -186,7 +186,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -207,7 +206,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -228,7 +226,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3/Net4"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -249,7 +246,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3/Net4/Net5"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -271,7 +267,6 @@ node_a = NodePath("../../../Backboard")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -293,7 +288,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -314,7 +308,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -335,7 +328,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -356,7 +348,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4/Net5"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -463,7 +454,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -484,7 +474,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -505,7 +494,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3/Net4"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -526,7 +514,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3/Net4/Net5"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -548,7 +535,6 @@ node_a = NodePath("../../../Backboard")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -570,7 +556,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -591,7 +576,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -612,7 +596,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3/Net4"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0
@@ -633,7 +616,6 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3/Net4/Net5"]
-modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
 margin_left = -10.0
 margin_top = -19.0
 margin_right = 10.0

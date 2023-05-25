@@ -1,0 +1,146 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Items/Coal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Maps/Spaceship/Ship.gd" type="Script" id=2]
+
+[sub_resource type="PhysicsMaterial" id=2]
+absorbent = true
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 61, 52 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 75.5, 10 )
+
+[sub_resource type="Curve" id=11]
+_data = [ Vector2( 0.00877193, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0, 0.482927, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 0.732117, 0.0976563, 1, 1, 0, 0, 0.309804 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0.9 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.323485 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 90.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 50.0
+angular_velocity = 180.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 20.0
+angle = 45.0
+angle_curve = SubResource( 12 )
+scale = 150.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 10 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Spawns" type="Node2D" parent="."]
+position = Vector2( 0, 490 )
+
+[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( -1004, -1160 )
+scale = Vector2( -1, 1 )
+
+[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 558, -1704 )
+
+[node name="Spaceship_Right" type="RigidBody2D" parent="."]
+position = Vector2( 624, -1106 )
+mass = 50.0
+physics_material_override = SubResource( 2 )
+can_sleep = false
+script = ExtResource( 2 )
+
+[node name="Furnace" type="Area2D" parent="Spaceship_Right"]
+position = Vector2( 295, 131 )
+
+[node name="Burn Zone2" type="CollisionShape2D" parent="Spaceship_Right/Furnace"]
+position = Vector2( -8, -18 )
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Spaceship_Right/Furnace"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.0
+margin_top = -70.0
+margin_right = 54.0
+margin_bottom = 33.0
+color = Color( 0.345098, 0.345098, 0.345098, 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Spaceship_Right"]
+position = Vector2( -981, 532 )
+polygon = PoolVector2Array( 559, -589, 560, -352, 1351, -352, 1351, -688, 1327, -688, 1325, -372, 1207, -374, 1208, -436, 1183, -436, 1182, -376, 590, -377, 593, -588 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Spaceship_Right"]
+position = Vector2( -981, 532 )
+polygon = PoolVector2Array( 559, -589, 560, -352, 1351, -352, 1351, -688, 1327, -688, 1325, -372, 1207, -374, 1208, -436, 1183, -436, 1182, -376, 590, -377, 593, -588 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spaceship_Right"]
+position = Vector2( 277, 86 )
+rotation = 3.14159
+shape = SubResource( 3 )
+one_way_collision = true
+
+[node name="Particles2D" type="Particles2D" parent="Spaceship_Right"]
+position = Vector2( 119, 212 )
+amount = 50
+lifetime = 3.0
+preprocess = 600.0
+process_material = SubResource( 4 )
+
+[node name="GrooveJoint2D" type="GrooveJoint2D" parent="."]
+position = Vector2( 786, -1106 )
+node_a = NodePath("../Reference")
+node_b = NodePath("../Spaceship_Right")
+length = 1000.0
+initial_offset = 1.0
+
+[node name="GrooveJoint2D2" type="GrooveJoint2D" parent="."]
+position = Vector2( 425, -1106 )
+node_a = NodePath("../Reference")
+node_b = NodePath("../Spaceship_Right")
+length = 1000.0
+initial_offset = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -0.229797, -428 )
+current = true
+zoom = Vector2( 1.7, 1.7 )
+
+[node name="Reference" type="StaticBody2D" parent="."]
+
+[node name="Coal" parent="." instance=ExtResource( 1 )]
+position = Vector2( 716, -1182 )
+
+[node name="Coal2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 308, -1163 )
+
+[node name="Coal3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 401, -1132 )
+
+[node name="Coal4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 397, -1221 )
+
+[node name="Coal5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 370, -1334 )
+
+[connection signal="body_entered" from="Spaceship_Right/Furnace" to="Spaceship_Right" method="_on_Furnace_body_entered"]
+[connection signal="body_exited" from="Spaceship_Right/Furnace" to="Spaceship_Right" method="_on_Furnace_body_exited"]

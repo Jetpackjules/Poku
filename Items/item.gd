@@ -58,10 +58,13 @@ func _physics_process(_delta):
 			set_collision_mask_bit(1, true)
 #			visual.color = Color.black
 	
-
 	if locked:
 		var current_angle = get_global_transform().get_rotation()
-		angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
+		var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
+		if angle_difference > deg2rad(2.5):  # Adjust this value to change the size of the dead zone
+			angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
+		else:
+			angular_velocity = 0
 
 
 	if is_stationary() and pin.get_node_b()=="" and !cooldown and !impaled:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Player/Leg.gd" type="Script" id=1]
 [ext_resource path="res://Player/Body.gd" type="Script" id=2]
@@ -72,9 +72,6 @@ corner_radius_bottom_left = 50
 corner_detail = 7
 anti_aliasing = false
 
-[sub_resource type="PhysicsMaterial" id=19]
-friction = 0.0
-
 [sub_resource type="CapsuleShape2D" id=18]
 radius = 5.0
 height = 5.0
@@ -83,6 +80,7 @@ height = 5.0
 position = Vector2( 14, 28 )
 collision_layer = 14
 collision_mask = 13
+mode = 2
 physics_material_override = SubResource( 12 )
 can_sleep = false
 script = ExtResource( 2 )
@@ -264,13 +262,6 @@ node_a = NodePath("..")
 node_b = NodePath("../../Leg_L_down")
 bias = 0.9
 
-[node name="PinJoint2D2" type="PinJoint2D" parent="Leg_L_up"]
-position = Vector2( 0.539349, -28.0662 )
-rotation = -0.0520928
-node_a = NodePath("../..")
-node_b = NodePath("..")
-bias = 0.9
-
 [node name="Leg_L_down" type="RigidBody2D" parent="." groups=["stabb-able"]]
 position = Vector2( -7, 79 )
 rotation = 0.0520928
@@ -311,13 +302,6 @@ node_a = NodePath("..")
 node_b = NodePath("../../Leg_R_down")
 bias = 0.9
 
-[node name="PinJoint2D" type="PinJoint2D" parent="Leg_R_up"]
-position = Vector2( -0.531851, -28.0663 )
-rotation = 0.0523599
-node_a = NodePath("../..")
-node_b = NodePath("..")
-bias = 0.9
-
 [node name="Leg_R_down" type="RigidBody2D" parent="." groups=["stabb-able"]]
 position = Vector2( 7, 79 )
 rotation = -0.0523599
@@ -356,74 +340,12 @@ process_mode = 0
 wait_time = 5.0
 one_shot = true
 
-[node name="Eye_Left" type="Node2D" parent="."]
-scale = Vector2( -1, 1 )
-
-[node name="Whites" type="StaticBody2D" parent="Eye_Left"]
-position = Vector2( 17.5, 0 )
-collision_layer = 128
-collision_mask = 128
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Eye_Left/Whites"]
-position = Vector2( -0.479383, 0 )
-polygon = PoolVector2Array( -31.4174, -50.8842, -16.871, -0.750801, -25.9625, 55.6168, 56.6408, 47.3046, 57.6798, -51.6635, 13.2611, -54.5209, 13.0944, -4.5618, 13.4683, -1.81971, 13.5306, 0.73542, 13.1567, 4.34999, 12.1596, 7.27905, 10.6016, 9.83418, 8.54502, 11.9531, 6.17685, 13.3864, 3.43476, 14.6328, 0.0694599, 15.0068, -2.92191, 14.6952, -6.10024, 13.7604, -8.46841, 12.0777, -10.525, 10.2081, -12.2076, 7.21673, -13.2671, 4.28767, -13.5164, 1.17166, -13.3294, -2.50523, -13.2671, -4.31252, -12.083, -7.67781, -10.7119, -9.7967, -8.46841, -12.1649, -5.60168, -13.7852, -2.92191, -14.8446, 0.318743, -15.0316, 3.18547, -14.7823, 6.05221, -13.5359, 8.54502, -12.1025, 10.6639, -9.73438, 12.0349, -7.49085, 13.0575, -4.625, 11.7025, -54.7806 )
-
-[node name="Panel" type="Panel" parent="Eye_Left/Whites"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -13.5
-margin_top = -15.0
-margin_right = 13.5
-margin_bottom = 15.0
-custom_styles/panel = SubResource( 16 )
-
-[node name="Iris" type="Panel" parent="Eye_Left/Whites"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -7.5
-margin_top = -5.0
-margin_right = 7.5
-margin_bottom = 5.0
-custom_styles/panel = SubResource( 17 )
-script = ExtResource( 3 )
-
-[node name="PinJoint2D" type="PinJoint2D" parent="Eye_Left/Whites"]
-position = Vector2( 0.00682259, -0.000841141 )
-rotation = -3.14159
-scale = Vector2( 1, -1 )
-node_a = NodePath("..")
-node_b = NodePath("../Counterweight")
-bias = 0.9
-disable_collision = false
-
-[node name="Counterweight" type="RigidBody2D" parent="Eye_Left/Whites"]
-position = Vector2( 0.00682259, -0.000841141 )
-collision_layer = 128
-collision_mask = 128
-mode = 2
-physics_material_override = SubResource( 19 )
-gravity_scale = 0.0
-continuous_cd = 2
-can_sleep = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Eye_Left/Whites/Counterweight"]
-rotation = 1.5708
-shape = SubResource( 18 )
-
 [node name="Eye_Right" type="Node2D" parent="."]
 
 [node name="Whites" type="StaticBody2D" parent="Eye_Right"]
 position = Vector2( 17.5, 0 )
 collision_layer = 128
 collision_mask = 128
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Eye_Right/Whites"]
-position = Vector2( -0.479383, 0 )
-polygon = PoolVector2Array( -31.4174, -50.8842, -16.391, -1.53008, -25.9625, 55.6168, 56.6408, 47.3046, 57.6798, -51.6635, 13.2611, -54.5209, 13.0944, -4.5618, 13.4683, -1.81971, 13.5306, 0.73542, 13.1567, 4.34999, 12.1596, 7.27905, 10.6016, 9.83418, 8.54502, 11.9531, 6.17685, 13.3864, 3.43476, 14.6328, 0.0694599, 15.0068, -2.92191, 14.6952, -6.10024, 13.7604, -8.46841, 12.0777, -10.525, 10.2081, -12.2076, 7.21673, -13.2671, 4.28767, -13.5164, 1.17166, -13.3294, -2.50523, -13.2671, -4.31252, -12.083, -7.67781, -10.7119, -9.7967, -8.46841, -12.1649, -5.60168, -13.7852, -2.92191, -14.8446, 0.318743, -15.0316, 3.18547, -14.7823, 6.05221, -13.5359, 8.54502, -12.1025, 10.6639, -9.73438, 12.0349, -7.49085, 13.0575, -4.625, 11.7025, -54.7806 )
 
 [node name="Panel" type="Panel" parent="Eye_Right/Whites"]
 anchor_left = 0.5
@@ -454,7 +376,7 @@ rotation = -3.14159
 scale = Vector2( 1, -1 )
 node_a = NodePath("..")
 node_b = NodePath("../Counterweight")
-bias = 0.9
+bias = 0.5
 disable_collision = false
 
 [node name="Counterweight" type="RigidBody2D" parent="Eye_Right/Whites"]
@@ -462,14 +384,93 @@ position = Vector2( 0.00682259, -0.000841141 )
 collision_layer = 128
 collision_mask = 128
 mode = 2
-mass = 0.00102041
-physics_material_override = SubResource( 19 )
-continuous_cd = 2
+mass = 4.0
+gravity_scale = 0.0
 can_sleep = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Eye_Right/Whites/Counterweight"]
 rotation = 1.5708
 shape = SubResource( 18 )
+
+[node name="Eye_Cover" type="Polygon2D" parent="Eye_Right/Whites"]
+position = Vector2( -0.5, 0 )
+scale = Vector2( -1, 1 )
+color = Color( 0.901961, 0.184314, 0.682353, 1 )
+invert_border = 1.0
+polygon = PoolVector2Array( -5.00903, -23.3639, -15.0783, -15.1619, -19.0804, -6.32429, -19.3723, 0.832943, -17.1724, 10.3032, -11.1222, 17.4394, -0.774836, 24.8071, 15.9852, 25.3343, 16.8627, 0.634392, 23.7509, -23.3421, 10.7529, -26.4217, 13.0944, -4.5618, 13.4683, -1.81971, 13.5306, 0.73542, 13.1567, 4.34999, 12.1596, 7.27905, 10.6016, 9.83418, 8.54502, 11.9531, 6.17685, 13.3864, 3.43476, 14.6328, 0.0694599, 15.0068, -2.92191, 14.6952, -6.10024, 13.7604, -8.46841, 12.0777, -10.525, 10.2081, -12.2076, 7.21673, -13.2671, 4.28767, -13.5164, 1.17166, -13.3294, -2.50523, -13.2671, -4.31252, -12.083, -7.67781, -10.7119, -9.7967, -8.46841, -12.1649, -5.60168, -13.7852, -2.92191, -14.8446, 0.318743, -15.0316, 3.18547, -14.7823, 6.05221, -13.5359, 8.54502, -12.1025, 10.6639, -9.73438, 12.0349, -7.49085, 13.0575, -4.625, 10.6575, -26.4645 )
+
+[node name="Eye_Left" type="Node2D" parent="."]
+scale = Vector2( -1, 1 )
+
+[node name="Whites" type="StaticBody2D" parent="Eye_Left"]
+position = Vector2( 17.5, 0 )
+collision_layer = 128
+collision_mask = 128
+
+[node name="Panel" type="Panel" parent="Eye_Left/Whites"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -13.5
+margin_top = -15.0
+margin_right = 13.5
+margin_bottom = 15.0
+custom_styles/panel = SubResource( 16 )
+
+[node name="Iris" type="Panel" parent="Eye_Left/Whites"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -7.5
+margin_top = -5.0
+margin_right = 7.5
+margin_bottom = 5.0
+custom_styles/panel = SubResource( 17 )
+script = ExtResource( 3 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Eye_Left/Whites"]
+position = Vector2( 0.00682259, -0.000841141 )
+rotation = -3.14159
+scale = Vector2( 1, -1 )
+node_a = NodePath("..")
+node_b = NodePath("../Counterweight")
+bias = 0.5
+disable_collision = false
+
+[node name="Counterweight" type="RigidBody2D" parent="Eye_Left/Whites"]
+position = Vector2( 0.00682259, -0.000841141 )
+collision_layer = 128
+collision_mask = 128
+mode = 2
+mass = 4.0
+gravity_scale = 0.0
+can_sleep = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Eye_Left/Whites/Counterweight"]
+rotation = 1.5708
+shape = SubResource( 18 )
+
+[node name="Eye_Cover" type="Polygon2D" parent="Eye_Left/Whites"]
+position = Vector2( -0.5, 0 )
+scale = Vector2( -1, 1 )
+color = Color( 0.901961, 0.184314, 0.682353, 1 )
+invert_border = 1.0
+polygon = PoolVector2Array( -5.00903, -23.3639, -15.0783, -15.1619, -19.0804, -6.32429, -19.3723, 0.832943, -17.1724, 10.3032, -11.1222, 17.4394, -0.774836, 24.8071, 15.9852, 25.3343, 16.8627, 0.634392, 23.7509, -23.3421, 10.7529, -26.4217, 13.0944, -4.5618, 13.4683, -1.81971, 13.5306, 0.73542, 13.1567, 4.34999, 12.1596, 7.27905, 10.6016, 9.83418, 8.54502, 11.9531, 6.17685, 13.3864, 3.43476, 14.6328, 0.0694599, 15.0068, -2.92191, 14.6952, -6.10024, 13.7604, -8.46841, 12.0777, -10.525, 10.2081, -12.2076, 7.21673, -13.2671, 4.28767, -13.5164, 1.17166, -13.3294, -2.50523, -13.2671, -4.31252, -12.083, -7.67781, -10.7119, -9.7967, -8.46841, -12.1649, -5.60168, -13.7852, -2.92191, -14.8446, 0.318743, -15.0316, 3.18547, -14.7823, 6.05221, -13.5359, 8.54502, -12.1025, 10.6639, -9.73438, 12.0349, -7.49085, 13.0575, -4.625, 10.6575, -26.4645 )
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="."]
+position = Vector2( -2, -4.3869e-05 )
+scale = Vector2( 1, 1 )
+node_a = NodePath("..")
+node_b = NodePath("../Leg_L_up")
+bias = 0.9
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+position = Vector2( 2, 1.90735e-06 )
+node_a = NodePath("..")
+node_b = NodePath("../Leg_R_up")
+bias = 0.9
 
 [connection signal="body_entered" from="Pickup_range" to="." method="_on_Area2D_body_entered"]
 [connection signal="timeout" from="Respawn_timer" to="." method="_on_Respawn_timer_timeout"]

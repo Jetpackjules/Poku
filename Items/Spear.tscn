@@ -14,7 +14,6 @@ extents = Vector2( 91.5, 3.5 )
 
 [node name="Spear" type="RigidBody2D" groups=["tool"]]
 physics_interpolation_mode = 2
-position = Vector2( -224.956, 81.5755 )
 collision_layer = 16
 collision_mask = 17
 mass = 0.00102041

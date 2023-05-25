@@ -34,9 +34,9 @@ func _process(delta):
 	if last_platform_position.y > camera.position.y-1000:
 		generate_platform(last_platform_position)
 
-#	camera.position.y -= cam_speed
-#	cam_speed += delta/45
-	
+	camera.position.y -= cam_speed
+	cam_speed += delta/45
+#
 
 	for player in players:
 		if player.global_position.y > camera.position.y+get_viewport().size.y+300:
