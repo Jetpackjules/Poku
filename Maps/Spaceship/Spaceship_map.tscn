@@ -37,7 +37,7 @@ scale = Vector2( -1, 1 )
 [node name="P2_Spawn" type="Position2D" parent="Spawns"]
 position = Vector2( 1136, -498 )
 
-[node name="Spaceship_Right" type="RigidBody2D" parent="." groups=["move_player"]]
+[node name="Spaceship_Right" type="RigidBody2D" parent="." groups=["move_player", "ship"]]
 position = Vector2( 1136, 200 )
 mass = 5.0
 physics_material_override = SubResource( 2 )
@@ -149,7 +149,7 @@ margin_right = 180.0
 margin_bottom = 12.0
 color = Color( 0.647059, 0.647059, 0.647059, 1 )
 
-[node name="Spaceship_Left" type="RigidBody2D" parent="." groups=["move_player"]]
+[node name="Spaceship_Left" type="RigidBody2D" parent="." groups=["move_player", "ship"]]
 position = Vector2( -1136, 200 )
 mass = 5.0
 physics_material_override = SubResource( 2 )
@@ -273,7 +273,7 @@ tools = [ "Coal" ]
 initial_spawn = 8
 
 [node name="Clouds" type="Node2D" parent="."]
-position = Vector2( 1159, -783 )
+position = Vector2( 1159, -904 )
 
 [node name="Cloud" parent="Clouds" instance=ExtResource( 4 )]
 position = Vector2( -1551, 951 )

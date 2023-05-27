@@ -4,6 +4,7 @@ var float_height : float = 0.0
 var coal_objects : Array = []
 var max_thrusters : int = 5
 
+var OG_X := 0.0
 
 var thrusters_left : Array = []
 var thrusters_right : Array = []
@@ -11,21 +12,26 @@ var thrusters_right : Array = []
 onready var thruster_left = get_node("Thruster_Left")
 onready var thruster_right = get_node("Thruster_Right")
 
-var new_desired_angle := 0.0
+var new_desired_angle := get_global_transform().get_rotation()
+
+func _ready():
+	OG_X = global_position.x
 	
 func _physics_process(_delta):
-	
 	var current_angle = get_global_transform().get_rotation()
 	var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
+#	print("----")
 #	print(rad2deg(angle_difference))
-	if angle_difference > deg2rad(100):  # Adjust this value to change the size of the dead zone
-		angular_velocity = lerp_angle(current_angle, new_desired_angle, (10)* _delta)
-	else:
-		angular_velocity = 0
+#	print(rad2deg(get_global_transform().get_rotation()))
+#	if angle_difference:  # Adjust this value to change the size of the dead zone
+#		print(rad2deg(new_desired_angle))
+	angular_velocity = lerp_angle(current_angle, new_desired_angle, (100)* _delta)
+#	print("++++")
+
 
 	
 	# Calculate the target position
-	var target_position = Vector2(global_position.x, -float_height)
+	var target_position = Vector2(OG_X, -float_height)
 
 	# Calculate the direction to the target position
 	var direction = (target_position - global_position).normalized()
@@ -98,7 +104,11 @@ func _physics_process(_delta):
 		var new_thruster = thruster_right.duplicate()
 		add_child(new_thruster)
 		thrusters_right.append(new_thruster)
+		
+		
+		
 
+	
 func _on_Furnace_body_entered(body):
 	if body.is_in_group("flammable"):
 		coal_objects.append(body)

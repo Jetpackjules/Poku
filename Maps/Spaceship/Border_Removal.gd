@@ -17,5 +17,8 @@ func _on_Border_Removal_body_entered(body):
 	if body.is_in_group("tool"):
 		body.emit_signal("done")
 		body.queue_free()
+	if body.is_in_group("ship"):
+		print("DEATH")
+		body.queue_free()
 	if body.is_in_group("player"):
 		pass
