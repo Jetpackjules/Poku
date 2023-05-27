@@ -8,6 +8,7 @@ var snap := false
 var held := false
 export var usable := true
 
+export var indicator := true
 
 export var sharp := false
 export var directional := false
@@ -73,19 +74,21 @@ func _physics_process(_delta):
 		mass = 0.01
 		weight = 0.01
 		
-		visual.color = Color.green
+		if indicator:
+			visual.color = Color.green
 		
-	else:
+	elif indicator:
 		visual.color = Color.red
 			
 
-	if snap == true:
+	if snap and indicator:
 		visual.color = Color.blue
-	if locked == true:
-		visual.color = Color.purple
+#	if locked == true:
+#		visual.color = Color.purple
 		
 	if snap and usable:
 		if target_node:
+			target_node.owner.grabbed_item = self
 			available = false
 			
 			force += 1/2
@@ -106,7 +109,7 @@ func _physics_process(_delta):
 				
 				
 				snap = false
-				target_node.owner.grabbed_item = self
+				
 				force = 1
 				grab()
 
@@ -130,6 +133,8 @@ func grab():
 	bounce = 0.0
 	
 func release():
+	target_node.owner.grabbed_item = null
+	target_node.owner.holding_something = false
 	pin.set_node_b("")
 	cooldown = true
 	locked = false
@@ -179,12 +184,6 @@ func impale(body, colliding_point, direction):
 
 func _on_body_entered(body):
 	if sharp and !available and !snap and !held:
-#		var me = target_node.owner
-#		var hitted = body.owner
-#		var same = false
-#		if hitted == me:
-#			same = true
-##		var same = (hitted==me)
 		if body.is_in_group("stabb-able") and (target_node.owner != body.owner) and (target_node.owner != body):
 			if !impaled:
 				var result = Physics2DTestMotionResult.new()
@@ -268,7 +267,4 @@ func _on_body_entered(body):
 				
 						
 
-func reverse(dir) -> void:
-	breakpoint
-#	NO REVERSE FUNCTION HERE!
-	pass
+

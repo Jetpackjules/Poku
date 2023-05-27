@@ -97,6 +97,7 @@ func set_color(body_color, limbs_color):
 	var limb_style = spine1.get_node("Panel").get("custom_styles/panel")
 	var body_style = get_node("Panel").get("custom_styles/panel")
 	
+	
 	var eye_left_cover = get_node("Eye_Right/Whites/Eye_Cover")
 	var eye_right_cover = get_node("Eye_Left/Whites/Eye_Cover")
 	
@@ -152,6 +153,7 @@ func _input(event):
 	if event.is_action_released(spin) and controllable:
 #		self.mode = RigidBody2D.MODE_CHARACTER
 		if grabbed_item != null:
+			var test = str(grabbed_item)
 			grabbed_item.release()
 			grabbed_item = null
 			holding_something = false
@@ -182,7 +184,8 @@ func _input(event):
 		mult = 1
 		run_dir = 1
 		
-		if grabbed_item and grabbed_item != null:
+		if grabbed_item and grabbed_item != null and str(grabbed_item) != "[Deleted Object]":
+
 #			grabbed_item.rotation = deg2rad(180)
 			grabbed_item.new_desired_angle = deg2rad(180)
 			
@@ -217,8 +220,14 @@ func _input(event):
 	
 func _physics_process(_delta):
 	
-#	print(mode)
-#	print('-')
+	
+	
+#	debugging, but i dont think its necessary...
+#	if str(grabbed_item) == "[Deleted Object]":
+#		grabbed_item = null
+#		if auto_balance_timeout <= 0:
+#			holding_something = false
+##
 	
 	if Input.is_action_pressed(move_right) and controllable:
 		variant += 0.001
@@ -360,7 +369,8 @@ func stabbed(body):
 	
 func _on_Respawn_timer_timeout():
 	for body in stabbed_bodies:
-		if body != null:
+		if str(body) != "[null]":
+			var test = str(body)
 			body.queue_free()
 			yield(body, "tree_exited")
 	stabbed_bodies.clear()

@@ -76,10 +76,10 @@ anti_aliasing = false
 radius = 5.0
 height = 5.0
 
-[node name="Body" type="RigidBody2D" groups=["stabb-able"]]
+[node name="Body" type="RigidBody2D" groups=["player", "stabb-able"]]
 position = Vector2( 14, 28 )
 collision_layer = 14
-collision_mask = 13
+collision_mask = 525
 mode = 2
 physics_material_override = SubResource( 12 )
 can_sleep = false
@@ -89,6 +89,7 @@ script = ExtResource( 2 )
 position = Vector2( 0, 1 )
 enabled = true
 cast_to = Vector2( 0, 130 )
+collision_mask = 513
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -96,8 +97,8 @@ shape = SubResource( 11 )
 
 [node name="Spine6" type="RigidBody2D" parent="." groups=["stabb-able"]]
 position = Vector2( 32, -7 )
-collision_layer = 6
-collision_mask = 5
+collision_layer = 2
+collision_mask = 513
 mass = 0.102041
 physics_material_override = SubResource( 14 )
 script = ExtResource( 10 )
@@ -121,7 +122,7 @@ bias = 0.9
 [node name="Spine5" type="RigidBody2D" parent="Spine6" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
-collision_mask = 5
+collision_mask = 517
 mass = 0.102041
 physics_material_override = SubResource( 9 )
 script = ExtResource( 6 )
@@ -145,7 +146,7 @@ bias = 0.9
 [node name="Spine4" type="RigidBody2D" parent="Spine6/Spine5" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
-collision_mask = 5
+collision_mask = 517
 mass = 0.102041
 physics_material_override = SubResource( 9 )
 script = ExtResource( 9 )
@@ -169,7 +170,7 @@ bias = 0.9
 [node name="Spine3" type="RigidBody2D" parent="Spine6/Spine5/Spine4" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
-collision_mask = 5
+collision_mask = 517
 mass = 0.102041
 physics_material_override = SubResource( 9 )
 script = ExtResource( 7 )
@@ -193,7 +194,7 @@ bias = 0.9
 [node name="Spine2" type="RigidBody2D" parent="Spine6/Spine5/Spine4/Spine3" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
-collision_mask = 5
+collision_mask = 517
 mass = 0.102041
 physics_material_override = SubResource( 9 )
 script = ExtResource( 8 )
@@ -217,7 +218,7 @@ bias = 0.9
 [node name="Spine1" type="RigidBody2D" parent="Spine6/Spine5/Spine4/Spine3/Spine2" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
-collision_mask = 5
+collision_mask = 517
 mass = 0.102041
 physics_material_override = SubResource( 9 )
 can_sleep = false
@@ -243,6 +244,7 @@ bias = 0.9
 position = Vector2( -4, 28 )
 rotation = 0.0520928
 collision_layer = 2
+collision_mask = 513
 angular_damp = 3.0
 script = ExtResource( 1 )
 
@@ -266,6 +268,7 @@ bias = 0.9
 position = Vector2( -7, 79 )
 rotation = 0.0520928
 collision_layer = 2
+collision_mask = 513
 physics_material_override = SubResource( 7 )
 script = ExtResource( 1 )
 
@@ -283,6 +286,7 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 4, 28 )
 rotation = -0.0523599
 collision_layer = 2
+collision_mask = 513
 angular_damp = 3.0
 script = ExtResource( 1 )
 
@@ -306,6 +310,7 @@ bias = 0.9
 position = Vector2( 7, 79 )
 rotation = -0.0523599
 collision_layer = 2
+collision_mask = 513
 physics_material_override = SubResource( 7 )
 script = ExtResource( 1 )
 
@@ -461,7 +466,6 @@ polygon = PoolVector2Array( -5.00903, -23.3639, -15.0783, -15.1619, -19.0804, -6
 
 [node name="PinJoint2D2" type="PinJoint2D" parent="."]
 position = Vector2( -2, -4.3869e-05 )
-scale = Vector2( 1, 1 )
 node_a = NodePath("..")
 node_b = NodePath("../Leg_L_up")
 bias = 0.9

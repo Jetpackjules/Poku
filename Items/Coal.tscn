@@ -3,16 +3,15 @@
 [ext_resource path="res://Items/Coal.gd" type="Script" id=1]
 
 [sub_resource type="PhysicsMaterial" id=1]
-rough = true
-absorbent = true
 
 [node name="Coal" type="RigidBody2D" groups=["flammable", "tool"]]
-collision_layer = 16
-collision_mask = 17
-mass = 0.00102041
+collision_layer = 48
+collision_mask = 49
+mass = 10.0
 physics_material_override = SubResource( 1 )
 can_sleep = false
 script = ExtResource( 1 )
+indicator = false
 
 [node name="PinJoint2D" type="PinJoint2D" parent="."]
 node_a = NodePath("..")

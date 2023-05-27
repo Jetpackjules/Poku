@@ -1,16 +1,26 @@
 extends Node2D
 
-onready var tools = load("res://Items/Tools.tscn").instance().get_children()
+export var tools = ["Ball", "Shuriken", "Spear"]
 
-var loaded_tools = []
+var loaded_tools := []
 
 var ball_count := 0
 
+export var initial_spawn := 4
+
+export var spawn_at_point := false
+
+var x_range_start := -1000 
+var x_range_end := 1000 
+var y_height := -1000
+	
 func _ready():
-	_spawn_new_tool()
-	_spawn_new_tool()
-	_spawn_new_tool()
-	_spawn_new_tool()
+	for index in range(tools.size()):
+
+		tools[index] = load("res://Items/"+tools[index]+".tscn")
+
+	for i in range(initial_spawn):
+		_spawn_new_tool()
 
 
 func _spawn_new_tool(item = null):
@@ -19,7 +29,7 @@ func _spawn_new_tool(item = null):
 		if "Ball" in item.name:
 			ball_count -= 1
 
-	var new_tool = tools[randi() % tools.size()].duplicate() 
+	var new_tool = tools[randi() % tools.size()].instance() 
 	if "Ball" in new_tool.name:
 		ball_count += 1
 		if ball_count > 2:
@@ -30,17 +40,17 @@ func _spawn_new_tool(item = null):
 		
 	new_tool.connect("done", self, "_spawn_new_tool") 
 	
-	var x_range_start = -1000 
-	var x_range_end = 1000 
-	var y_height = -1000
-	
-	var random_x = rand_range(x_range_start, x_range_end) 
-
-	
 	add_child(new_tool)
-#	new_tool.owner = self
 	
-	new_tool.global_position = Vector2(random_x, y_height) 
+	if spawn_at_point:
+		new_tool.global_position = self.global_position
+	else:
+		var rand_x = rand_range(x_range_start, x_range_end) 
+		new_tool.global_position = Vector2(rand_x, y_height) 
+	
+	
+
+
 	
 	if get_children().size() >= 7:
 		for curr_tool in get_children():
