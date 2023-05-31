@@ -154,6 +154,7 @@ func _input(event):
 #		self.mode = RigidBody2D.MODE_CHARACTER
 		if grabbed_item != null:
 			var test = str(grabbed_item)
+			print(test)
 			grabbed_item.release()
 			grabbed_item = null
 			holding_something = false
@@ -223,10 +224,11 @@ func _physics_process(_delta):
 	
 	
 #	debugging, but i dont think its necessary...
-#	if str(grabbed_item) == "[Deleted Object]":
-#		grabbed_item = null
-#		if auto_balance_timeout <= 0:
-#			holding_something = false
+	if str(grabbed_item) == "[Deleted Object]":
+		grabbed_item = null
+
+		if auto_balance_timeout <= 0:
+			holding_something = false
 ##
 	
 	if Input.is_action_pressed(move_right) and controllable:
@@ -243,7 +245,7 @@ func _physics_process(_delta):
 
 	if Input.is_action_pressed(spin) and controllable:
 		spin_multiplier += 0.003
-		angular_velocity = 10*spin_dir*min(spin_multiplier, 1.33)  # Set a constant angular velocity
+		angular_velocity = 10*spin_dir*min(spin_multiplier, 1.30)  # Set a constant angular velocity
 		
 
 

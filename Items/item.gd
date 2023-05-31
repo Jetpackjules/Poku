@@ -232,7 +232,7 @@ func _on_body_entered(body):
 							emit_signal("done", self)
 							found = true
 							done = true
-#
+
 
 				
 				if (body is StaticBody2D):

@@ -1,0 +1,23 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=30]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float progress : hint_range(0,1) = 1.0;
+uniform vec4 fill_color : hint_color = vec4(1.0, 0.549, 0.0, 1.0); // Darker shade of orange
+
+void fragment() {
+    if(progress < 1.0) {
+        float fill = step(1.0 - progress, UV.y);
+        vec4 overlay_color = vec4(fill_color.rgb, fill_color.a * fill);
+        COLOR = mix(COLOR, overlay_color, overlay_color.a);
+    }
+}
+"
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 30 )
+shader_param/progress = 0.0
+shader_param/fill_color = Color( 1, 0.549, 0, 1 )

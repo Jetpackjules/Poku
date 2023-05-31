@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
 [ext_resource path="res://fonts/kirifont/Kirifont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Items/Tool_Spawner.gd" type="Script" id=4]
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
+[ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
 
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 3, 1000 )
@@ -657,6 +658,7 @@ physics_material_override = SubResource( 28 )
 polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81 )
 
 [node name="Panel" type="Panel" parent="Hoop_right/Backboard"]
+material = ExtResource( 6 )
 margin_left = -9.0
 margin_top = -132.0
 margin_right = 10.0
