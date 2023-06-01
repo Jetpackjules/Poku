@@ -275,13 +275,14 @@ func _physics_process(_delta):
 
 
 	if running:
-		# Upper Leg power
+#		# Upper Leg power
 		stride += mult * _delta
-		var new_power = abs(linear_velocity.x)
-		mult = min(2.5, new_power/400)
-		
-		Leg_R_up.power = min(new_power, 400)
-		Leg_L_up.power = min(new_power, 400)
+#		var new_power = abs(linear_velocity.x)
+#		mult = min(2.5, new_power/400)
+#
+		print(stride)
+#		Leg_R_up.power = min(new_power, 400)
+#		Leg_L_up.power = min(new_power, 400)
 
 
 		# Upper Leg new desired angles

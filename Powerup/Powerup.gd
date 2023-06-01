@@ -39,7 +39,9 @@ func _process(delta):
 		tween.interpolate_property(rigidbody, "scale", rigidbody.scale, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 		tween.start()
 		if distance < 15:
-			ingested(target_body)
+			get_node("Pickup_Area").disabled = true
+			get_node("Timer").start()
+			ingested()
 			being_ingested = false
 
 func _on_Powerup_body_entered(body):
@@ -52,6 +54,6 @@ func _on_Powerup_body_entered(body):
 	tween.interpolate_property(rigidbody, "scale", rigidbody.scale, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 	tween.start()
 
-func ingested(body):
+func ingested():
 	print("Powerup has been ingested!")  # replace with your own logic
 	queue_free()
