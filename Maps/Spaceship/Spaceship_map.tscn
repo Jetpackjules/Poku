@@ -31,7 +31,7 @@ extents = Vector2( 5000, 138.5 )
 position = Vector2( 0, 490 )
 
 [node name="P1_Spawn" type="Position2D" parent="Spawns"]
-position = Vector2( 66, -1140 )
+position = Vector2( -70, -991 )
 scale = Vector2( -1, 1 )
 
 [node name="P2_Spawn" type="Position2D" parent="Spawns"]

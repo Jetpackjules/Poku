@@ -8,10 +8,21 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "FakeConfettiParticles",
+"language": "GDScript",
+"path": "res://Items/Effects/Confetti.gd"
+} ]
+_global_script_class_icons={
+"FakeConfettiParticles": ""
+}
+
 [application]
 
-config/name="Active Ragdoll Lab"
+config/name="Poku"
 run/main_scene="res://Maps/Scene_Manager.tscn"
+config/icon="res://Icon.png"
 
 [autoload]
 
@@ -171,6 +182,7 @@ escape={
 2d/time_before_sleep=0.0
 2d/default_gravity_vector=Vector2( 0, 10 )
 3d/default_gravity_vector=Vector3( 0, 1000, 0 )
+common/physics_interpolation=true
 
 [rendering]
 

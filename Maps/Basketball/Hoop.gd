@@ -6,6 +6,7 @@ onready var score := get_node("../Score")
 onready var backboard := get_node("Backboard/Panel")
 var body_inside
 
+onready var confetti = load("res://Items/Effects/Confetti.tscn")
 
 func _ready():
 	var panel_material = load("res://Maps/Basketball/Progress_Goal.tres").duplicate()
@@ -28,6 +29,13 @@ func _on_Hoop_Goal_body_exited(body):
 	
 func _on_Timer_timeout():
 	body_inside.emit_signal("done", body_inside)
+	
+	var confet = confetti.instance()
+	
+	add_child(confet)
+	confet.global_position = body_inside.global_position
+	confet.pop()
+	
 	body_inside.queue_free()
 
 

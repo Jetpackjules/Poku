@@ -119,7 +119,7 @@ func _ready():
 	
 
 	if flip:
-		flip()	
+		flip()
 
 func interpolate_keyframes(keyframes, progress):
 	var index = int(progress * len(keyframes))
@@ -206,17 +206,21 @@ func _input(event):
 		linear_velocity.y = 0
 		
 
-			
 		self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
 		float_height = 100
-		
-	elif event.is_action_pressed(crouch) and controllable:
-		for part in legs:
-				part.locked = false
-				
-	if event.is_action_released(crouch) and controllable:
+	
+	elif event.is_action_pressed(crouch) and controllable and !raycast.is_colliding():
 		for part in legs:
 				part.locked = true
+		gravity_scale = 10
+	
+	
+	if event.is_action_released(crouch) and controllable:
+		for part in legs:
+			part.locked = true
+		float_height = 100  # Reset the float height when crouch is released.
+		gravity_scale = 1
+
 				
 	
 func _physics_process(_delta):
@@ -229,7 +233,7 @@ func _physics_process(_delta):
 
 		if auto_balance_timeout <= 0:
 			holding_something = false
-##
+
 	
 	if Input.is_action_pressed(move_right) and controllable:
 		variant += 0.001
@@ -306,7 +310,7 @@ func _physics_process(_delta):
 #		Blimp code:
 		var distance_to_ground = raycast.get_collision_point().distance_to(raycast.global_position)
 
-		if (distance_to_ground < float_height) and !Input.is_action_pressed(crouch) and !Input.is_action_pressed(jump) and controllable:
+		if (distance_to_ground < float_height) and !Input.is_action_pressed(crouch) and controllable:
 #			chest_polygon.color = Color.red
 
 			# Calculate the difference between the current height and the desired height
@@ -315,7 +319,7 @@ func _physics_process(_delta):
 			# Set the vertical velocity to a value proportional to the height difference
 			self.linear_velocity.y = -height_difference * float_force/100
 
-		elif (distance_to_ground > float_height+10) and !Input.is_action_pressed(crouch) and !Input.is_action_pressed(jump) and controllable:
+		elif (distance_to_ground > float_height+10) and !Input.is_action_pressed(crouch) and controllable:
 #			chest_polygon.color = Color.yellow
 
 			# Calculate the difference between the current height and the desired height
@@ -371,7 +375,7 @@ func stabbed(body):
 	
 func _on_Respawn_timer_timeout():
 	for body in stabbed_bodies:
-		if str(body) != "[null]":
+		if str(body) != "[Deleted Object]":
 			var test = str(body)
 			body.queue_free()
 			yield(body, "tree_exited")

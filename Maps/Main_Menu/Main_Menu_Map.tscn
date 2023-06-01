@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Maps/Main_Menu/MenuRoot.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Menu_Fonts/Title_Font.tres" type="DynamicFont" id=2]
@@ -13,6 +13,9 @@
 
 [sub_resource type="StyleBoxLine" id=1]
 thickness = 0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 9193, 250 )
 
 [node name="Main_Menu" type="CanvasLayer"]
 
@@ -242,6 +245,13 @@ texture_normal = ExtResource( 5 )
 expand = true
 
 [node name="Tween" type="Tween" parent="MenuRoot"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2( 2039, 1549 )
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource( 2 )
 
 [connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Games" to="MenuRoot" method="_on_Games_pressed"]
 [connection signal="pressed" from="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer/Back" to="MenuRoot" method="_on_Back_Button_pressed"]

@@ -33,7 +33,6 @@ radius = 7.0
 height = 50.0
 
 [sub_resource type="PhysicsMaterial" id=7]
-friction = 11.0
 rough = true
 bounce = 10.0
 absorbent = true

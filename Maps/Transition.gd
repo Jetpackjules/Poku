@@ -1,14 +1,14 @@
 extends CanvasLayer
 
 
-var time = 0.4
-var flip = 1
+var time := 0.4
+var flip := 1
 
 signal switch
 
 func _process(delta):
 	
-	time += delta*flip/2
+	time += delta*flip*2
 	$ColorRect.material.set_shader_param("progress", 1-time)
 	if time >= 1.0:
 #		time = 0.0
