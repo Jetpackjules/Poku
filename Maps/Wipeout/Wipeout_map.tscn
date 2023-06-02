@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Maps/Wipeout/Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Maps/Wipeout/Wall_Spawner.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )
@@ -60,7 +60,6 @@ shape = SubResource( 3 )
 [node name="Camera2D" parent="." instance=ExtResource( 1 )]
 scale = Vector2( 0.810814, 0.287216 )
 
-[node name="Wall" parent="." instance=ExtResource( 2 )]
-position = Vector2( 182, 0 )
-collision_layer = 0
-collision_mask = 0
+[node name="Wall_Spawner" type="Node2D" parent="."]
+position = Vector2( 0, -816 )
+script = ExtResource( 2 )
