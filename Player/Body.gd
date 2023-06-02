@@ -153,8 +153,8 @@ func _input(event):
 	if event.is_action_released(spin) and controllable:
 #		self.mode = RigidBody2D.MODE_CHARACTER
 		if grabbed_item != null:
-			var test = str(grabbed_item)
-			print(test)
+#			var test = str(grabbed_item)
+#			print(test)
 			grabbed_item.release()
 			grabbed_item = null
 			holding_something = false
@@ -280,7 +280,7 @@ func _physics_process(_delta):
 #		var new_power = abs(linear_velocity.x)
 #		mult = min(2.5, new_power/400)
 #
-		print(stride)
+#		print(stride)
 #		Leg_R_up.power = min(new_power, 400)
 #		Leg_L_up.power = min(new_power, 400)
 
