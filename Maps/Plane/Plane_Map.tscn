@@ -1,5 +1,0 @@
-[gd_scene format=2]
-
-[node name="Sky" type="Node2D"]
-
-[node name="Plane" type="RigidBody2D" parent="."]

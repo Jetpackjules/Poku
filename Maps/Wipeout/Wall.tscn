@@ -6,6 +6,8 @@
 extents = Vector2( 46, 1710 )
 
 [node name="Wall" type="RigidBody2D" groups=["move_player"]]
+collision_layer = 512
+collision_mask = 0
 mode = 2
 mass = 1e+07
 gravity_scale = 0.0
@@ -36,4 +38,4 @@ margin_left = -46.0
 margin_top = -1710.0
 margin_right = 46.0
 margin_bottom = 1710.0
-color = Color( 0.882353, 0.294118, 0.294118, 1 )
+color = Color( 0.294118, 0.411765, 0.882353, 1 )

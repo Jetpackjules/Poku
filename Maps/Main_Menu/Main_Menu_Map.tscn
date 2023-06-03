@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Maps/Main_Menu/MenuRoot.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Menu_Fonts/Title_Font.tres" type="DynamicFont" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Maps/Main_Menu/Logos/doodle.jpeg" type="Texture" id=9]
 [ext_resource path="res://Maps/Main_Menu/Logos/SPACESHIP.jpg" type="Texture" id=10]
 [ext_resource path="res://Maps/Main_Menu/Logos/Wipeout_Icon.jpg" type="Texture" id=11]
+[ext_resource path="res://Maps/Main_Menu/Logos/Plane_Icon.png" type="Texture" id=12]
 
 [sub_resource type="StyleBoxLine" id=1]
 thickness = 0
@@ -165,16 +166,16 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 11 )
 expand = true
 
-[node name="TextureButton7" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Planes" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 290.0
 margin_top = 290.0
 margin_right = 540.0
 margin_bottom = 540.0
 rect_min_size = Vector2( 250, 250 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 12 )
 expand = true
 
-[node name="TextureButton8" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back8" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 580.0
 margin_top = 290.0
 margin_right = 830.0
@@ -183,7 +184,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton9" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back7" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 870.0
 margin_top = 290.0
 margin_right = 1120.0
@@ -192,7 +193,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton10" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back6" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 1160.0
 margin_top = 290.0
 margin_right = 1410.0
@@ -201,7 +202,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton11" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back5" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_top = 580.0
 margin_right = 250.0
 margin_bottom = 830.0
@@ -209,7 +210,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton12" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back4" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 290.0
 margin_top = 580.0
 margin_right = 540.0
@@ -218,7 +219,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton13" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back3" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 580.0
 margin_top = 580.0
 margin_right = 830.0
@@ -227,7 +228,7 @@ rect_min_size = Vector2( 250, 250 )
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="TextureButton14" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
+[node name="Back2" type="TextureButton" parent="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer"]
 margin_left = 870.0
 margin_top = 580.0
 margin_right = 1120.0

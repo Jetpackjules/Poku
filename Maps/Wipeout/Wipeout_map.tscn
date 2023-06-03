@@ -48,10 +48,6 @@ collision_mask = 8
 position = Vector2( 1629, -788.907 )
 shape = SubResource( 2 )
 
-[node name="Boundary_Left" type="CollisionShape2D" parent="Seperator"]
-position = Vector2( -1639, -788 )
-shape = SubResource( 2 )
-
 [node name="Boundary_Left2" type="CollisionShape2D" parent="Seperator"]
 position = Vector2( -7, -1733 )
 rotation = 1.5708
