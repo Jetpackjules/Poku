@@ -2,7 +2,7 @@ extends RigidBody2D
 
 onready var plane := get_node("Plane")
 
-var gravity := -2.0
+var gravity := -4.0
 var reg_gravity := gravity
 
 var updraft_gravity := 20.8
