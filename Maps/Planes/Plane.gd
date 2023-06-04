@@ -1,39 +1,61 @@
 extends RigidBody2D
 
-# Assuming the Area2D node is a child of the current node and it's named "UpdraftArea".
-onready var plane = get_node("Plane")
+onready var plane := get_node("Plane")
 
-# Initial gravity value
-var gravity = Vector2(0, 17.8)
+var gravity := -2.0
+var reg_gravity := gravity
 
-# When in updraft, the gravity will become negative
-var updraft_gravity = Vector2(0, -45.8)
+var updraft_gravity := 20.8
+
+
+# Array to keep track of bodies in the "Stand Zone"
+var stand_zone_bodies = []
 
 func _ready():
 	pass
 
-
 func _physics_process(delta):
-	# Apply constant downward force
-#	apply_central_impulse(-gravity*1000)
-	applied_force.y = -gravity.y
-	print(gravity.y)
-#	print("")
-#	print("")
-	# The horizontal motion remains the same
-	linear_velocity.x = plane.rotation_degrees * 20
+	
+#	updraft_gravity = 20.8
+	applied_force.y = -gravity*mass*100
+	
+	 
+	
+	
+	# Apply force based on the position of bodies in the "Stand Zone"
+	if stand_zone_bodies:
+		for body in stand_zone_bodies:
+	#		print(plane.global_position.x - body.global_position.x)
+			var x_diff = body.global_position.x - plane.global_position.x
+			applied_force.x = (sign(x_diff) * pow(abs(x_diff), 2) / 10) * mass
+			print(sign(x_diff) * pow(abs(x_diff), 1.5) / 600)
+			plane.rotation_degrees = lerp(plane.rotation_degrees, sign(x_diff) * pow(abs(x_diff), 2) / 1000, 0.3)
+	else:
+		plane.rotation_degrees = lerp(plane.rotation_degrees, 0, 0.03)
+		
+	
 
+	linear_velocity.x = clamp(linear_velocity.x, -600, 600)
+	linear_velocity.y = clamp(linear_velocity.y, -300, 300)
+	
+#	linear_velocity.y = 0
+#	plane.linear_velocity.y = 0
 
 func _on_Updraft_body_entered(body):
 	if body == self:
 		gravity = updraft_gravity
 		print("Plane entered updraft")
-		print("ENTERED")
-
 
 func _on_Updraft_body_exited(body):
 	if body == self:
-		gravity = Vector2(0, 90.8)
+		gravity = reg_gravity
 		print("Plane left updraft")
-		print("EXITED")
-pass # Replace with function body.
+
+# Add body to the array when it enters the "Stand Zone"
+func _on_Stand_Zone_body_entered(body):
+	stand_zone_bodies.append(body)
+
+# Remove body from the array when it exits the "Stand Zone"
+func _on_Stand_Zone_body_exited(body):
+	stand_zone_bodies.erase(body)
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Items/Tool_Spawner.gd" type="Script" id=4]
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
 [ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
+[ext_resource path="res://Ostritch/Ostritch.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 3, 1000 )
@@ -696,6 +697,9 @@ scale = Vector2( -1, 1 )
 
 [node name="P2_Spawn" type="Position2D" parent="Spawns"]
 position = Vector2( 900, -300 )
+
+[node name="Ostritch" parent="." instance=ExtResource( 7 )]
+position = Vector2( -436, 139 )
 
 [connection signal="body_entered" from="Hoop_left/Hoop_Goal" to="Hoop_left" method="_on_Hoop_Goal_body_entered"]
 [connection signal="body_exited" from="Hoop_left/Hoop_Goal" to="Hoop_left" method="_on_Hoop_Goal_body_exited"]
