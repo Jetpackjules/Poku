@@ -81,12 +81,18 @@ func move_players() -> void:
 	
 	for curr_player in scene_manager.get_node("Players").get_children():
 		curr_player.ragdoll(0)
+		curr_player.win(false)
 		var spawn_location = current_map.get_node("Spawns/P" + str(curr_player.get_index()+1) + "_Spawn")
 		if spawn_location.scale.x == -1:
 			curr_player.flip()
 		
 		curr_player.controllable = false
 #		curr_player.global_position = spawn_location.global_position
+		for part in curr_player.body:
+			part.mode = RigidBody2D.MODE_STATIC
+			part.sleeping = false
+			pass
+			
 		tween.interpolate_property(curr_player, "global_position", curr_player.global_position, spawn_location.global_position, 1)
 #		tween.interpolate_property(next_menu, "rect_global_position", next_menu.rect_global_position, menu_origin_position, menu_transition_time)
 		tween.start()
@@ -95,7 +101,8 @@ func move_players() -> void:
 func player_move_done():
 	for curr_player in scene_manager.get_node("Players").get_children():
 		curr_player.controllable = true
-
+	
+		curr_player.stop()
 
 func make_player(player_number: int) -> void:
 	var new_player = load("res://Player/Player.tscn").instance()
@@ -125,6 +132,11 @@ func make_player(player_number: int) -> void:
 			breakpoint
 
 func check_living():
+	print("ALIVE: ", living_players)
 	if living_players <= 1:
 		print("ALL DEAD")
-		random_map()
+		for curr_player in scene_manager.get_node("Players").get_children():
+			if !curr_player.dead:
+				print(curr_player.name, " WINS!")
+				curr_player.win(true)
+#		random_map()

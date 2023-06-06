@@ -36,6 +36,9 @@ onready var spine4 = get_node("Spine6/Spine5/Spine4")
 onready var spine5 = get_node("Spine6/Spine5")
 onready var spine6 = get_node("Spine6")
 
+onready var eye1 = get_node("Eye_Left/Whites/Iris")
+onready var eye2 = get_node("Eye_Right/Whites/Iris")
+
 #onready var waist = get_node("../Body")
 export var controllable := true
 
@@ -306,9 +309,7 @@ func _physics_process(_delta):
 	raycast.global_rotation = 0
 	pickup_zone.global_rotation = 0
 	
-
 	if raycast.is_colliding() and auto_balance_timeout <= 0 and controllable:
-
 
 #		Blimp code:
 		var distance_to_ground = raycast.get_collision_point().distance_to(raycast.global_position)
@@ -394,28 +395,54 @@ func _on_Respawn_timer_timeout():
 
 
 func ragdoll(timeout):
-	
-	if timeout == 0:
-		dead = false
-	
 	auto_balance_timeout = timeout
 
 	
 	for part in body:
-		locked = false
+		part.locked = false
 
 	if grabbed_item:
 		grabbed_item.release()
 		grabbed_item = null
 		holding_something = true
 
+	if timeout == 0:
+		eye1.dead_iris(false)
+		eye2.dead_iris(false)
+		if dead:
+			SceneSwitcher.living_players += 1
+		dead = false
+		for part in body:
+			part.locked = true
+	
 
 func die() -> void:
+	controllable = false
 	ragdoll(9999999)
-	SceneSwitcher.living_players -= 1
-	SceneSwitcher.check_living()
+	eye1.dead_iris(true)
+	eye2.dead_iris(true)
+	if !dead:
+		SceneSwitcher.living_players -= 1
 	dead = true
+	SceneSwitcher.check_living()
 
+
+var trophy
+func win(status: bool) -> void:
+	print("WINRAND")
+	if status and !trophy:
+		trophy = load("res://Items/Trophy.tscn").instance()
+		trophy.winning_player = self
+		
+		add_child(trophy)
+		trophy.position = Vector2(0,0)
+#		trophy.position = position
+		print("ADDED")
+		print(trophy.global_position)
+	elif trophy:
+		print("REMOVING")
+		trophy.queue_free()
+		trophy = null
 
 
 func _on_Area2D_body_entered(body):
@@ -427,4 +454,9 @@ func _on_Area2D_body_entered(body):
 				holding_something = true
 
 
-
+func stop():
+	for part in body:
+		part.mode = RigidBody2D.MODE_RIGID
+#		part.linear_velocity = Vector2(0,0)
+#		part.angular_velocity = 0
+	mode = RigidBody2D.MODE_CHARACTER
