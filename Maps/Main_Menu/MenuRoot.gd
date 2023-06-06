@@ -66,3 +66,8 @@ func _on_Games_pressed():
 func _on_Back_Button_pressed():
 	move_to_previous_menu()
 	pass # Replace with function body.
+
+
+func _on_Start_pressed():
+	SceneSwitcher.random_map()
+

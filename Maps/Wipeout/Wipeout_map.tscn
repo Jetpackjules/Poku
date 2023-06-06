@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Maps/Wipeout/Wall_Spawner.gd" type="Script" id=2]
+[ext_resource path="res://Maps/Vertical_Parkour/Death_Zone.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )
@@ -11,6 +12,9 @@ extents = Vector2( 3, 1000 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 3.00011, 1640 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 696, 2885 )
 
 [node name="Whipeout_Zone" type="Node2D"]
 
@@ -59,3 +63,14 @@ scale = Vector2( 0.810814, 0.287216 )
 [node name="Wall_Spawner" type="Node2D" parent="."]
 position = Vector2( 0, -816 )
 script = ExtResource( 2 )
+
+[node name="Death_Zone" type="Area2D" parent="."]
+position = Vector2( -2376, -475 )
+collision_layer = 8
+collision_mask = 8
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death_Zone"]
+shape = SubResource( 4 )
+
+[connection signal="body_entered" from="Death_Zone" to="Death_Zone" method="_on_Death_Zone_body_entered"]

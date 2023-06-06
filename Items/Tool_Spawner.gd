@@ -48,7 +48,9 @@ func _spawn_new_tool(item = null):
 		var rand_x = rand_range(x_range_start, x_range_end) 
 		new_tool.global_position = Vector2(rand_x, y_height) 
 	
-	
+	if new_tool.global_position.x > 0:
+		new_tool.rotation_degrees = 180
+
 
 
 	

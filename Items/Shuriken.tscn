@@ -3,17 +3,15 @@
 [ext_resource path="res://Items/item.gd" type="Script" id=1]
 
 [sub_resource type="PhysicsMaterial" id=13]
-friction = 0.0
 
 [node name="Shuriken" type="RigidBody2D" groups=["tool"]]
 collision_layer = 16
 collision_mask = 17
-mass = 0.00102041
+mass = 0.1
 physics_material_override = SubResource( 13 )
 continuous_cd = 2
 contacts_reported = 2
 contact_monitor = true
-can_sleep = false
 script = ExtResource( 1 )
 sharp = true
 

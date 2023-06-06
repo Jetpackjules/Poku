@@ -97,8 +97,10 @@ shape = SubResource( 11 )
 position = Vector2( 32, -7 )
 collision_layer = 2
 collision_mask = 513
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 14 )
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6"]
@@ -115,14 +117,15 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("../..")
 node_b = NodePath("..")
-bias = 0.9
 
 [node name="Spine5" type="RigidBody2D" parent="Spine6" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
 collision_mask = 517
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 9 )
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6/Spine5"]
@@ -139,14 +142,15 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("..")
 node_b = NodePath("../..")
-bias = 0.9
 
 [node name="Spine4" type="RigidBody2D" parent="Spine6/Spine5" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
 collision_mask = 517
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 9 )
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6/Spine5/Spine4"]
@@ -163,14 +167,15 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("..")
 node_b = NodePath("../..")
-bias = 0.9
 
 [node name="Spine3" type="RigidBody2D" parent="Spine6/Spine5/Spine4" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
 collision_mask = 517
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 9 )
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6/Spine5/Spine4/Spine3"]
@@ -187,14 +192,15 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("..")
 node_b = NodePath("../..")
-bias = 0.9
 
 [node name="Spine2" type="RigidBody2D" parent="Spine6/Spine5/Spine4/Spine3" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
 collision_mask = 517
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 9 )
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6/Spine5/Spine4/Spine3/Spine2"]
@@ -211,15 +217,15 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("..")
 node_b = NodePath("../..")
-bias = 0.9
 
 [node name="Spine1" type="RigidBody2D" parent="Spine6/Spine5/Spine4/Spine3/Spine2" groups=["stabb-able"]]
 position = Vector2( 0, -14 )
 collision_layer = 6
 collision_mask = 517
-mass = 0.102041
+mass = 0.1
 physics_material_override = SubResource( 9 )
-can_sleep = false
+continuous_cd = 2
+linear_damp = 1.0
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6/Spine5/Spine4/Spine3/Spine2/Spine1"]
@@ -236,7 +242,6 @@ custom_styles/panel = ExtResource( 11 )
 position = Vector2( 0, 7 )
 node_a = NodePath("..")
 node_b = NodePath("../..")
-bias = 0.9
 
 [node name="Leg_L_up" type="RigidBody2D" parent="." groups=["stabb-able"]]
 position = Vector2( -4, 28 )

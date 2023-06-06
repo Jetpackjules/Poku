@@ -5,12 +5,15 @@ var current_map
 
 var player_count := 2
 var spawned_players := 0
+var living_players := 0
 
 onready var scene_manager = get_tree().get_current_scene()
 
 onready var tween = scene_manager.get_node("Tween")
 
 onready var transition = load("res://Menus/Transitions/Diamond_Transition.tscn")
+
+var gamemodes := ["Wipeout", "Basketball", "Vertical_Parkour"]
 
 func _input(event):
 	if event.is_action_pressed("escape"):
@@ -19,10 +22,24 @@ func _input(event):
 
 
 func _ready():
+	randomize()
+	
 	tween.connect("tween_all_completed", self, "player_move_done")
 	
 	current_map = load("res://Maps/Main_Menu/Main_Menu_Map.tscn").instance()
 	scene_manager.add_child(current_map)
+	
+	for mode in current_map.get_node("MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer").get_children():
+		if !("Back" in mode.name):
+#			gamemodes.append(mode.name)
+			pass
+
+func random_map() -> void:
+	var new_map: String = gamemodes[randi() % gamemodes.size()]
+	print(gamemodes)
+	print(new_map)
+	change_map(new_map)
+	
 
 func change_map(next_map_name: String) -> void:
 #	var next_map: Resource
@@ -56,12 +73,14 @@ func change_map(next_map_name: String) -> void:
 func move_players() -> void:
 	while spawned_players < player_count:
 		spawned_players += 1
+		living_players += 1
 		make_player(spawned_players)
 		
 	
 
 	
 	for curr_player in scene_manager.get_node("Players").get_children():
+		curr_player.ragdoll(0)
 		var spawn_location = current_map.get_node("Spawns/P" + str(curr_player.get_index()+1) + "_Spawn")
 		if spawn_location.scale.x == -1:
 			curr_player.flip()
@@ -104,3 +123,8 @@ func make_player(player_number: int) -> void:
 			new_player.set_color(Color(0.901961, 0.184314, 0.682353), Color(0.94902, 0.886275, 0))
 		_:
 			breakpoint
+
+func check_living():
+	if living_players <= 1:
+		print("ALL DEAD")
+		random_map()

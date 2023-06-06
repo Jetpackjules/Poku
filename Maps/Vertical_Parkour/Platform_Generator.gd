@@ -28,8 +28,7 @@ func _ready():
 
 func _process(delta):
 	
-	if !players:
-		players = get_tree().get_root().get_node("Scene_Manager/Players").get_children()
+
 	
 	if last_platform_position.y > camera.position.y-1000:
 		generate_platform(last_platform_position)
@@ -37,12 +36,12 @@ func _process(delta):
 	camera.position.y -= cam_speed
 	cam_speed += delta/45
 #
-
-	for player in players:
-		if player.global_position.y > camera.position.y+get_viewport().size.y+300:
-			
-			player.ragdoll(1)
-			player.apply_central_impulse(Vector2(0,-2000))
+	if !players:
+		players = get_tree().get_root().get_node("Scene_Manager/Players").get_children()
+#	for player in players:
+#		if player.global_position.y > camera.position.y+get_viewport().size.y+300:
+#			player.die()
+#			player.apply_central_impulse(Vector2(0,-2000))
 
 
 func generate_platform(position):

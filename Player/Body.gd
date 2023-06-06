@@ -61,7 +61,7 @@ var running  := false
 var spine := []
 var legs := []
 
-
+var dead := false
 var grabber
 var upper_leg_keyframes := [
 -1.0, 0, 2.4, 0
@@ -224,8 +224,10 @@ func _input(event):
 				
 	
 func _physics_process(_delta):
-	
-	
+#	for thing in spine:
+#		var joint = thing.get_node("PinJoint2D")
+#		print(joint.bias)
+#		joint.bias = 0.000
 	
 #	debugging, but i dont think its necessary...
 	if str(grabbed_item) == "[Deleted Object]":
@@ -392,6 +394,10 @@ func _on_Respawn_timer_timeout():
 
 
 func ragdoll(timeout):
+	
+	if timeout == 0:
+		dead = false
+	
 	auto_balance_timeout = timeout
 
 	
@@ -404,13 +410,21 @@ func ragdoll(timeout):
 		holding_something = true
 
 
+func die() -> void:
+	ragdoll(9999999)
+	SceneSwitcher.living_players -= 1
+	SceneSwitcher.check_living()
+	dead = true
+
+
 
 func _on_Area2D_body_entered(body):
-	if body.usable:
-		if body.available and !holding_something and !body.held:
-			body.target_node = grabber
-			body.snap = true
-			holding_something = true
+	if not body.get("usable") == null:
+		if body.usable:
+			if body.available and !holding_something and !body.held:
+				body.target_node = grabber
+				body.snap = true
+				holding_something = true
 
 
 

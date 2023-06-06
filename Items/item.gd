@@ -11,7 +11,7 @@ export var usable := true
 export var indicator := true
 
 export var sharp := false
-export var directional := false
+
 
 signal done(item)
 
@@ -184,6 +184,7 @@ func impale(body, colliding_point, direction):
 
 func _on_body_entered(body):
 	if sharp and !available and !snap and !held:
+		locked = false
 		if body.is_in_group("stabb-able") and (target_node.owner != body.owner) and (target_node.owner != body):
 			if !impaled:
 				var result = Physics2DTestMotionResult.new()

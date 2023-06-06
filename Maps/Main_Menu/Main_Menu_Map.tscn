@@ -52,25 +52,25 @@ custom_constants/shadow_offset_y = 9
 custom_fonts/font = ExtResource( 2 )
 text = "POKU"
 
-[node name="Games" type="ToolButton" parent="MenuRoot/Main/CenterContainer/VBoxContainer"]
+[node name="Start" type="ToolButton" parent="MenuRoot/Main/CenterContainer/VBoxContainer"]
 margin_top = 294.0
 margin_right = 1053.0
 margin_bottom = 443.0
-custom_colors/font_color = Color( 0.67451, 0.407843, 1, 1 )
-custom_colors/font_color_hover = Color( 0.7855, 0.61, 1, 1 )
-custom_fonts/font = ExtResource( 4 )
-custom_styles/focus = SubResource( 1 )
-text = "Games"
-
-[node name="Start" type="ToolButton" parent="MenuRoot/Main/CenterContainer/VBoxContainer"]
-margin_top = 447.0
-margin_right = 1053.0
-margin_bottom = 596.0
 custom_colors/font_color = Color( 0.184314, 0.792157, 0.101961, 1 )
 custom_colors/font_color_hover = Color( 0.445095, 0.81, 0.3969, 1 )
 custom_fonts/font = ExtResource( 4 )
 custom_styles/focus = SubResource( 1 )
 text = "Start"
+
+[node name="Games" type="ToolButton" parent="MenuRoot/Main/CenterContainer/VBoxContainer"]
+margin_top = 447.0
+margin_right = 1053.0
+margin_bottom = 596.0
+custom_colors/font_color = Color( 0.67451, 0.407843, 1, 1 )
+custom_colors/font_color_hover = Color( 0.7855, 0.61, 1, 1 )
+custom_fonts/font = ExtResource( 4 )
+custom_styles/focus = SubResource( 1 )
+text = "Games"
 
 [node name="Options" type="ToolButton" parent="MenuRoot/Main/CenterContainer/VBoxContainer"]
 margin_top = 600.0
@@ -255,5 +255,6 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 shape = SubResource( 2 )
 
+[connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Start" to="MenuRoot" method="_on_Start_pressed"]
 [connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Games" to="MenuRoot" method="_on_Games_pressed"]
 [connection signal="pressed" from="MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer/Back" to="MenuRoot" method="_on_Back_Button_pressed"]

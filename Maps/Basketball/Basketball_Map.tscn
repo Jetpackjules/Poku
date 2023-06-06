@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://Items/Tool_Spawner.gd" type="Script" id=4]
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
 [ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
-[ext_resource path="res://Ostritch/Ostritch.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Maps/Vertical_Parkour/Death_Zone.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 3, 1000 )
@@ -14,11 +14,11 @@ extents = Vector2( 3, 1000 )
 [sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 1500, 33 )
 
-[sub_resource type="RectangleShape2D" id=17]
-extents = Vector2( 191.936, 1295.5 )
-
 [sub_resource type="RectangleShape2D" id=29]
-extents = Vector2( 191.936, 1295.5 )
+extents = Vector2( 191.936, 1012.75 )
+
+[sub_resource type="RectangleShape2D" id=30]
+extents = Vector2( 191.936, 177.5 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 1875, 250 )
@@ -46,7 +46,7 @@ anti_aliasing = false
 
 [sub_resource type="PhysicsMaterial" id=28]
 rough = true
-bounce = 1.0
+bounce = 37.04
 absorbent = true
 
 [sub_resource type="StyleBoxFlat" id=23]
@@ -55,6 +55,12 @@ corner_radius_top_left = 15
 corner_radius_bottom_left = 10
 corner_detail = 9
 anti_aliasing = false
+
+[sub_resource type="RectangleShape2D" id=31]
+extents = Vector2( 696, 2325.5 )
+
+[sub_resource type="RectangleShape2D" id=32]
+extents = Vector2( 2308, 690.5 )
 
 [node name="Stadium" type="Node2D"]
 position = Vector2( 0, -370 )
@@ -92,31 +98,39 @@ script = ExtResource( 4 )
 
 [node name="Walls" type="StaticBody2D" parent="." groups=["stabb-able"]]
 
-[node name="Wall_right" type="CollisionShape2D" parent="Walls"]
-position = Vector2( 1683.06, -925.5 )
-shape = SubResource( 17 )
+[node name="ColorRect3" type="ColorRect" parent="Walls"]
+margin_left = 1490.0
+margin_top = -2217.0
+margin_right = 1874.0
+margin_bottom = 656.0
+size_flags_horizontal = 5
+size_flags_vertical = 3
+color = Color( 0.407843, 0.529412, 0.74902, 1 )
 
-[node name="ColorRect2" type="ColorRect" parent="Walls/Wall_right"]
-margin_left = -193.06
-margin_top = -1291.5
-margin_right = 190.94
-margin_bottom = 1581.5
+[node name="ColorRect2" type="ColorRect" parent="Walls"]
+margin_left = -1875.0
+margin_top = -2221.0
+margin_right = -1491.0
+margin_bottom = 652.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 color = Color( 0.407843, 0.529412, 0.74902, 1 )
 
 [node name="Wall_left" type="CollisionShape2D" parent="Walls"]
-position = Vector2( -1683, -925 )
+position = Vector2( -1683, -1207.75 )
 shape = SubResource( 29 )
 
-[node name="ColorRect2" type="ColorRect" parent="Walls/Wall_left"]
-margin_left = -192.0
-margin_top = -1296.0
-margin_right = 192.0
-margin_bottom = 1577.0
-size_flags_horizontal = 5
-size_flags_vertical = 3
-color = Color( 0.407843, 0.529412, 0.74902, 1 )
+[node name="Wall_left_Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2( -1683, 195.5 )
+shape = SubResource( 30 )
+
+[node name="Wall_right" type="CollisionShape2D" parent="Walls"]
+position = Vector2( 1682, -1207.75 )
+shape = SubResource( 29 )
+
+[node name="Wall_right_Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2( 1682, 195.5 )
+shape = SubResource( 30 )
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2( 0, 370 )
@@ -157,6 +171,8 @@ position = Vector2( 240, 26 )
 rotation = 3.50817
 scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net"]
 shape = SubResource( 18 )
@@ -178,6 +194,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( 3.42871, 31.3628 )
 rotation = -0.174533
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2"]
 shape = SubResource( 18 )
@@ -198,6 +216,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( 12.8318, 27.6206 )
 rotation = -0.808422
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3"]
 shape = SubResource( 18 )
@@ -218,6 +238,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( -4.89664, 30.2102 )
 rotation = 0.275978
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3/Net4"]
 shape = SubResource( 18 )
@@ -238,6 +260,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( 15.5, 16.1666 )
 rotation = -1.3403
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3/Net4/Net5"]
 shape = SubResource( 18 )
@@ -259,6 +283,8 @@ position = Vector2( 15, 26 )
 rotation = 2.75527
 scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2"]
 shape = SubResource( 18 )
@@ -280,6 +306,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( -10.4506, 27.6009 )
 rotation = 0.630071
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2"]
 shape = SubResource( 18 )
@@ -300,6 +328,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( -3.88458, 30.5128 )
 rotation = 0.240007
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3"]
 shape = SubResource( 18 )
@@ -320,6 +350,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( -4.64142, 31.5685 )
 rotation = 0.287285
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4"]
 shape = SubResource( 18 )
@@ -340,6 +372,8 @@ custom_styles/panel = ExtResource( 5 )
 position = Vector2( 0.244141, 31.857 )
 rotation = -0.0153155
 physics_material_override = SubResource( 26 )
+linear_damp = 2.0
+angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4/Net5"]
 shape = SubResource( 18 )
@@ -388,7 +422,7 @@ scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 28 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_left/Backboard"]
-polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81 )
+polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 394, 80.999, 394, -132.001 )
 
 [node name="Panel" type="Panel" parent="Hoop_left/Backboard"]
 margin_left = -9.0
@@ -656,7 +690,7 @@ scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 28 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_right/Backboard"]
-polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81 )
+polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 393, 81.999, 393, -132.001 )
 
 [node name="Panel" type="Panel" parent="Hoop_right/Backboard"]
 material = ExtResource( 6 )
@@ -683,11 +717,6 @@ align = 1
 valign = 1
 script = ExtResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( -0.229797, -428 )
-current = true
-zoom = Vector2( 1.7, 1.7 )
-
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2( 0, 490 )
 
@@ -698,8 +727,28 @@ scale = Vector2( -1, 1 )
 [node name="P2_Spawn" type="Position2D" parent="Spawns"]
 position = Vector2( 900, -300 )
 
-[node name="Ostritch" parent="." instance=ExtResource( 7 )]
-position = Vector2( -436, 139 )
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -0.229797, -428 )
+current = true
+zoom = Vector2( 1.7, 1.7 )
+
+[node name="Death_Zone" type="Area2D" parent="."]
+position = Vector2( -2376, -475 )
+collision_layer = 8
+collision_mask = 8
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death_Zone"]
+position = Vector2( -64, 0 )
+shape = SubResource( 31 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Death_Zone"]
+position = Vector2( 4827, 0 )
+shape = SubResource( 31 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Death_Zone"]
+position = Vector2( 2377, 1650.5 )
+shape = SubResource( 32 )
 
 [connection signal="body_entered" from="Hoop_left/Hoop_Goal" to="Hoop_left" method="_on_Hoop_Goal_body_entered"]
 [connection signal="body_exited" from="Hoop_left/Hoop_Goal" to="Hoop_left" method="_on_Hoop_Goal_body_exited"]
@@ -707,3 +756,4 @@ position = Vector2( -436, 139 )
 [connection signal="body_entered" from="Hoop_right/Hoop_Goal" to="Hoop_right" method="_on_Hoop_Goal_body_entered"]
 [connection signal="body_exited" from="Hoop_right/Hoop_Goal" to="Hoop_right" method="_on_Hoop_Goal_body_exited"]
 [connection signal="timeout" from="Hoop_right/Timer" to="Hoop_right" method="_on_Timer_timeout"]
+[connection signal="body_entered" from="Death_Zone" to="Death_Zone" method="_on_Death_Zone_body_entered"]
