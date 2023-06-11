@@ -47,6 +47,7 @@ var body := []
 var variant := 1.0
 
 var auto_balance_timeout := 0.0
+var ragdolled := false
 
 onready var raycast = get_node("RayCast2D")
 onready var pickup_zone = get_node("Pickup_range")
@@ -93,6 +94,7 @@ func flip():
 		part.new_desired_angle *= -1
 	
 	arm_collision_recovering = true
+
 
 
 
@@ -187,6 +189,7 @@ func _input(event):
 		variant = 1
 		mult = 1
 		run_dir = 1
+		stride = 0
 		
 		if grabbed_item and grabbed_item != null and str(grabbed_item) != "[Deleted Object]":
 
@@ -198,6 +201,7 @@ func _input(event):
 		variant = 1
 		mult = 1
 		run_dir = -1
+		stride = 0
 		
 		if grabbed_item != null:
 			grabbed_item.new_desired_angle = deg2rad(0)
@@ -212,16 +216,20 @@ func _input(event):
 		self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
 		float_height = 100
 	
-	elif event.is_action_pressed(crouch) and controllable and !raycast.is_colliding():
-		for part in legs:
-				part.locked = true
-		gravity_scale = 10
+	elif event.is_action_pressed(crouch) and controllable:
+		if raycast.is_colliding():
+			for part in legs:
+					part.locked = false
+		else:
+			for part in legs:
+					part.locked = true
+			gravity_scale = 10
 	
 	
 	if event.is_action_released(crouch) and controllable:
 		for part in legs:
 			part.locked = true
-		float_height = 100  # Reset the float height when crouch is released.
+#		float_height = 100  # Reset the float height when crouch is released.
 		gravity_scale = 1
 
 				
@@ -229,23 +237,34 @@ func _input(event):
 func _physics_process(_delta):
 #	for thing in spine:
 #		var joint = thing.get_node("PinJoint2D")
-#		print(joint.bias)
-#		joint.bias = 0.000
-	
+##		print(joint.bias)
+#		joint.bias = 0.99900
+
+
+
+
+
+
 #	debugging, but i dont think its necessary...
 	if str(grabbed_item) == "[Deleted Object]":
 		grabbed_item = null
+		holding_something = false
 
-		if auto_balance_timeout <= 0:
-			holding_something = false
+	if auto_balance_timeout <= 0 and ragdolled:
+		grabbed_item = null
+		holding_something = false
+		ragdolled = false
+		for part in body:
+			part.locked = true
+			
 
 	
 	if Input.is_action_pressed(move_right) and controllable:
-		variant += 0.001
+		variant += 0.060 *  _delta
 		velocity.x = speed*variant
 	
 	elif Input.is_action_pressed(move_left) and controllable:		
-		variant += 0.001
+		variant += 0.060 * _delta
 		velocity.x = -speed*variant
 	
 	else:
@@ -253,7 +272,7 @@ func _physics_process(_delta):
 
 
 	if Input.is_action_pressed(spin) and controllable:
-		spin_multiplier += 0.003
+		spin_multiplier += 0.060 * _delta
 		angular_velocity = 10*spin_dir*min(spin_multiplier, 1.30)  # Set a constant angular velocity
 		
 
@@ -264,7 +283,7 @@ func _physics_process(_delta):
 		running = false
 	
 	
-	power = 300
+	power = 900
 #	if locked:
 #		var current_angle = get_global_transform().get_rotation() 
 #		angular_velocity = lerp_angle(current_angle, new_desired_angle, (power) *_delta)
@@ -274,7 +293,7 @@ func _physics_process(_delta):
 		var current_angle = get_global_transform().get_rotation()
 		var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
 		if angle_difference > deg2rad(2.5):  # Adjust this value to change the size of the dead zone
-			angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
+			angular_velocity = lerp_angle(current_angle, new_desired_angle, (power)* _delta)
 		else:
 			angular_velocity = 0
 
@@ -282,12 +301,7 @@ func _physics_process(_delta):
 	if running:
 #		# Upper Leg power
 		stride += mult * _delta
-#		var new_power = abs(linear_velocity.x)
-#		mult = min(2.5, new_power/400)
-#
-#		print(stride)
-#		Leg_R_up.power = min(new_power, 400)
-#		Leg_L_up.power = min(new_power, 400)
+
 
 
 		# Upper Leg new desired angles
@@ -333,7 +347,7 @@ func _physics_process(_delta):
 			self.linear_velocity.y = height_difference * float_force/100
 
 	else:
-		auto_balance_timeout -= (0.0166666666)
+		auto_balance_timeout -= _delta #(0.0166666666)
 #		print(auto_balance_timeout)
 	
 	if Input.is_action_pressed(jump) and controllable and raycast.is_colliding():
@@ -396,7 +410,7 @@ func _on_Respawn_timer_timeout():
 
 func ragdoll(timeout):
 	auto_balance_timeout = timeout
-
+	ragdolled = true
 	
 	for part in body:
 		part.locked = false
@@ -404,7 +418,7 @@ func ragdoll(timeout):
 	if grabbed_item:
 		grabbed_item.release()
 		grabbed_item = null
-		holding_something = true
+		holding_something = false
 
 	if timeout == 0:
 		eye1.dead_iris(false)
@@ -414,6 +428,7 @@ func ragdoll(timeout):
 		dead = false
 		for part in body:
 			part.locked = true
+		ragdolled = false
 	
 
 func die() -> void:
@@ -434,7 +449,7 @@ func win(status: bool) -> void:
 		trophy = load("res://Items/Trophy.tscn").instance()
 		trophy.winning_player = self
 		
-		add_child(trophy)
+		call_deferred("add_child", trophy)
 		trophy.position = Vector2(0,0)
 #		trophy.position = position
 		print("ADDED")
@@ -446,17 +461,17 @@ func win(status: bool) -> void:
 
 
 func _on_Area2D_body_entered(body):
-	if not body.get("usable") == null:
-		if body.usable:
-			if body.available and !holding_something and !body.held:
-				body.target_node = grabber
-				body.snap = true
-				holding_something = true
+	if !ragdolled:
+		if not body.get("usable") == null:
+			if body.usable:
+				if body.available and !holding_something and !body.held:
+					body.target_node = grabber
+					body.snap = true
+					holding_something = true
 
 
 func stop():
+
 	for part in body:
-		part.mode = RigidBody2D.MODE_RIGID
-#		part.linear_velocity = Vector2(0,0)
-#		part.angular_velocity = 0
-	mode = RigidBody2D.MODE_CHARACTER
+		part.linear_velocity = Vector2(0,0)
+		part.angular_velocity = 0

@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Props/Target.gd" type="Script" id=2]
+
+[sub_resource type="ParticlesMaterial" id=2]
+lifetime_randomness = 0.02
+flag_disable_z = true
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 0.06
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 52.92
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 20, 93 )
+
+[node name="Target" type="RigidBody2D" groups=["stabb-able"]]
+collision_layer = 3
+mass = 100.0
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -93.0
+margin_right = 20.0
+margin_bottom = 93.0
+rect_pivot_offset = Vector2( 20, 93 )
+color = Color( 0.807843, 0.807843, 0.807843, 1 )
+
+[node name="BobbingTimer" type="Timer" parent="."]
+wait_time = 0.345
+one_shot = true
+
+[node name="SmokeParticles2D" type="Particles2D" parent="."]
+lifetime = 3.0
+process_material = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[connection signal="timeout" from="BobbingTimer" to="." method="_on_BobbingTimer_timeout"]

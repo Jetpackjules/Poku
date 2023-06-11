@@ -12,7 +12,7 @@ export var indicator := true
 
 export var sharp := false
 
-
+var power := 600
 signal done(item)
 
 var done := false
@@ -63,7 +63,7 @@ func _physics_process(_delta):
 		var current_angle = get_global_transform().get_rotation()
 		var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
 		if angle_difference > deg2rad(2.5):  # Adjust this value to change the size of the dead zone
-			angular_velocity = lerp_angle(current_angle, new_desired_angle, (300)* _delta)
+			angular_velocity = lerp_angle(current_angle, new_desired_angle, (power)* _delta)
 		else:
 			angular_velocity = 0
 
@@ -240,14 +240,12 @@ func _on_body_entered(body):
 #					set_collision_mask_bit(1, true)
 					set_collision_layer_bit(1, true)
 				else:
-					print("-----")
-#					print(body)
-#					print(body.owner)
-#					print(body.owner.name)
 					if "Body" in body.name:
 						body.stabbed(self)
-					else:
+					elif "Body" in body.owner.name:
 						body.owner.stabbed(self)
+					else:
+						body.stabbed(self)
 						
 					set_collision_mask_bit(1, false)
 					set_collision_layer_bit(1, false)

@@ -9,7 +9,7 @@ var living_players := 0
 
 onready var scene_manager = get_tree().get_current_scene()
 
-onready var tween = scene_manager.get_node("Tween")
+#onready var tween = scene_manager.get_node("Tween")
 
 onready var transition = load("res://Menus/Transitions/Diamond_Transition.tscn")
 
@@ -24,7 +24,6 @@ func _input(event):
 func _ready():
 	randomize()
 	
-	tween.connect("tween_all_completed", self, "player_move_done")
 	
 	current_map = load("res://Maps/Main_Menu/Main_Menu_Map.tscn").instance()
 	scene_manager.add_child(current_map)
@@ -75,11 +74,16 @@ func move_players() -> void:
 		spawned_players += 1
 		living_players += 1
 		make_player(spawned_players)
-		
-	
 
-	
+
 	for curr_player in scene_manager.get_node("Players").get_children():
+		for part in curr_player.body:
+			part.set_collision_layer_bit(1, false)
+			part.set_collision_mask_bit(0, false)
+			part.set_collision_mask_bit(9, false)
+		
+		
+		
 		curr_player.ragdoll(0)
 		curr_player.win(false)
 		var spawn_location = current_map.get_node("Spawns/P" + str(curr_player.get_index()+1) + "_Spawn")
@@ -87,22 +91,32 @@ func move_players() -> void:
 			curr_player.flip()
 		
 		curr_player.controllable = false
-#		curr_player.global_position = spawn_location.global_position
-		for part in curr_player.body:
-			part.mode = RigidBody2D.MODE_STATIC
-			part.sleeping = false
-			pass
-			
-		tween.interpolate_property(curr_player, "global_position", curr_player.global_position, spawn_location.global_position, 1)
-#		tween.interpolate_property(next_menu, "rect_global_position", next_menu.rect_global_position, menu_origin_position, menu_transition_time)
-		tween.start()
+		var target_position = spawn_location.global_position
+		
+		var player_tween = Tween.new()  # create a new tween
+		scene_manager.add_child(player_tween)  # add it as a child of the part
+
+		player_tween.interpolate_property(curr_player, "global_position", curr_player.global_position, target_position, 1)
+		player_tween.start()
+		player_tween.connect("tween_completed", self, "player_move_done", [curr_player])  # pass the player and part as arguments
 		
 
-func player_move_done():
-	for curr_player in scene_manager.get_node("Players").get_children():
-		curr_player.controllable = true
-	
-		curr_player.stop()
+
+func player_move_done(obj: Object, key: String, curr_player) -> void:
+	print("BLASLKRHLAKSJHD:  ", curr_player)
+#	for curr_player in scene_manager.get_node("Players").get_children():
+	curr_player.controllable = true
+
+	curr_player.stop()
+	print("DONE")
+
+	for part in curr_player.body:
+		if !("Body" in part.name):
+			part.set_collision_layer_bit(1, true)
+			part.set_collision_mask_bit(0, true)
+			part.set_collision_mask_bit(9, true)
+		
+		
 
 func make_player(player_number: int) -> void:
 	var new_player = load("res://Player/Player.tscn").instance()
@@ -139,4 +153,7 @@ func check_living():
 			if !curr_player.dead:
 				print(curr_player.name, " WINS!")
 				curr_player.win(true)
-#		random_map()
+				print("WAITING")
+				yield(get_tree().create_timer(5.0), "timeout")
+				print("NEEEXT")
+				random_map()

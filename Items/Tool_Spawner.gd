@@ -40,6 +40,8 @@ func _spawn_new_tool(item = null):
 		
 	new_tool.connect("done", self, "_spawn_new_tool") 
 	
+#	call_deferred("add_child", new_tool)
+#	commented because it messes up position with spawn at point &^^ 
 	add_child(new_tool)
 	
 	if spawn_at_point:

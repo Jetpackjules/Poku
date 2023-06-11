@@ -1,7 +1,7 @@
 extends RigidBody2D
 #leg script
 var new_desired_angle = 0 
-var power = 300
+var power = 400 #300
 var locked = true
 #Called when the node enters the scene tree for the first time.
 func _ready(): 
