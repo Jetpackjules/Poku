@@ -242,8 +242,9 @@ func _on_body_entered(body):
 				else:
 					if "Body" in body.name:
 						body.stabbed(self)
-					elif "Body" in body.owner.name:
-						body.owner.stabbed(self)
+					elif body.owner:
+						if "Body" in body.owner.name:
+							body.owner.stabbed(self)
 					else:
 						body.stabbed(self)
 						

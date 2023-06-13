@@ -1,26 +1,104 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Props/Target.gd" type="Script" id=2]
-
-[sub_resource type="ParticlesMaterial" id=2]
-lifetime_randomness = 0.02
-flag_disable_z = true
-gravity = Vector3( 0, 98, 0 )
-initial_velocity = 100.0
-initial_velocity_random = 0.06
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-scale = 52.92
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 20, 93 )
 
+[sub_resource type="Shader" id=6]
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+
+[sub_resource type="Gradient" id=8]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.234783, 0.956522, 0.991304 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.145098, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=12]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, -200 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="Curve" id=10]
+_data = [ Vector2( 0, 0.0670455 ), 0.0, 1.38, 0, 0, Vector2( 0.134387, 0.432954 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+lifetime_randomness = 0.02
+emission_shape = 1
+emission_sphere_radius = 20.89
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, -98, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 0.06
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel_random = 0.41
+linear_accel_curve = SubResource( 13 )
+angle = 45.0
+angle_random = 0.34
+scale = 100.0
+scale_random = 0.1
+scale_curve = SubResource( 11 )
+color = Color( 0.607843, 0.607843, 0.607843, 1 )
+color_ramp = SubResource( 9 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.360784, 0.360784, 0.360784, 1 )
+border_color = Color( 0.862745, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 20
+anti_aliasing_size = 0.457
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 41.1096
+
+[sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0.9, 0.60795, 0.369, 1 )
+border_color = Color( 0.862745, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 20
+anti_aliasing_size = 0.159
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.360784, 0.360784, 0.360784, 1 )
+border_color = Color( 0.862745, 0, 0, 1 )
+border_blend = true
+corner_radius_top_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 7
+anti_aliasing_size = 0.178
+
 [node name="Target" type="RigidBody2D" groups=["stabb-able"]]
 collision_layer = 3
 mass = 100.0
+linear_damp = 1.0
 script = ExtResource( 2 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 1 )
+
+[node name="Target_Body" type="ColorRect" parent="."]
+material = SubResource( 7 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -37,10 +115,75 @@ wait_time = 0.345
 one_shot = true
 
 [node name="SmokeParticles2D" type="Particles2D" parent="."]
+position = Vector2( 0, -125 )
+amount = 32
 lifetime = 3.0
+explosiveness = 0.01
+randomness = 0.2
+visibility_rect = Rect2( -100000, -100000, 100000, 100000 )
+local_coords = false
 process_material = SubResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+[node name="Rotor_Top" type="RigidBody2D" parent="."]
+position = Vector2( 0, -125 )
+gravity_scale = 0.0
+angular_damp = 0.0
+
+[node name="Rotor_Housing_Top2" type="Panel" parent="Rotor_Top"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -49.0
+margin_top = -49.0
+margin_right = 49.0
+margin_bottom = 49.0
+rect_pivot_offset = Vector2( 41, 41 )
+custom_styles/panel = SubResource( 14 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rotor_Top"]
+visible = false
+shape = SubResource( 5 )
+
+[node name="Rotor_Housing_Top" type="Panel" parent="Rotor_Top"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -41.0
+margin_top = -41.0
+margin_right = 41.0
+margin_bottom = 41.0
+rect_pivot_offset = Vector2( 41, 41 )
+custom_styles/panel = SubResource( 15 )
+
+[node name="Rotor_Blade1" type="Panel" parent="Rotor_Top"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -8.0
+margin_top = -37.5
+margin_right = 8.0
+margin_bottom = 37.5
+rect_pivot_offset = Vector2( 8.16739, 37.4048 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="Rotor_Blade2" type="Panel" parent="Rotor_Top"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -8.0
+margin_top = -37.5
+margin_right = 8.0
+margin_bottom = 37.5
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 8.16739, 37.4048 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Rotor_Top"]
+node_a = NodePath("../..")
+node_b = NodePath("..")
 
 [connection signal="timeout" from="BobbingTimer" to="." method="_on_BobbingTimer_timeout"]

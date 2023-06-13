@@ -24,14 +24,14 @@ func _input(event):
 func _ready():
 	randomize()
 	
+	change_map("Main_Menu")
+#	current_map = load("res://Maps/Main_Menu/Main_Menu_Map.tscn").instance()
+#	scene_manager.add_child(current_map)
 	
-	current_map = load("res://Maps/Main_Menu/Main_Menu_Map.tscn").instance()
-	scene_manager.add_child(current_map)
-	
-	for mode in current_map.get_node("MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer").get_children():
-		if !("Back" in mode.name):
-#			gamemodes.append(mode.name)
-			pass
+#	for mode in current_map.get_node("MenuRoot/Map_Select/CenterContainer/VBoxContainer/GridContainer").get_children():
+#		if !("Back" in mode.name):
+##			gamemodes.append(mode.name)
+#			pass
 
 func random_map() -> void:
 	var new_map: String = gamemodes[randi() % gamemodes.size()]
@@ -52,21 +52,25 @@ func change_map(next_map_name: String) -> void:
 #			print("INVALID LEVEL NAME!")
 #			breakpoint 
 	
-	
+
 #	Transition:
 	var obscurer = transition.instance()
 	scene_manager.add_child(obscurer)
 	yield(obscurer, "switch")
 	
 	var next_map = load("res://Maps/" + next_map_name + "/" + next_map_name + "_map.tscn").instance()
-	scene_manager.add_child(next_map)
 	if current_map:
 		current_map.queue_free()
 	current_map = next_map
 	
-	if not "Menu" in next_map_name:
-		move_players()
+#	if not "Menu" in next_map_name:
+	move_players()
 		
+		
+	scene_manager.add_child(next_map)
+
+	
+
 
 
 func move_players() -> void:
@@ -76,7 +80,7 @@ func move_players() -> void:
 		make_player(spawned_players)
 
 
-	for curr_player in scene_manager.get_node("Players").get_children():
+	for curr_player in get_players():
 		for part in curr_player.body:
 			part.set_collision_layer_bit(1, false)
 			part.set_collision_mask_bit(0, false)
@@ -103,7 +107,7 @@ func move_players() -> void:
 
 
 func player_move_done(obj: Object, key: String, curr_player) -> void:
-	print("BLASLKRHLAKSJHD:  ", curr_player)
+	print("Finished Moving:  ", curr_player)
 #	for curr_player in scene_manager.get_node("Players").get_children():
 	curr_player.controllable = true
 
@@ -120,8 +124,15 @@ func player_move_done(obj: Object, key: String, curr_player) -> void:
 
 func make_player(player_number: int) -> void:
 	var new_player = load("res://Player/Player.tscn").instance()
-	new_player.global_position = Vector2(0,0)
+	
+	# Fetch spawn location from the map
+	var spawn_location = current_map.get_node("Spawns/P" + str(player_number) + "_Spawn")
+
+	# Set the new player's position to the spawn location
+	new_player.global_position = spawn_location.global_position
+	
 	scene_manager.get_node("Players").add_child(new_player)
+	new_player.set_name("Body_" + str(player_number))
 	
 	match player_number:
 		1:
@@ -149,7 +160,7 @@ func check_living():
 	print("ALIVE: ", living_players)
 	if living_players <= 1:
 		print("ALL DEAD")
-		for curr_player in scene_manager.get_node("Players").get_children():
+		for curr_player in get_players():
 			if !curr_player.dead:
 				print(curr_player.name, " WINS!")
 				curr_player.win(true)
@@ -157,3 +168,7 @@ func check_living():
 				yield(get_tree().create_timer(5.0), "timeout")
 				print("NEEEXT")
 				random_map()
+
+func get_players():
+	var test = scene_manager.get_node("Players").get_children()
+	return scene_manager.get_node("Players").get_children()

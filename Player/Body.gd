@@ -7,7 +7,7 @@ var jump_power := 1000.0
 
 var bad_spines := 0
 
-#var spin_power := 50
+signal increase_score(amount)
 
 var power := 500.0
 
@@ -449,8 +449,10 @@ func win(status: bool) -> void:
 		trophy = load("res://Items/Trophy.tscn").instance()
 		trophy.winning_player = self
 		
-		call_deferred("add_child", trophy)
-		trophy.position = Vector2(0,0)
+		SceneSwitcher.current_map.call_deferred("add_child", trophy)
+#		trophy.position = Vector2(0,0)
+		
+#		trophy.rotation_degrees = 0
 #		trophy.position = position
 		print("ADDED")
 		print(trophy.global_position)

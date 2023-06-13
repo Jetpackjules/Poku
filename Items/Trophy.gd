@@ -14,6 +14,7 @@ func _physics_process(delta):
 #	print(bobbing_pos)
 
 	# Make the powerup bob up and down
+	bobbing_pos = winning_player.global_position + Vector2(0, -140)
 	var bobbing_offset = Vector2(0, sin(bobbing_speed * OS.get_ticks_msec() / 1000.0) * bobbing_height)
-	position = bobbing_pos + bobbing_offset
+	global_position = bobbing_pos + bobbing_offset
  

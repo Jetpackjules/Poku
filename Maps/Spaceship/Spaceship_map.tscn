@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Maps/Spaceship/SpaceShip_Thrusters.tres" type="Material" id=1]
 [ext_resource path="res://Maps/Spaceship/Ship.gd" type="Script" id=2]
-[ext_resource path="res://Items/Tool_Spawner.gd" type="Script" id=3]
+[ext_resource path="res://Prefabs/Tool_Spawner.gd" type="Script" id=3]
 [ext_resource path="res://Maps/Spaceship/Cloud.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Maps/Spaceship/Border_Removal.gd" type="Script" id=5]
 

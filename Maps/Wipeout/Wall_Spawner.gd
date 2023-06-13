@@ -5,7 +5,7 @@ export var time_until_next_wall = 4.0
 export var max_gap_size = 600
 export var min_gap_size = 100
 export var num_walls_spawned = 0  # Use this to shrink the gap size
-export var gap_shrink_speed = 10  # How fast the gap shrinks
+export var gap_shrink_speed = 80  # How fast the gap shrinks
 var speed = 100
 
 func _physics_process(delta):
@@ -31,9 +31,9 @@ func spawn_wall():
 			spawn_position = Vector2(0, -get_viewport().size.y) # arbitrary offscreen value
 			wall.rotation_degrees = 90
 		1:  # Right
-			spawn_position = Vector2(get_viewport().size.x/2, 0)  # arbitrary offscreen value
+			spawn_position = Vector2(get_viewport().size.x/2 + 500, 0)  # arbitrary offscreen value
 		2:  # Left
-			spawn_position = Vector2(-get_viewport().size.x/2, 0)  # arbitrary offscreen value
+			spawn_position = Vector2(-get_viewport().size.x/2 - 500, 0)  # arbitrary offscreen value
 			
 #	wall.global_position = spawn_position
 	# Determine the gap size
@@ -41,6 +41,8 @@ func spawn_wall():
 	
 	print(gap_shrink_speed * num_walls_spawned)
 	
+	
+	print(gap_size)
 	wall.gap = gap_size  # Set the gap size of the wall
 	
 	wall.speed = speed
@@ -50,7 +52,7 @@ func spawn_wall():
 	
 	add_child(wall)
 	
-	wall.position = Vector2(2*(get_viewport().size.x/2), 0)
+	wall.position = Vector2(2*(get_viewport().size.x/2 * 1.7), 0)
 	
 	
 	wall.adjust()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Maps/Main_Menu/MenuRoot.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Menu_Fonts/Title_Font.tres" type="DynamicFont" id=2]
@@ -18,7 +18,13 @@
 thickness = 0
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 9193, 250 )
+extents = Vector2( 1015.5, 49.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 640.5, 29 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 638.5, 23.5 )
 
 [node name="Main_Menu" type="CanvasLayer"]
 
@@ -250,11 +256,42 @@ expand = true
 [node name="Tween" type="Tween" parent="MenuRoot"]
 
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2( 2039, 1549 )
+position = Vector2( 963, 1330 )
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( -9.5, -200.5 )
 shape = SubResource( 2 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Floor"]
+position = Vector2( -10, -1380 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Floor"]
+position = Vector2( -993, -784.5 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 980.5, -791.5 )
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 363, 599 )
+scale = Vector2( -1, 1 )
+
+[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 1599, 609 )
+
+[node name="P3_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 588, 895 )
+scale = Vector2( -1, 1 )
+
+[node name="P4_Spawn" type="Position2D" parent="Spawns"]
+position = Vector2( 1377, 888 )
 
 [connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Start" to="MenuRoot" method="_on_Start_pressed"]
 [connection signal="pressed" from="MenuRoot/Main/CenterContainer/VBoxContainer/Games" to="MenuRoot" method="_on_Games_pressed"]

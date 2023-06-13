@@ -3,10 +3,10 @@
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
 [ext_resource path="res://fonts/kirifont/Kirifont.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Items/Tool_Spawner.gd" type="Script" id=4]
+[ext_resource path="res://Prefabs/Tool_Spawner.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
 [ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
-[ext_resource path="res://Maps/Vertical_Parkour/Death_Zone.gd" type="Script" id=7]
+[ext_resource path="res://Prefabs/Death_Zone.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 3, 1000 )
@@ -93,8 +93,7 @@ collision_mask = 31
 position = Vector2( 0, -1376 )
 shape = SubResource( 21 )
 
-[node name="Tool_Spawner" type="Node2D" parent="."]
-script = ExtResource( 4 )
+[node name="Tool_Spawner" parent="." instance=ExtResource( 4 )]
 
 [node name="Walls" type="StaticBody2D" parent="." groups=["stabb-able"]]
 

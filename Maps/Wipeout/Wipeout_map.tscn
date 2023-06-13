@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Maps/Wipeout/Wall_Spawner.gd" type="Script" id=2]
-[ext_resource path="res://Maps/Vertical_Parkour/Death_Zone.gd" type="Script" id=3]
+[ext_resource path="res://Prefabs/Death_Zone.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )

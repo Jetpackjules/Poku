@@ -12,3 +12,4 @@ func _on_Death_Zone_body_entered(body) -> void:
 		if !body.done:
 			body.done = true
 			body.emit_signal("done", body)
+		body.queue_free()
