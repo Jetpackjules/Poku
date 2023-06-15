@@ -1,14 +1,21 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Props/Target.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 20, 93 )
+extents = Vector2( 20, 90 )
+
+[sub_resource type="CircleShape2D" id=16]
+radius = 49.0
 
 [sub_resource type="Shader" id=6]
 
 [sub_resource type="ShaderMaterial" id=7]
 shader = SubResource( 6 )
+
+[sub_resource type="StyleBoxFlat" id=17]
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [sub_resource type="Gradient" id=8]
 interpolation_mode = 2
@@ -64,9 +71,6 @@ corner_radius_bottom_left = 50
 corner_detail = 20
 anti_aliasing_size = 0.457
 
-[sub_resource type="CircleShape2D" id=5]
-radius = 41.1096
-
 [sub_resource type="StyleBoxFlat" id=15]
 bg_color = Color( 0.9, 0.60795, 0.369, 1 )
 border_color = Color( 0.862745, 0, 0, 1 )
@@ -77,6 +81,9 @@ corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 corner_detail = 20
 anti_aliasing_size = 0.159
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 41.0488
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.360784, 0.360784, 0.360784, 1 )
@@ -94,10 +101,14 @@ linear_damp = 1.0
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+position = Vector2( 0, -3 )
 shape = SubResource( 1 )
 
-[node name="Target_Body" type="ColorRect" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -125 )
+shape = SubResource( 16 )
+
+[node name="Target_Body" type="Panel" parent="."]
 material = SubResource( 7 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -108,10 +119,10 @@ margin_top = -93.0
 margin_right = 20.0
 margin_bottom = 93.0
 rect_pivot_offset = Vector2( 20, 93 )
-color = Color( 0.807843, 0.807843, 0.807843, 1 )
+custom_styles/panel = SubResource( 17 )
 
 [node name="BobbingTimer" type="Timer" parent="."]
-wait_time = 0.345
+wait_time = 1.065
 one_shot = true
 
 [node name="SmokeParticles2D" type="Particles2D" parent="."]
@@ -124,12 +135,20 @@ visibility_rect = Rect2( -100000, -100000, 100000, 100000 )
 local_coords = false
 process_material = SubResource( 2 )
 
-[node name="Rotor_Top" type="RigidBody2D" parent="."]
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
 position = Vector2( 0, -125 )
-gravity_scale = 0.0
-angular_damp = 0.0
+node_a = NodePath("..")
+node_b = NodePath("../Rotor_Housing_Top")
 
-[node name="Rotor_Housing_Top2" type="Panel" parent="Rotor_Top"]
+[node name="Rotor_Housing_Top" type="RigidBody2D" parent="."]
+position = Vector2( 0, -125 )
+mode = 2
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rotor_Housing_Top"]
+shape = SubResource( 16 )
+
+[node name="Rotor_Housing_Top2" type="Panel" parent="Rotor_Housing_Top"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -138,24 +157,44 @@ margin_left = -49.0
 margin_top = -49.0
 margin_right = 49.0
 margin_bottom = 49.0
-rect_pivot_offset = Vector2( 41, 41 )
+rect_pivot_offset = Vector2( 49, 49 )
 custom_styles/panel = SubResource( 14 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Rotor_Top"]
-visible = false
-shape = SubResource( 5 )
-
-[node name="Rotor_Housing_Top" type="Panel" parent="Rotor_Top"]
+[node name="Rotor_Housing_Top" type="Panel" parent="Rotor_Housing_Top"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -41.0
-margin_top = -41.0
-margin_right = 41.0
-margin_bottom = 41.0
+margin_left = -39.0
+margin_top = -39.0
+margin_right = 39.0
+margin_bottom = 39.0
 rect_pivot_offset = Vector2( 41, 41 )
 custom_styles/panel = SubResource( 15 )
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="Rotor_Housing_Top"]
+position = Vector2( 0, 42 )
+rotation = 1.5708
+node_a = NodePath("..")
+node_b = NodePath("../..")
+length = 1.0
+stiffness = 64.0
+damping = 16.0
+
+[node name="Rotor_Top" type="RigidBody2D" parent="."]
+position = Vector2( 0, -125 )
+collision_layer = 0
+collision_mask = 0
+gravity_scale = 0.0
+angular_damp = 0.0
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Rotor_Top"]
+node_a = NodePath("../../Rotor_Housing_Top")
+node_b = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rotor_Top"]
+visible = false
+shape = SubResource( 5 )
 
 [node name="Rotor_Blade1" type="Panel" parent="Rotor_Top"]
 anchor_left = 0.5
@@ -163,9 +202,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -8.0
-margin_top = -37.5
+margin_top = -37.0
 margin_right = 8.0
-margin_bottom = 37.5
+margin_bottom = 39.0
 rect_pivot_offset = Vector2( 8.16739, 37.4048 )
 custom_styles/panel = SubResource( 4 )
 
@@ -175,15 +214,11 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -8.0
-margin_top = -37.5
+margin_top = -37.0
 margin_right = 8.0
-margin_bottom = 37.5
+margin_bottom = 39.0
 rect_rotation = 90.0
 rect_pivot_offset = Vector2( 8.16739, 37.4048 )
 custom_styles/panel = SubResource( 4 )
-
-[node name="PinJoint2D" type="PinJoint2D" parent="Rotor_Top"]
-node_a = NodePath("../..")
-node_b = NodePath("..")
 
 [connection signal="timeout" from="BobbingTimer" to="." method="_on_BobbingTimer_timeout"]

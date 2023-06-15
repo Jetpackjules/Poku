@@ -58,7 +58,7 @@ func change_map(next_map_name: String) -> void:
 	scene_manager.add_child(obscurer)
 	yield(obscurer, "switch")
 	
-	var next_map = load("res://Maps/" + next_map_name + "/" + next_map_name + "_map.tscn").instance()
+	var next_map = load("res://Maps/" + next_map_name + "/" + next_map_name + "_Map.tscn").instance()
 	if current_map:
 		current_map.queue_free()
 	current_map = next_map

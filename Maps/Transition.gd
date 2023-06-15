@@ -9,8 +9,8 @@ signal switch
 func _process(delta):
 	
 	time += delta*flip*2
-	$ColorRect.material.set_shader_param("progress", 1-time)
-	if time >= 1.0:
+	$ColorRect.material.set_shader_param("progress", clamp(1-time, 0, 1))
+	if time >= 1.1:
 #		time = 0.0
 		emit_signal("switch")
 		flip = -1

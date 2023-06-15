@@ -416,7 +416,8 @@ func ragdoll(timeout):
 		part.locked = false
 
 	if grabbed_item:
-		grabbed_item.release()
+		if typeof(grabbed_item) != TYPE_ARRAY:
+			grabbed_item.release()
 		grabbed_item = null
 		holding_something = false
 
