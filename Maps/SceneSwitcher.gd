@@ -8,6 +8,7 @@ var spawned_players := 0
 var living_players := 0
 
 var players_moved := 0
+var start := false
 
 signal players_moved
 
@@ -36,6 +37,18 @@ func _ready():
 #		if !("Back" in mode.name):
 ##			gamemodes.append(mode.name)
 #			pass
+
+
+
+func _process(_delta) -> void:
+	if start == false:
+		for curr_player in get_players():
+			if curr_player.controllable == true:
+				curr_player.stop()
+	pass
+
+
+
 
 func random_map() -> void:
 	var new_map: String = gamemodes[randi() % gamemodes.size()]
@@ -78,6 +91,7 @@ func change_map(next_map_name: String) -> void:
 
 
 func move_players() -> void:
+	start = false
 	players_moved = 0  # reset count every time we start to move players
 
 	while spawned_players < player_count:
@@ -130,6 +144,7 @@ func player_move_done(obj: Object, key: String, curr_player) -> void:
 	players_moved += 1
 	if players_moved == player_count:
 		emit_signal("players_moved")
+		start = true
 		print("all_moved")
 
 func make_player(player_number: int) -> void:

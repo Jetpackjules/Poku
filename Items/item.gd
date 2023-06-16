@@ -91,7 +91,7 @@ func _physics_process(_delta):
 			target_node.owner.grabbed_item = self
 			available = false
 			
-			force += 1/2
+			force += (0.1)
 			# Calculate the target position
 			var target_position = target_node.global_position
 
@@ -99,9 +99,13 @@ func _physics_process(_delta):
 			var direction = (target_position - pin.global_position).normalized()
 
 			# Move towards the target
-			linear_velocity = (direction * speed * force)
+			print(force)
+			linear_velocity = ((direction * speed) * force)
+#			print(linear_velocity)
 			
-			if (pin.global_position - target_position).abs() < Vector2(3,3):
+			print((pin.global_position - target_position).abs())
+			var diff = (pin.global_position - target_position).abs()
+			if diff.x < 6 and diff.y < 6:
 #				pin.global_position = target_position
 
 				global_position = target_position-pin.position
