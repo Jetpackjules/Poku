@@ -7,6 +7,10 @@ var player_count := 2
 var spawned_players := 0
 var living_players := 0
 
+var players_moved := 0
+
+signal players_moved
+
 onready var scene_manager = get_tree().get_current_scene()
 
 #onready var tween = scene_manager.get_node("Tween")
@@ -74,6 +78,8 @@ func change_map(next_map_name: String) -> void:
 
 
 func move_players() -> void:
+	players_moved = 0  # reset count every time we start to move players
+
 	while spawned_players < player_count:
 		spawned_players += 1
 		living_players += 1
@@ -106,13 +112,14 @@ func move_players() -> void:
 		
 
 
+
 func player_move_done(obj: Object, key: String, curr_player) -> void:
 	print("Finished Moving:  ", curr_player)
 #	for curr_player in scene_manager.get_node("Players").get_children():
 	curr_player.controllable = true
 
-	curr_player.stop()
-	print("DONE")
+#	Enable this to make players freeze in place for a second before dropping:
+#	curr_player.stop()
 
 	for part in curr_player.body:
 		if !("Body" in part.name):
@@ -120,7 +127,10 @@ func player_move_done(obj: Object, key: String, curr_player) -> void:
 			part.set_collision_mask_bit(0, true)
 			part.set_collision_mask_bit(9, true)
 		
-		
+	players_moved += 1
+	if players_moved == player_count:
+		emit_signal("players_moved")
+		print("all_moved")
 
 func make_player(player_number: int) -> void:
 	var new_player = load("res://Player/Player.tscn").instance()
