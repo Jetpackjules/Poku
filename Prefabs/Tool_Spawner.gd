@@ -1,8 +1,10 @@
 extends Node2D
 
-export var tools = ["Ball", "Shuriken", "Spear"]
+export var tool_names = ["Ball", "Shuriken", "Spear"]
 
+var tools := []
 var loaded_tools := []
+
 
 var ball_count := 0
 
@@ -15,9 +17,10 @@ var x_range_end := 1000
 var y_height := -1000
 	
 func _ready():
-	for index in range(tools.size()):
+	
+	for index in range(tool_names.size()):
 
-		tools[index] = load("res://Items/"+tools[index]+".tscn")
+		tools.append(load("res://Items/"+tool_names[index]+".tscn"))
 
 	for i in range(initial_spawn):
 		_spawn_new_tool()

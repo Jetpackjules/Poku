@@ -23,7 +23,8 @@ var gamemodes := ["Wipeout", "Basketball", "Vertical_Parkour"]
 func _input(event):
 	if event.is_action_pressed("escape"):
 		change_map("Main_Menu")
-
+	if event.is_action_pressed("random_map"):
+		random_map()
 
 
 func _ready():

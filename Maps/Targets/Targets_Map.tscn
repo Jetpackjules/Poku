@@ -59,13 +59,11 @@ color = Color( 1, 0.824, 0.78, 1 )
 
 [node name="Tool_Spawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( -1332, -731 )
-tools = [ "Spear", "Shuriken" ]
 initial_spawn = 1
 spawn_at_point = true
 
 [node name="Tool_Spawner2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 1287, -731 )
-tools = [ "Spear", "Shuriken" ]
 initial_spawn = 1
 spawn_at_point = true
 
