@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-onready var plane := get_node("Plane")
+@onready var plane := get_node("Plane")
 
 var gravity := -4.0
 var reg_gravity := gravity
@@ -17,7 +17,7 @@ func _ready():
 func _physics_process(delta):
 	
 #	updraft_gravity = 20.8
-	applied_force.y = -gravity*mass*100
+	constant_force.y = -gravity*mass*100
 	
 	 
 	
@@ -27,11 +27,11 @@ func _physics_process(delta):
 		for body in stand_zone_bodies:
 	#		print(plane.global_position.x - body.global_position.x)
 			var x_diff = body.global_position.x - plane.global_position.x
-			applied_force.x = (sign(x_diff) * pow(abs(x_diff), 2) / 10) * mass
+			constant_force.x = (sign(x_diff) * pow(abs(x_diff), 2) / 10) * mass
 			print(sign(x_diff) * pow(abs(x_diff), 1.5) / 600)
 			plane.rotation_degrees = lerp(plane.rotation_degrees, sign(x_diff) * pow(abs(x_diff), 2) / 1000, 0.3)
 	else:
-		plane.rotation_degrees = lerp(plane.rotation_degrees, 0, 0.03)
+		plane.rotation_degrees = lerp(plane.rotation_degrees, 0.0, 0.03)
 		
 	
 
@@ -58,4 +58,3 @@ func _on_Stand_Zone_body_entered(body):
 # Remove body from the array when it exits the "Stand Zone"
 func _on_Stand_Zone_body_exited(body):
 	stand_zone_bodies.erase(body)
-

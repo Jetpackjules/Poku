@@ -16,20 +16,20 @@ var cam_speed := 1.0
 var last_platform_type = "normal" # Initialize with the type of the first platform
 
 
-onready var camera = get_node("../Camera2D") 
-onready var players = get_tree().get_root().get_node("Scene_Manager/Players").get_children()
+@onready var camera = get_node("../Camera2D")
+@onready var players = get_tree().get_root().get_node("Scene_Manager/Players").get_children()
 
 
 func _ready():
 	randomize()
 	generate_platform(Vector2(0, 100))
-	
-	
+
+
 
 func _process(delta):
-	
 
-	
+
+
 	if last_platform_position.y > camera.position.y-1000:
 		generate_platform(last_platform_position)
 
@@ -45,7 +45,7 @@ func _process(delta):
 
 
 func generate_platform(position):
-	
+
 	# Adjust the platform probabilities based on the type of the last platform
 #	var total_probability := 0.0
 #	for platform in platform_scenes:
@@ -60,8 +60,8 @@ func generate_platform(position):
 	for platform in get_children():
 		if platform.position.y > camera.position.y+get_viewport().size.y+500:
 			platform.queue_free()
-	
-	
+
+
 	# Randomly select a platform scene based on the adjusted probabilities
 	var random_value := randf() # * total_probability
 	var cumulative_probability := 0.0
@@ -81,22 +81,22 @@ func generate_platform(position):
 
 
 	# Create a new instance of the platform scene
-	var new_platform = platform_scene.instance()
+	var new_platform = platform_scene.instantiate()
 	# Add the platform to the scene
 	add_child(new_platform)
-	
-	
+
+
 	# Calculate a new position for the platform
-	var new_x = rand_range(x_range.x, x_range.y)
-	
+	var new_x = randf_range(x_range.x, x_range.y)
+
 	if platform_type == "moving":
 		new_x = clamp(new_x, -300, 300)  # Keep moving platforms 200 units away from the edges
 
-		new_platform.get_node("PathFollow2D").unit_offset = randf()
+		new_platform.get_node("PathFollow2D").progress_ratio = randf()
 
-		
-	
-	var new_y = position.y - rand_range(adjusted_y_gap.x, adjusted_y_gap.y)
+
+
+	var new_y = position.y - randf_range(adjusted_y_gap.x, adjusted_y_gap.y)
 	new_platform.position = Vector2(new_x, new_y)
 
 

@@ -1,8 +1,8 @@
 extends Area2D
 
 # Node paths
-onready var rigidbody = $RigidBody2D
-onready var tween = $Tween
+@onready var rigidbody = $RigidBody2D
+var follow_tween: Tween
 
 # Bobbing properties
 var bobbing_speed := 2
@@ -28,16 +28,14 @@ func _ready():
 func _process(delta):
 	if not being_ingested:
 		# Make the powerup bob up and down
-		var bobbing_offset = Vector2(0, sin(bobbing_speed * OS.get_ticks_msec() / 1000.0) * bobbing_height)
+		var bobbing_offset = Vector2(0, sin(bobbing_speed * Time.get_ticks_msec() / 1000.0) * bobbing_height)
 		rigidbody.global_position = bobbing_pos + bobbing_offset
 	elif target_body:
 		# Compute the tween's duration based on the distance to the target body
 		var distance = rigidbody.global_position.distance_to(target_body.global_position)
 		var tween_duration = lerp(max_tween_duration, min_tween_duration, 1 - distance / 500)  # Replace 500 with the maximum expected distance
 		# Update the tween's final value to follow the body
-		tween.interpolate_property(rigidbody, "global_position", rigidbody.global_position, target_body.global_position, tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-		tween.interpolate_property(rigidbody, "scale", rigidbody.scale, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-		tween.start()
+		follow_target(target_body.global_position, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration)
 		if distance < 15:
 			get_node("Pickup_Area").disabled = true
 			get_node("Timer").start()
@@ -50,9 +48,14 @@ func _on_Powerup_body_entered(body):
 	target_body = body
 	var distance = rigidbody.global_position.distance_to(target_body.global_position)
 	var tween_duration = lerp(max_tween_duration, min_tween_duration, 1 - distance / 500)  # Replace 500 with the maximum expected distance
-	tween.interpolate_property(rigidbody, "global_position", rigidbody.global_position, body.global_position, tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.interpolate_property(rigidbody, "scale", rigidbody.scale, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.start()
+	follow_target(body.global_position, lerp(max_scale, min_scale, 1 - distance / 500), tween_duration)
+
+func follow_target(target_position: Vector2, target_scale: Vector2, duration: float):
+	if follow_tween and follow_tween.is_valid():
+		follow_tween.kill()
+	follow_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	follow_tween.tween_property(rigidbody, "global_position", target_position, duration)
+	follow_tween.tween_property(rigidbody, "scale", target_scale, duration)
 
 func ingested():
 	print("Powerup has been ingested!")  # replace with your own logic

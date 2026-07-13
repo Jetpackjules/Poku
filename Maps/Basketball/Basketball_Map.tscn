@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
-[ext_resource path="res://fonts/kirifont/Kirifont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/kirifont/Kirifont.tres" type="FontFile" id=3]
 [ext_resource path="res://Prefabs/Tool_Spawner.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
 [ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
@@ -66,15 +66,15 @@ extents = Vector2( 2308, 690.5 )
 position = Vector2( 0, -370 )
 
 [node name="Left_Background" type="ColorRect" parent="."]
-margin_top = -1565.0
-margin_right = 1530.0
-margin_bottom = 414.0
+offset_top = -1565.0
+offset_right = 1530.0
+offset_bottom = 414.0
 color = Color( 0.615686, 0.901961, 0.921569, 1 )
 
 [node name="Right_Background" type="ColorRect" parent="."]
-margin_left = -1530.0
-margin_top = -1565.0
-margin_bottom = 414.0
+offset_left = -1530.0
+offset_top = -1565.0
+offset_bottom = 414.0
 color = Color( 0.717647, 0.913725, 0.933333, 1 )
 
 [node name="Seperator" type="StaticBody2D" parent="."]
@@ -98,19 +98,19 @@ shape = SubResource( 21 )
 [node name="Walls" type="StaticBody2D" parent="." groups=["stabb-able"]]
 
 [node name="ColorRect3" type="ColorRect" parent="Walls"]
-margin_left = 1490.0
-margin_top = -2217.0
-margin_right = 1874.0
-margin_bottom = 656.0
+offset_left = 1490.0
+offset_top = -2217.0
+offset_right = 1874.0
+offset_bottom = 656.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 color = Color( 0.407843, 0.529412, 0.74902, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="Walls"]
-margin_left = -1875.0
-margin_top = -2221.0
-margin_right = -1491.0
-margin_bottom = 652.0
+offset_left = -1875.0
+offset_top = -2221.0
+offset_right = -1491.0
+offset_bottom = 652.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 color = Color( 0.407843, 0.529412, 0.74902, 1 )
@@ -142,9 +142,9 @@ shape = SubResource( 5 )
 [node name="ColorRect" type="ColorRect" parent="Floor"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -1875.0
-margin_right = 1875.0
-margin_bottom = 500.0
+offset_left = -1875.0
+offset_right = 1875.0
+offset_bottom = 500.0
 color = Color( 1, 0.824, 0.78, 1 )
 
 [node name="Hoop_left" type="Node2D" parent="."]
@@ -161,7 +161,7 @@ collision_mask = 16
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_left/Hoop_Goal"]
 position = Vector2( -3, -18 )
 scale = Vector2( 1.99352, 1 )
-polygon = PoolVector2Array( 49.6609, -10.0002, 41.1333, 28.9998, 27.0878, 55.9999, 10.0327, 66.9999, -20, 66, -30.5991, 51.0002, -40.1299, 27.0002, -47.1528, -9.99976 )
+polygon = PackedVector2Array( 49.6609, -10.0002, 41.1333, 28.9998, 27.0878, 55.9999, 10.0327, 66.9999, -20, 66, -30.5991, 51.0002, -40.1299, 27.0002, -47.1528, -9.99976 )
 
 [node name="Nets" type="Node2D" parent="Hoop_left"]
 
@@ -182,12 +182,12 @@ node_a = NodePath("../../../Front_Bumper")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 26.0
-rect_pivot_offset = Vector2( 10.1541, 2.9557 )
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 26.0
+pivot_offset = Vector2( 10.1541, 2.9557 )
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_left/Nets/Net"]
 position = Vector2( 3.42871, 31.3628 )
@@ -205,11 +205,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net3" type="RigidBody2D" parent="Hoop_left/Nets/Net/Net2"]
 position = Vector2( 12.8318, 27.6206 )
@@ -227,11 +227,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net4" type="RigidBody2D" parent="Hoop_left/Nets/Net/Net2/Net3"]
 position = Vector2( -4.89664, 30.2102 )
@@ -249,11 +249,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3/Net4"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net5" type="RigidBody2D" parent="Hoop_left/Nets/Net/Net2/Net3/Net4"]
 position = Vector2( 15.5, 16.1666 )
@@ -271,11 +271,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net/Net2/Net3/Net4/Net5"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_left/Nets"]
 position = Vector2( 15, 26 )
@@ -294,12 +294,12 @@ node_a = NodePath("../../../Backboard")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-rect_pivot_offset = Vector2( 10.1541, 2.9557 )
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+pivot_offset = Vector2( 10.1541, 2.9557 )
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_left/Nets/Net2"]
 position = Vector2( -10.4506, 27.6009 )
@@ -317,11 +317,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net3" type="RigidBody2D" parent="Hoop_left/Nets/Net2/Net2"]
 position = Vector2( -3.88458, 30.5128 )
@@ -339,11 +339,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net4" type="RigidBody2D" parent="Hoop_left/Nets/Net2/Net2/Net3"]
 position = Vector2( -4.64142, 31.5685 )
@@ -361,11 +361,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net5" type="RigidBody2D" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4"]
 position = Vector2( 0.244141, 31.857 )
@@ -383,11 +383,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4/Net5"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="Hoop_left/Nets"]
 position = Vector2( 141, 67 )
@@ -408,11 +408,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -18.0
-margin_top = -18.0
-margin_right = 18.0
-margin_bottom = 18.0
-custom_styles/panel = SubResource( 24 )
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+theme_override_styles/panel = SubResource( 24 )
 
 [node name="Backboard" type="StaticBody2D" parent="Hoop_left"]
 position = Vector2( 10, -63 )
@@ -421,14 +421,14 @@ scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 28 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_left/Backboard"]
-polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 394, 80.999, 394, -132.001 )
+polygon = PackedVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 394, 80.999, 394, -132.001 )
 
 [node name="Panel" type="Panel" parent="Hoop_left/Backboard"]
-margin_left = -9.0
-margin_top = -132.0
-margin_right = 10.0
-margin_bottom = 81.0
-custom_styles/panel = SubResource( 23 )
+offset_left = -9.0
+offset_top = -132.0
+offset_right = 10.0
+offset_bottom = 81.0
+theme_override_styles/panel = SubResource( 23 )
 
 [node name="Timer" type="Timer" parent="Hoop_left"]
 process_mode = 0
@@ -449,7 +449,7 @@ collision_mask = 16
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_right/Hoop_Goal"]
 position = Vector2( -3, -18 )
 scale = Vector2( 1.99352, 1 )
-polygon = PoolVector2Array( 49.6609, -10.0002, 41.1333, 28.9998, 27.0878, 55.9999, 10.0327, 66.9999, -20, 66, -30.5991, 51.0002, -40.1299, 27.0002, -47.1528, -9.99976 )
+polygon = PackedVector2Array( 49.6609, -10.0002, 41.1333, 28.9998, 27.0878, 55.9999, 10.0327, 66.9999, -20, 66, -30.5991, 51.0002, -40.1299, 27.0002, -47.1528, -9.99976 )
 
 [node name="Nets" type="Node2D" parent="Hoop_right"]
 
@@ -468,12 +468,12 @@ node_a = NodePath("../../../Front_Bumper")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 26.0
-rect_pivot_offset = Vector2( 10.1541, 2.9557 )
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 26.0
+pivot_offset = Vector2( 10.1541, 2.9557 )
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_right/Nets/Net"]
 position = Vector2( 3.42871, 31.3628 )
@@ -489,11 +489,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net3" type="RigidBody2D" parent="Hoop_right/Nets/Net/Net2"]
 position = Vector2( 12.8318, 27.6206 )
@@ -509,11 +509,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net4" type="RigidBody2D" parent="Hoop_right/Nets/Net/Net2/Net3"]
 position = Vector2( -4.89664, 30.2102 )
@@ -529,11 +529,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3/Net4"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net5" type="RigidBody2D" parent="Hoop_right/Nets/Net/Net2/Net3/Net4"]
 position = Vector2( 15.5, 16.1666 )
@@ -549,11 +549,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net/Net2/Net3/Net4/Net5"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_right/Nets"]
 position = Vector2( 15, 26 )
@@ -570,12 +570,12 @@ node_a = NodePath("../../../Backboard")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-rect_pivot_offset = Vector2( 10.1541, 2.9557 )
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+pivot_offset = Vector2( 10.1541, 2.9557 )
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net2" type="RigidBody2D" parent="Hoop_right/Nets/Net2"]
 position = Vector2( -10.4506, 27.6009 )
@@ -591,11 +591,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net3" type="RigidBody2D" parent="Hoop_right/Nets/Net2/Net2"]
 position = Vector2( -3.88458, 30.5128 )
@@ -611,11 +611,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net4" type="RigidBody2D" parent="Hoop_right/Nets/Net2/Net2/Net3"]
 position = Vector2( -4.64142, 31.5685 )
@@ -631,11 +631,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3/Net4"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="Net5" type="RigidBody2D" parent="Hoop_right/Nets/Net2/Net2/Net3/Net4"]
 position = Vector2( 0.244141, 31.857 )
@@ -651,11 +651,11 @@ node_a = NodePath("../..")
 node_b = NodePath("..")
 
 [node name="Panel" type="Panel" parent="Hoop_right/Nets/Net2/Net2/Net3/Net4/Net5"]
-margin_left = -10.0
-margin_top = -19.0
-margin_right = 10.0
-margin_bottom = 16.0
-custom_styles/panel = ExtResource( 5 )
+offset_left = -10.0
+offset_top = -19.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_styles/panel = ExtResource( 5 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="Hoop_right/Nets"]
 position = Vector2( 141, 67 )
@@ -676,11 +676,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -18.0
-margin_top = -18.0
-margin_right = 18.0
-margin_bottom = 18.0
-custom_styles/panel = SubResource( 24 )
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+theme_override_styles/panel = SubResource( 24 )
 
 [node name="Backboard" type="StaticBody2D" parent="Hoop_right"]
 position = Vector2( 10, -63 )
@@ -689,28 +689,28 @@ scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 28 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hoop_right/Backboard"]
-polygon = PoolVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 393, 81.999, 393, -132.001 )
+polygon = PackedVector2Array( 9.99963, -132, 3.99963, -132, 0.999634, -131, -3.00037, -129, -5.00037, -127, -8.00037, -123, -9.00037, -119, -8.99988, 72, -6.99988, 77, -3.99988, 80, 1.00012, 81, 10.0001, 81, 393, 81.999, 393, -132.001 )
 
 [node name="Panel" type="Panel" parent="Hoop_right/Backboard"]
 material = ExtResource( 6 )
-margin_left = -9.0
-margin_top = -132.0
-margin_right = 10.0
-margin_bottom = 81.0
-custom_styles/panel = SubResource( 23 )
+offset_left = -9.0
+offset_top = -132.0
+offset_right = 10.0
+offset_bottom = 81.0
+theme_override_styles/panel = SubResource( 23 )
 
 [node name="Timer" type="Timer" parent="Hoop_right"]
 process_mode = 0
 wait_time = 2.0
 
 [node name="Score" type="Label" parent="."]
-margin_left = -645.0
-margin_top = -1353.0
-margin_right = 583.0
-margin_bottom = -893.0
+offset_left = -645.0
+offset_top = -1353.0
+offset_right = 583.0
+offset_bottom = -893.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
-custom_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource( 3 )
 text = "0 -0"
 align = 1
 valign = 1
@@ -719,11 +719,11 @@ script = ExtResource( 2 )
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2( 0, 490 )
 
-[node name="P1_Spawn" type="Position2D" parent="Spawns"]
+[node name="P1_Spawn" type="Marker2D" parent="Spawns"]
 position = Vector2( -900, -300 )
 scale = Vector2( -1, 1 )
 
-[node name="P2_Spawn" type="Position2D" parent="Spawns"]
+[node name="P2_Spawn" type="Marker2D" parent="Spawns"]
 position = Vector2( 900, -300 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

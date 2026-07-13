@@ -15,15 +15,15 @@ scale = Vector2( 0.5, 1 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2( -200, -35 )
-polygon = PoolVector2Array( 401, 0, 398, 14, 392, 31, 384, 44, 367, 60, 350, 67, 332, 70, 67, 70, 50, 68, 34, 61, 14, 42, 4, 25, 1, 0 )
+polygon = PackedVector2Array( 401, 0, 398, 14, 392, 31, 384, 44, 367, 60, 350, 67, 332, 70, 67, 70, 50, 68, 34, 61, 14, 42, 4, 25, 1, 0 )
 
 [node name="Panel" type="Panel" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -200.0
-margin_top = -35.0
-margin_right = 200.0
-margin_bottom = 35.0
-custom_styles/panel = SubResource( 1 )
+offset_left = -200.0
+offset_top = -35.0
+offset_right = 200.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource( 1 )

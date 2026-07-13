@@ -8,7 +8,7 @@ var child_players := []
 
 
 func _ready():
-	SceneSwitcher.connect("players_moved", self, "scan_players") 
+	SceneSwitcher.connect("players_moved", Callable(self, "scan_players"))
 	text = str(score) + " "
 
 
@@ -22,4 +22,4 @@ func increase(amount):
 	if score >= win_score:
 		for player in child_players:
 			player.win(true)
-	
+

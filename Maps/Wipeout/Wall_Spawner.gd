@@ -1,11 +1,11 @@
 extends Node2D
 
-export var Wall = preload("res://Maps/Wipeout/Wall.tscn")
-export var time_until_next_wall = 4.0
-export var max_gap_size = 600
-export var min_gap_size = 100
-export var num_walls_spawned = 0  # Use this to shrink the gap size
-export var gap_shrink_speed = 80  # How fast the gap shrinks
+@export var Wall = preload("res://Maps/Wipeout/Wall.tscn")
+@export var time_until_next_wall = 4.0
+@export var max_gap_size = 600
+@export var min_gap_size = 100
+@export var num_walls_spawned = 0  # Use this to shrink the gap size
+@export var gap_shrink_speed = 80  # How fast the gap shrinks
 var speed = 100
 
 func _physics_process(delta):
@@ -19,7 +19,7 @@ func _physics_process(delta):
 #	print(speed)
 
 func spawn_wall():
-	var wall = Wall.instance()
+	var wall = Wall.instantiate()
 	var spawn_position = Vector2.ZERO
 	var rand_side = randi() % 1 + 1
 
@@ -47,7 +47,7 @@ func spawn_wall():
 	
 	wall.speed = speed
 	# Set a random offset for the wall
-	var wall_offset = rand_range(-550, 1000)  # Set a random offset for the wall
+	var wall_offset = randf_range(-550, 1000)  # Set a random offset for the wall
 	wall.offset = wall_offset
 	
 	add_child(wall)

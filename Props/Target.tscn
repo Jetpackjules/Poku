@@ -19,10 +19,10 @@ corner_radius_bottom_left = 25
 
 [sub_resource type="Gradient" id=8]
 interpolation_mode = 2
-offsets = PoolRealArray( 0, 0.234783, 0.956522, 0.991304 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.145098, 1, 1, 1, 0 )
+offsets = PackedFloat32Array( 0, 0.234783, 0.956522, 0.991304 )
+colors = PackedColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.145098, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=9]
+[sub_resource type="GradientTexture2D" id=9]
 gradient = SubResource( 8 )
 
 [sub_resource type="Curve" id=12]
@@ -39,7 +39,7 @@ _data = [ Vector2( 0, 0.0670455 ), 0.0, 1.38, 0, 0, Vector2( 0.134387, 0.432954 
 [sub_resource type="CurveTexture" id=11]
 curve = SubResource( 10 )
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticleProcessMaterial" id=2]
 lifetime_randomness = 0.02
 emission_shape = 1
 emission_sphere_radius = 20.89
@@ -114,18 +114,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -93.0
-margin_right = 20.0
-margin_bottom = 93.0
-rect_pivot_offset = Vector2( 20, 93 )
-custom_styles/panel = SubResource( 17 )
+offset_left = -20.0
+offset_top = -93.0
+offset_right = 20.0
+offset_bottom = 93.0
+pivot_offset = Vector2( 20, 93 )
+theme_override_styles/panel = SubResource( 17 )
 
 [node name="BobbingTimer" type="Timer" parent="."]
 wait_time = 1.065
 one_shot = true
 
-[node name="SmokeParticles2D" type="Particles2D" parent="."]
+[node name="SmokeParticles2D" type="GPUParticles2D" parent="."]
 position = Vector2( 0, -125 )
 amount = 32
 lifetime = 3.0
@@ -153,24 +153,24 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -49.0
-margin_top = -49.0
-margin_right = 49.0
-margin_bottom = 49.0
-rect_pivot_offset = Vector2( 49, 49 )
-custom_styles/panel = SubResource( 14 )
+offset_left = -49.0
+offset_top = -49.0
+offset_right = 49.0
+offset_bottom = 49.0
+pivot_offset = Vector2( 49, 49 )
+theme_override_styles/panel = SubResource( 14 )
 
 [node name="Rotor_Housing_Top" type="Panel" parent="Rotor_Housing_Top"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -39.0
-margin_top = -39.0
-margin_right = 39.0
-margin_bottom = 39.0
-rect_pivot_offset = Vector2( 41, 41 )
-custom_styles/panel = SubResource( 15 )
+offset_left = -39.0
+offset_top = -39.0
+offset_right = 39.0
+offset_bottom = 39.0
+pivot_offset = Vector2( 41, 41 )
+theme_override_styles/panel = SubResource( 15 )
 
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="Rotor_Housing_Top"]
 position = Vector2( 0, 42 )
@@ -201,24 +201,24 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -37.0
-margin_right = 8.0
-margin_bottom = 39.0
-rect_pivot_offset = Vector2( 8.16739, 37.4048 )
-custom_styles/panel = SubResource( 4 )
+offset_left = -8.0
+offset_top = -37.0
+offset_right = 8.0
+offset_bottom = 39.0
+pivot_offset = Vector2( 8.16739, 37.4048 )
+theme_override_styles/panel = SubResource( 4 )
 
 [node name="Rotor_Blade2" type="Panel" parent="Rotor_Top"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -37.0
-margin_right = 8.0
-margin_bottom = 39.0
-rect_rotation = 90.0
-rect_pivot_offset = Vector2( 8.16739, 37.4048 )
-custom_styles/panel = SubResource( 4 )
+offset_left = -8.0
+offset_top = -37.0
+offset_right = 8.0
+offset_bottom = 39.0
+rotation = 90.0
+pivot_offset = Vector2( 8.16739, 37.4048 )
+theme_override_styles/panel = SubResource( 4 )
 
 [connection signal="timeout" from="BobbingTimer" to="." method="_on_BobbingTimer_timeout"]

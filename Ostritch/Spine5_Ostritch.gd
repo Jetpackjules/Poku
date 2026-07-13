@@ -1,11 +1,11 @@
-extends "res://Spine.gd"
+extends "res://Ostritch/Spine_Ostritch.gd"
 
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 func _physics_process(delta):
-	new_desired_angle = deg2rad(100)
+	new_desired_angle = deg_to_rad(100)
 	power = 2000
 # Called when the node enters the scene tree for the first time.
 func _ready():

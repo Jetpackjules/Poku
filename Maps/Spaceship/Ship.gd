@@ -9,8 +9,8 @@ var OG_X := 0.0
 var thrusters_left : Array = []
 var thrusters_right : Array = []
 
-onready var thruster_left = get_node("Thruster_Left")
-onready var thruster_right = get_node("Thruster_Right")
+@onready var thruster_left = get_node("Thruster_Left")
+@onready var thruster_right = get_node("Thruster_Right")
 
 var new_desired_angle := get_global_transform().get_rotation()
 

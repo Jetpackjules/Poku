@@ -21,10 +21,10 @@ shape = SubResource( 4 )
 [node name="Color_Top" type="ColorRect" parent="Wall_Top"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -46.0
-margin_top = -1710.0
-margin_right = 46.0
-margin_bottom = 1710.0
+offset_left = -46.0
+offset_top = -1710.0
+offset_right = 46.0
+offset_bottom = 1710.0
 color = Color( 0.882353, 0.294118, 0.294118, 1 )
 
 [node name="Wall_Bottom" type="CollisionShape2D" parent="."]
@@ -34,8 +34,8 @@ shape = SubResource( 4 )
 [node name="Color_Bottom" type="ColorRect" parent="Wall_Bottom"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -46.0
-margin_top = -1710.0
-margin_right = 46.0
-margin_bottom = 1710.0
+offset_left = -46.0
+offset_top = -1710.0
+offset_right = 46.0
+offset_bottom = 1710.0
 color = Color( 0.294118, 0.411765, 0.882353, 1 )

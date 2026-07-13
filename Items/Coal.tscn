@@ -19,9 +19,9 @@ node_a = NodePath("..")
 scale = Vector2( 2.81818, 2.81818 )
 color = Color( 0.22, 0.22, 0.22, 1 )
 offset = Vector2( 3, 3 )
-polygon = PoolVector2Array( -9, -3, -9, -5, -8, -7, -6, -10, -2, -11, 0, -10, 2, -7, 2, -4, 2, -1, 1, 1, -2, 3, -6, 4, -8, 3, -9, 0 )
+polygon = PackedVector2Array( -9, -3, -9, -5, -8, -7, -6, -10, -2, -11, 0, -10, 2, -7, 2, -4, 2, -1, 1, 1, -2, 3, -6, 4, -8, 3, -9, 0 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2( 8.38838, 8.48215 )
 scale = Vector2( 2.818, 2.818 )
-polygon = PoolVector2Array( -9, -3, -9, -5, -8, -7, -6, -10, -2, -11, 0, -10, 2, -7, 2, -4, 2, -1, 1, 1, -2, 3, -6, 4, -8, 3, -9, 0 )
+polygon = PackedVector2Array( -9, -3, -9, -5, -8, -7, -6, -10, -2, -11, 0, -10, 2, -7, 2, -4, 2, -1, 1, 1, -2, 3, -6, 4, -8, 3, -9, 0 )

@@ -7,7 +7,7 @@ var level_buttons := []
 func _ready():
 	for button in $CenterContainer/VBoxContainer/GridContainer.get_children():
 		if !("Back" in button.name):
-			button.connect("pressed", self, "load_map",[button])
+			button.connect("pressed", Callable(self, "load_map").bind(button))
 	pass # Replace with function body.
 	
 func load_map(map_button):

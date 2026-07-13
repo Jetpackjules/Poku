@@ -5,7 +5,7 @@ var power = 1000
 var max_angle = 120 # Maximum angle in radians. You can change this variable.
 var locked = true
 
-onready var color_object = get_node("Panel")
+@onready var color_object = get_node("Panel")
 var current_angle = 0
 
 

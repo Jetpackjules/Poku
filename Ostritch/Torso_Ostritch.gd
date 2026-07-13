@@ -13,27 +13,27 @@ var new_desired_angle = 0
 
 var locked = true
 
-onready var head = get_node("../Head")
+@onready var head = get_node("../Head")
 
 var added_up_velocity = 0
-onready var Leg_L_up = get_node("../Leg_L_up")
-onready var Leg_L_down = get_node("../Leg_L_down")
-onready var Leg_R_up = get_node("../Leg_R_up")
-onready var Leg_R_down = get_node("../Leg_R_down")
+@onready var Leg_L_up = get_node("../Leg_L_up")
+@onready var Leg_L_down = get_node("../Leg_L_down")
+@onready var Leg_R_up = get_node("../Leg_R_up")
+@onready var Leg_R_down = get_node("../Leg_R_down")
 
-onready var spine2 = get_node("../Spine2")
-onready var spine3 = get_node("../Spine3")
-onready var spine4 = get_node("../Spine4")
-onready var spine5 = get_node("../Spine5")
-onready var spine6 = get_node("../Spine6")
+@onready var spine2 = get_node("../Spine2")
+@onready var spine3 = get_node("../Spine3")
+@onready var spine4 = get_node("../Spine4")
+@onready var spine5 = get_node("../Spine5")
+@onready var spine6 = get_node("../Spine6")
 
-onready var waist = get_node("../Body")
+@onready var waist = get_node("../Body")
 
 var body = []
 
 var variant = 1
 
-onready var raycast = waist.get_node("RayCast2D")
+@onready var raycast = waist.get_node("RayCast2D")
 
 
 var float_height = 115 # The height at which the character should float
@@ -228,7 +228,7 @@ func _process(_delta):
 
 	raycast.global_rotation = 0  # Make the raycast point straight down
 
-	applied_force.y = 0
+	constant_force.y = 0
 	if raycast.is_colliding():
 
 
@@ -257,4 +257,3 @@ func _process(_delta):
 #		print((float_height-distance_to_ground)*0.5+distance_to_ground)
 		
 #		print(float_height-distance_to_ground)
-

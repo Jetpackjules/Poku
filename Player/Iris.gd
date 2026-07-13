@@ -1,10 +1,10 @@
 extends Node2D
 
-onready var counterweight := get_node("../Counterweight")
+@onready var counterweight := get_node("../Counterweight")
 
-onready var normal_iris := get_node("Iris")
-onready var dead_iris1 := get_node("Dead_Iris1")
-onready var dead_iris2 := get_node("Dead_Iris2")
+@onready var normal_iris := get_node("Iris")
+@onready var dead_iris1 := get_node("Dead_Iris1")
+@onready var dead_iris2 := get_node("Dead_Iris2")
 
 var dead := false
 

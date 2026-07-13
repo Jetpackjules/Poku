@@ -6,7 +6,7 @@ var new_desired_angle = 0
 var locked = true
 
 func _ready():
-	 pass
+	pass
 func _process(delta):
 	#finds what the current angle of head is in every frame 
 	var current_angle = get_global_transform().get_rotation()

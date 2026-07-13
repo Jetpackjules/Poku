@@ -11,17 +11,17 @@ var value := 1
 signal done
 
 var bobbing_amplitude = 50
-var bobbing_speed = 2 
-var bobbing_counter = 0 
+var bobbing_speed = 2
+var bobbing_counter = 0
 
-onready var rotor_top = get_node("Rotor_Top")
+@onready var rotor_top = get_node("Rotor_Top")
 #onready var body = get_node("Target_Body")
 
 # Assuming these are the particles for the smoke and are children of the target.
-onready var smoke_particles = $SmokeParticles2D 
+@onready var smoke_particles = $SmokeParticles2D
 
 # Assuming you have a timer named "BobbingTimer" to control the bobbing effect.
-onready var bobbing_timer = $BobbingTimer
+@onready var bobbing_timer = $BobbingTimer
 
 var launch_force = 1500
 
@@ -48,7 +48,7 @@ func stabbed(body):
 		self.modulate = Color(0.5, 0.5, 0.5) # Change color to grey
 		self.gravity_scale = 0.5 # Fall down
 		smoke_particles.emitting = true # Start smoking
-		
+
 
 func _integrate_forces(state):
 	if not dead:

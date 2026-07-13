@@ -7,16 +7,16 @@ var player_count := 2
 var spawned_players := 0
 var living_players := 0
 
-var players_moved := 0
+var players_moved_count := 0
 var start := false
 
 signal players_moved
 
-onready var scene_manager = get_tree().get_current_scene()
+@onready var scene_manager = get_tree().get_current_scene()
 
 #onready var tween = scene_manager.get_node("Tween")
 
-onready var transition = load("res://Menus/Transitions/Diamond_Transition.tscn")
+@onready var transition = load("res://Menus/Transitions/Diamond_Transition.tscn")
 
 var gamemodes := ["Wipeout", "Basketball", "Vertical_Parkour"]
 
@@ -72,11 +72,11 @@ func change_map(next_map_name: String) -> void:
 	
 
 #	Transition:
-	var obscurer = transition.instance()
+	var obscurer = transition.instantiate()
 	scene_manager.add_child(obscurer)
-	yield(obscurer, "switch")
+	await obscurer.switch
 	
-	var next_map = load("res://Maps/" + next_map_name + "/" + next_map_name + "_Map.tscn").instance()
+	var next_map = load("res://Maps/" + next_map_name + "/" + next_map_name + "_Map.tscn").instantiate()
 	if current_map:
 		current_map.queue_free()
 	current_map = next_map
@@ -93,7 +93,7 @@ func change_map(next_map_name: String) -> void:
 
 func move_players() -> void:
 	start = false
-	players_moved = 0  # reset count every time we start to move players
+	players_moved_count = 0  # reset count every time we start to move players
 
 	while spawned_players < player_count:
 		spawned_players += 1
@@ -103,9 +103,9 @@ func move_players() -> void:
 
 	for curr_player in get_players():
 		for part in curr_player.body:
-			part.set_collision_layer_bit(1, false)
-			part.set_collision_mask_bit(0, false)
-			part.set_collision_mask_bit(9, false)
+			part.set_collision_layer_value(2, false)
+			part.set_collision_mask_value(1, false)
+			part.set_collision_mask_value(10, false)
 		
 		
 		
@@ -113,22 +113,19 @@ func move_players() -> void:
 		curr_player.win(false)
 		var spawn_location = current_map.get_node("Spawns/P" + str(curr_player.get_index()+1) + "_Spawn")
 		if spawn_location.scale.x == -1:
-			curr_player.flip()
+			curr_player.flip_orientation()
 		
 		curr_player.controllable = false
 		var target_position = spawn_location.global_position
 		
-		var player_tween = Tween.new()  # create a new tween
-		scene_manager.add_child(player_tween)  # add it as a child of the part
-
-		player_tween.interpolate_property(curr_player, "global_position", curr_player.global_position, target_position, 1)
-		player_tween.start()
-		player_tween.connect("tween_completed", self, "player_move_done", [curr_player])  # pass the player and part as arguments
+		var player_tween = scene_manager.create_tween()
+		player_tween.tween_property(curr_player, "global_position", target_position, 1.0).from(curr_player.global_position)
+		player_tween.finished.connect(player_move_done.bind(curr_player))
 		
 
 
 
-func player_move_done(obj: Object, key: String, curr_player) -> void:
+func player_move_done(curr_player) -> void:
 	print("Finished Moving:  ", curr_player)
 #	for curr_player in scene_manager.get_node("Players").get_children():
 	curr_player.controllable = true
@@ -138,18 +135,18 @@ func player_move_done(obj: Object, key: String, curr_player) -> void:
 
 	for part in curr_player.body:
 		if !("Body" in part.name):
-			part.set_collision_layer_bit(1, true)
-			part.set_collision_mask_bit(0, true)
-			part.set_collision_mask_bit(9, true)
+				part.set_collision_layer_value(2, true)
+				part.set_collision_mask_value(1, true)
+				part.set_collision_mask_value(10, true)
 		
-	players_moved += 1
-	if players_moved == player_count:
+	players_moved_count += 1
+	if players_moved_count == player_count:
 		emit_signal("players_moved")
 		start = true
 		print("all_moved")
 
 func make_player(player_number: int) -> void:
-	var new_player = load("res://Player/Player.tscn").instance()
+	var new_player = load("res://Player/Player.tscn").instantiate()
 	
 	# Fetch spawn location from the map
 	var spawn_location = current_map.get_node("Spawns/P" + str(player_number) + "_Spawn")
@@ -191,7 +188,7 @@ func check_living():
 				print(curr_player.name, " WINS!")
 				curr_player.win(true)
 				print("WAITING")
-				yield(get_tree().create_timer(5.0), "timeout")
+				await get_tree().create_timer(5.0).timeout
 				print("NEEEXT")
 				random_map()
 

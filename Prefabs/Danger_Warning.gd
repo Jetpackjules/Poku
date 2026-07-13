@@ -1,6 +1,6 @@
 extends Area2D
 
-onready var deathzone = get_node("Death_Zone")
+@onready var deathzone = get_node("Death_Zone")
 
 
 

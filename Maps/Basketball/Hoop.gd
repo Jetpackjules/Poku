@@ -1,12 +1,12 @@
 extends Node2D
 
 
-onready var timer := get_node("Timer")
-onready var score := get_node("../Score")
-onready var backboard := get_node("Backboard/Panel")
+@onready var timer := get_node("Timer")
+@onready var score := get_node("../Score")
+@onready var backboard := get_node("Backboard/Panel")
 var body_inside
 
-onready var confetti = load("res://Items/Effects/Confetti.tscn")
+@onready var confetti = load("res://Items/Effects/Confetti.tscn")
 
 func _ready():
 	var panel_material = load("res://Maps/Basketball/Progress_Goal.tres").duplicate()
@@ -14,7 +14,7 @@ func _ready():
 
 
 func _physics_process(_delta):
-	backboard.material.set_shader_param("progress", 1-(timer.time_left/timer.wait_time))
+	backboard.material.set_shader_parameter("progress", 1-(timer.time_left/timer.wait_time))
 
 func _on_Hoop_Goal_body_entered(body):
 	if body.is_in_group("score-able"):
@@ -30,7 +30,7 @@ func _on_Hoop_Goal_body_exited(body):
 func _on_Timer_timeout():
 	body_inside.emit_signal("done", body_inside)
 	
-	var confet = confetti.instance()
+	var confet = confetti.instantiate()
 	
 	add_child(confet)
 	confet.global_position = body_inside.global_position

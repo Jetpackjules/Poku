@@ -28,9 +28,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -10.0
-margin_top = -20.0
-margin_right = 10.0
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
 color = Color( 1, 0, 0, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="RigidBody2D"]
@@ -38,15 +38,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -10.0
-margin_right = 10.0
-margin_bottom = 20.0
+offset_left = -10.0
+offset_right = 10.0
+offset_bottom = 20.0
 color = Color( 0.164706, 0.12549, 0.866667, 1 )
-
-[node name="Tween" type="Tween" parent="."]
-playback_process_mode = 0
-playback_speed = 8.0
-playback/speed = 8.0
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0

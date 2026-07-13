@@ -1,6 +1,6 @@
 extends Node2D
 
-export var winning_score := 3
+@export var winning_score := 3
 
 func _ready():
 	for score in get_children():

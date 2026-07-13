@@ -57,7 +57,7 @@ shape = SubResource( 2 )
 
 [node name="Polygon2D" type="Polygon2D" parent="Head"]
 color = Color( 0.8, 0.65098, 0.301961, 1 )
-polygon = PoolVector2Array( -2, -30, 11, -28, 25, -16, 30, -3, 29, 10, 19, 22, 9, 28, -4, 29, -12, 27, -21, 21, -28, 7, -29, -8, -25, -18, -16, -26 )
+polygon = PackedVector2Array( -2, -30, 11, -28, 25, -16, 30, -3, 29, 10, 19, 22, 9, 28, -4, 29, -12, 27, -21, 21, -28, 7, -29, -8, -25, -18, -16, -26 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="Head"]
 position = Vector2( 0, 23 )
@@ -79,17 +79,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine1"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine1"]
 shape = SubResource( 4 )
@@ -112,17 +112,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 46.5297
-margin_top = -9.0
-margin_right = 62.5297
-margin_bottom = 9.0
+offset_left = 46.5297
+offset_top = -9.0
+offset_right = 62.5297
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine2"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine2"]
 shape = SubResource( 4 )
@@ -145,17 +145,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine3"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine3"]
 shape = SubResource( 4 )
@@ -178,17 +178,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine4"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine4"]
 shape = SubResource( 4 )
@@ -211,17 +211,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine5"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine5"]
 shape = SubResource( 4 )
@@ -243,17 +243,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 9.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 9.0
 
 [node name="Panel" type="Panel" parent="Spine6"]
-margin_left = -8.0
-margin_top = -9.0
-margin_right = 8.0
-margin_bottom = 15.0
-custom_styles/panel = ExtResource( 10 )
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 15.0
+theme_override_styles/panel = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spine6"]
 shape = SubResource( 4 )
@@ -276,18 +276,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Panel" type="Panel" parent="Leg_L_up"]
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
-custom_styles/panel = ExtResource( 4 )
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
+theme_override_styles/panel = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Leg_L_up"]
 shape = SubResource( 5 )
@@ -316,17 +316,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
 
 [node name="Panel" type="Panel" parent="Leg_L_down"]
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
-custom_styles/panel = ExtResource( 4 )
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
+theme_override_styles/panel = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Leg_L_down"]
 shape = SubResource( 5 )
@@ -344,18 +344,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
 color = Color( 0.996078, 0, 0, 1 )
 
 [node name="Panel" type="Panel" parent="Leg_R_up"]
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
-custom_styles/panel = ExtResource( 4 )
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
+theme_override_styles/panel = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Leg_R_up"]
 visible = false
@@ -385,18 +385,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
 color = Color( 0, 0.482353, 0.996078, 1 )
 
 [node name="Panel" type="Panel" parent="Leg_R_down"]
-margin_left = -7.0
-margin_top = -32.0
-margin_right = 7.0
-margin_bottom = 32.0
-custom_styles/panel = ExtResource( 4 )
+offset_left = -7.0
+offset_top = -32.0
+offset_right = 7.0
+offset_bottom = 32.0
+theme_override_styles/panel = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Leg_R_down"]
 shape = SubResource( 5 )
@@ -410,11 +410,11 @@ physics_material_override = SubResource( 7 )
 [node name="RayCast2D" type="RayCast2D" parent="Body"]
 position = Vector2( 0, 4 )
 enabled = true
-cast_to = Vector2( 0, 400 )
+target_position = Vector2( 0, 400 )
 
 [node name="Polygon2D" type="Polygon2D" parent="Body"]
 color = Color( 0.211765, 0.121569, 0.121569, 1 )
-polygon = PoolVector2Array( 3, -26, 11, -26, 18, -25, 24, -23, 30, -18, 34, -12, 36, -6, 37, 0, 36, 7, 34, 13, 30, 18, 25, 22, 18, 25, 11, 26, -1, 26, -11, 26, -17, 25, -24, 23, -29, 19, -34, 13, -36, 6, -37, 0, -36, -7, -34, -13, -30, -18, -24, -23, -18, -25, -11, -26 )
+polygon = PackedVector2Array( 3, -26, 11, -26, 18, -25, 24, -23, 30, -18, 34, -12, 36, -6, 37, 0, 36, 7, 34, 13, 30, 18, 25, 22, 18, 25, 11, 26, -1, 26, -11, 26, -17, 25, -24, 23, -29, 19, -34, 13, -36, 6, -37, 0, -36, -7, -34, -13, -30, -18, -24, -23, -18, -25, -11, -26 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2( 0, -7.62939e-06 )
@@ -424,4 +424,4 @@ shape = SubResource( 8 )
 [node name="Camera2D" type="Camera2D" parent="Body"]
 position = Vector2( -14, -93 )
 zoom = Vector2( 2, 2 )
-smoothing_enabled = true
+position_smoothing_enabled = true

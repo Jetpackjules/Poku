@@ -9,7 +9,7 @@ func _on_Death_Zone_body_entered(body) -> void:
 	#		get_node("CollisionShape2D").disabled = true
 			print("DEAD!")
 	elif body.is_in_group("tool"):
-		if !body.done:
-			body.done = true
+		if !body.is_done:
+			body.is_done = true
 			body.emit_signal("done", body)
 		body.queue_free()

@@ -5,7 +5,7 @@ resource_local_to_scene = true
 code = "shader_type canvas_item;
 
 uniform float progress : hint_range(0,1) = 1.0;
-uniform vec4 fill_color : hint_color = vec4(1.0, 0.549, 0.0, 1.0); // Darker shade of orange
+uniform vec4 fill_color : source_color = vec4(1.0, 0.549, 0.0, 1.0); // Darker shade of orange
 
 void fragment() {
     if(progress < 1.0) {
@@ -19,5 +19,5 @@ void fragment() {
 [resource]
 resource_local_to_scene = true
 shader = SubResource( 30 )
-shader_param/progress = 0.0
-shader_param/fill_color = Color( 1, 0.549, 0, 1 )
+shader_parameter/progress = 0.0
+shader_parameter/fill_color = Color( 1, 0.549, 0, 1 )

@@ -1,4 +1,4 @@
-extends "res://Torso.gd"
+extends "res://Ostritch/Torso_Ostritch.gd"
 
 
 # Declare member variables here. Examples:

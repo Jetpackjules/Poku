@@ -1,15 +1,15 @@
 extends RigidBody2D
 
 
-export var gap = 10.0
+@export var gap = 10.0
 
 
-export var speed = 100.0
-export var offset = 0.0
+@export var speed = 100.0
+@export var offset = 0.0
 var velocity = Vector2.ZERO
 
-onready var top_wall = get_node("Wall_Top")
-onready var bottom_wall = get_node("Wall_Bottom")
+@onready var top_wall = get_node("Wall_Top")
+@onready var bottom_wall = get_node("Wall_Bottom")
 
 
 func adjust() -> void:

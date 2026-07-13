@@ -1,4 +1,4 @@
-extends "res://Spine.gd"
+extends "res://Ostritch/Spine_Ostritch.gd"
 
 
 # Declare member variables here. Examples:
@@ -12,7 +12,7 @@ func _ready():
 
 func _physics_process(delta):
 	
-	new_desired_angle = deg2rad(70)
+	new_desired_angle = deg_to_rad(70)
 	power = 2500
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
