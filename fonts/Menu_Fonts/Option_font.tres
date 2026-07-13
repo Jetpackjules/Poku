@@ -1,10 +1,8 @@
-[gd_resource type="FontFile" load_steps=2 format=2]
+[gd_resource type="FontVariation" load_steps=2 format=3]
 
-[ext_resource path="res://fonts/kirifont/KiriFont.otf" type="FontFile" id=1]
+[ext_resource path="res://fonts/kirifont/KiriFont.otf" type="FontFile" id="1"]
 
 [resource]
-size = 90
-use_mipmaps = true
-extra_spacing_top = 31
-extra_spacing_bottom = 20
-font_data = ExtResource( 1 )
+base_font = ExtResource("1")
+spacing_top = 31
+spacing_bottom = 20

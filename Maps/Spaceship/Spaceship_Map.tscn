@@ -263,8 +263,8 @@ color = Color( 0.647059, 0.647059, 0.647059, 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -0.229797, -428 )
-current = true
-zoom = Vector2( 1.7, 1.7 )
+enabled = true
+zoom = Vector2( 0.588235, 0.588235 )
 
 [node name="Tool_Spawner" type="Node2D" parent="."]
 position = Vector2( 0, -1336 )

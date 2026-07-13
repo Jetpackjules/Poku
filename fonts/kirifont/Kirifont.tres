@@ -1,11 +1,7 @@
-[gd_resource type="FontFile" load_steps=2 format=2]
+[gd_resource type="FontVariation" load_steps=2 format=3]
 
-[ext_resource path="res://fonts/kirifont/KiriFont.otf" type="FontFile" id=1]
+[ext_resource path="res://fonts/kirifont/KiriFont.otf" type="FontFile" id="1"]
 
 [resource]
-size = 300
-outline_size = 20
-outline_color = Color( 0, 0, 0, 1 )
-use_filter = true
-extra_spacing_char = 25
-font_data = ExtResource( 1 )
+base_font = ExtResource("1")
+spacing_glyph = 25

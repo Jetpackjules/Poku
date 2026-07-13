@@ -7,12 +7,10 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )
 
-[sub_resource type="FontFile" id=3]
-size = 361
-use_filter = true
+[sub_resource type="FontVariation" id=3]
+base_font = ExtResource( 3 )
 spacing_top = 31
 spacing_bottom = 20
-font_data = ExtResource( 3 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 3791, 920 )
@@ -45,6 +43,7 @@ offset_right = 694.0
 offset_bottom = 669.0
 theme_override_colors/font_color = Color( 0.745098, 0.592157, 1, 1 )
 theme_override_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 361
 text = "Jump!"
 uppercase = true
 
@@ -60,8 +59,8 @@ position = Vector2( 900, -752 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -1, 0 )
-current = true
-zoom = Vector2( 1.7, 1.7 )
+enabled = true
+zoom = Vector2( 0.588235, 0.588235 )
 
 [node name="Death_Zone" type="Area2D" parent="Camera2D"]
 position = Vector2( 1, 1245 )

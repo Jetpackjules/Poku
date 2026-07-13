@@ -384,8 +384,8 @@ position = Vector2( 900, -752 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -0.229736, -798 )
-current = true
-zoom = Vector2( 1.7, 1.7 )
+enabled = true
+zoom = Vector2( 0.588235, 0.588235 )
 
 [node name="Ball" type="RigidBody2D" parent="." groups=["score-able", "tool"]]
 position = Vector2( -240, -588 )
