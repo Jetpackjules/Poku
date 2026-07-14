@@ -26,7 +26,8 @@ position = Vector2( -1084, 0 )
 rotate = false
 
 [node name="Platform_Small_Moving" type="RigidBody2D" parent="PathFollow2D" groups=["move_player"]]
-mode = 3
+freeze = true
+freeze_mode = 1
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PathFollow2D/Platform_Small_Moving"]
 position = Vector2( -201, -35 )

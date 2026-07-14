@@ -222,12 +222,12 @@ func _on_body_entered(body):
 				var dist = 0
 
 				if test_body_motion(Vector2.ZERO, 0.01, result):
-					impale(body, result.collision_point, result.collision_normal)
+					impale(body, result.get_collision_point(), result.get_collision_normal())
 					emit_signal("done", self)
 					is_done = true
 
 				elif test_body_motion(Vector2.ZERO, 10.0, result):
-					impale(body, result.collision_point, result.collision_normal)
+					impale(body, result.get_collision_point(), result.get_collision_normal())
 					emit_signal("done", self)
 					is_done = true
 
@@ -238,13 +238,13 @@ func _on_body_entered(body):
 						offset *= 1.1
 						if test_body_motion(-offset, 0.08, result):
 							global_position -= offset
-							impale(body, result.collision_point, result.collision_normal)
+							impale(body, result.get_collision_point(), result.get_collision_normal())
 							emit_signal("done", self)
 							found = true
 							is_done = true
 						elif test_body_motion(offset, 0.08, result):
 							global_position += offset
-							impale(body, result.collision_point, result.collision_normal)
+							impale(body, result.get_collision_point(), result.get_collision_normal())
 							emit_signal("done", self)
 							found = true
 							is_done = true
@@ -276,8 +276,5 @@ func _on_body_entered(body):
 #					body.get_node("Panel").modulate = Color.red
 #				elif body.get_node("Polygon2D"):
 #					body.get_node("Polygon2D").modulate = Color.red
-
-
-
 
 

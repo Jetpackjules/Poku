@@ -7,7 +7,7 @@ bounce = 0.1
 
 [sub_resource type="CapsuleShape2D" id=14]
 radius = 30.0
-height = 0.0
+height = 60.0
 
 [node name="Ball" type="RigidBody2D" groups=["score-able", "tool"]]
 collision_layer = 18

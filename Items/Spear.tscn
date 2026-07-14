@@ -13,6 +13,7 @@ extents = Vector2( 91.5, 3.5 )
 
 [node name="Spear" type="RigidBody2D" groups=["tool"]]
 physics_interpolation_mode = 2
+center_of_mass_mode = 1
 collision_layer = 16
 collision_mask = 17
 physics_material_override = SubResource( 13 )

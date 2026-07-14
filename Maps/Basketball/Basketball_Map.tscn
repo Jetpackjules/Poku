@@ -28,6 +28,8 @@ bounce = 1.0
 absorbent = true
 
 [sub_resource type="CapsuleShape2D" id=18]
+radius = 10.0
+height = 40.0
 
 [sub_resource type="PhysicsMaterial" id=27]
 bounce = 0.5
@@ -78,7 +80,7 @@ offset_bottom = 414.0
 color = Color( 0.717647, 0.913725, 0.933333, 1 )
 
 [node name="Seperator" type="StaticBody2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 8
 
 [node name="Vertical_Boundary" type="CollisionShape2D" parent="Seperator"]
@@ -170,7 +172,9 @@ position = Vector2( 240, 26 )
 rotation = 3.50817
 scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net"]
@@ -193,7 +197,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( 3.42871, 31.3628 )
 rotation = -0.174533
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2"]
@@ -215,7 +221,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( 12.8318, 27.6206 )
 rotation = -0.808422
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3"]
@@ -237,7 +245,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( -4.89664, 30.2102 )
 rotation = 0.275978
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3/Net4"]
@@ -259,7 +269,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( 15.5, 16.1666 )
 rotation = -1.3403
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net/Net2/Net3/Net4/Net5"]
@@ -282,7 +294,9 @@ position = Vector2( 15, 26 )
 rotation = 2.75527
 scale = Vector2( 1, -1 )
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2"]
@@ -305,7 +319,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( -10.4506, 27.6009 )
 rotation = 0.630071
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2"]
@@ -327,7 +343,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( -3.88458, 30.5128 )
 rotation = 0.240007
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3"]
@@ -349,7 +367,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( -4.64142, 31.5685 )
 rotation = 0.287285
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4"]
@@ -371,7 +391,9 @@ theme_override_styles/panel = ExtResource( 5 )
 position = Vector2( 0.244141, 31.857 )
 rotation = -0.0153155
 physics_material_override = SubResource( 26 )
+linear_damp_mode = 1
 linear_damp = 2.0
+angular_damp_mode = 1
 angular_damp = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop_left/Nets/Net2/Net2/Net3/Net4/Net5"]

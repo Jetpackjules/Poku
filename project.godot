@@ -25,6 +25,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/window_width_override=1024
 window/size/window_height_override=576
+window/dpi/allow_hidpi=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 
@@ -177,6 +178,8 @@ common/physics_ticks_per_second=120
 2d/sleep_threshold_linear=0.0
 2d/sleep_threshold_angular=0.0
 2d/time_before_sleep=0.0
+2d/solver/solver_iterations=8
+2d/solver/default_contact_bias=0.3
 2d/default_gravity_vector=Vector2( 0, 1 )
 3d/default_gravity_vector=Vector3( 0, 1000, 0 )
 common/physics_interpolation=true

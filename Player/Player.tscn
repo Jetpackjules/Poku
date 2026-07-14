@@ -16,21 +16,21 @@ friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id=11]
 radius = 26.0
-height = 22.0
+height = 74.0
 
 [sub_resource type="PhysicsMaterial" id=14]
 friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 8.0
-height = 2.0
+height = 18.0
 
 [sub_resource type="PhysicsMaterial" id=9]
 friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id=6]
 radius = 7.0
-height = 50.0
+height = 64.0
 
 [sub_resource type="PhysicsMaterial" id=7]
 rough = true
@@ -73,12 +73,12 @@ anti_aliasing = false
 
 [sub_resource type="CapsuleShape2D" id=18]
 radius = 5.0
-height = 5.0
+height = 15.0
 
 [node name="Body" type="RigidBody2D" groups=["player", "stabb-able"]]
 collision_layer = 14
 collision_mask = 525
-mode = 2
+lock_rotation = true
 physics_material_override = SubResource( 12 )
 can_sleep = false
 script = ExtResource( 2 )
@@ -100,6 +100,7 @@ collision_mask = 513
 mass = 0.1
 physics_material_override = SubResource( 14 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 10 )
 
@@ -125,6 +126,7 @@ collision_mask = 517
 mass = 0.1
 physics_material_override = SubResource( 9 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 6 )
 
@@ -150,6 +152,7 @@ collision_mask = 517
 mass = 0.1
 physics_material_override = SubResource( 9 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 9 )
 
@@ -175,6 +178,7 @@ collision_mask = 517
 mass = 0.1
 physics_material_override = SubResource( 9 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 7 )
 
@@ -200,6 +204,7 @@ collision_mask = 517
 mass = 0.1
 physics_material_override = SubResource( 9 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 8 )
 
@@ -225,6 +230,7 @@ collision_mask = 517
 mass = 0.1
 physics_material_override = SubResource( 9 )
 continuous_cd = 2
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 5 )
 
@@ -248,6 +254,7 @@ position = Vector2( -4, 28 )
 rotation = 0.0520928
 collision_layer = 2
 collision_mask = 513
+angular_damp_mode = 1
 angular_damp = 3.0
 script = ExtResource( 1 )
 
@@ -290,6 +297,7 @@ position = Vector2( 4, 28 )
 rotation = -0.0523599
 collision_layer = 2
 collision_mask = 513
+angular_damp_mode = 1
 angular_damp = 3.0
 script = ExtResource( 1 )
 
@@ -390,7 +398,7 @@ offset_left = -5.0
 offset_top = 2.0
 offset_right = 19.0
 offset_bottom = 9.0
-rotation = 45.0
+rotation = 0.785398
 pivot_offset = Vector2( 11.9871, 3.24921 )
 theme_override_styles/panel = SubResource( 17 )
 
@@ -403,7 +411,7 @@ offset_left = -5.0
 offset_top = 2.0
 offset_right = 19.0
 offset_bottom = 9.0
-rotation = -45.0
+rotation = -0.785398
 pivot_offset = Vector2( 11.9871, 3.22058 )
 theme_override_styles/panel = SubResource( 17 )
 
@@ -422,7 +430,7 @@ disable_collision = false
 position = Vector2( 0.00682259, -0.000841141 )
 collision_layer = 128
 collision_mask = 128
-mode = 2
+lock_rotation = true
 mass = 4.0
 gravity_scale = 0.0
 can_sleep = false
@@ -479,7 +487,7 @@ offset_left = -5.0
 offset_top = 2.0
 offset_right = 19.0
 offset_bottom = 9.0
-rotation = 45.0
+rotation = 0.785398
 pivot_offset = Vector2( 11.9871, 3.24921 )
 theme_override_styles/panel = SubResource( 17 )
 
@@ -493,7 +501,7 @@ offset_left = -5.0
 offset_top = 2.0
 offset_right = 19.0
 offset_bottom = 9.0
-rotation = -45.0
+rotation = -0.785398
 pivot_offset = Vector2( 11.9871, 3.22058 )
 theme_override_styles/panel = SubResource( 17 )
 
@@ -512,7 +520,7 @@ disable_collision = false
 position = Vector2( 0.00682259, -0.000841141 )
 collision_layer = 128
 collision_mask = 128
-mode = 2
+lock_rotation = true
 mass = 4.0
 gravity_scale = 0.0
 can_sleep = false

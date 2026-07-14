@@ -29,7 +29,7 @@ extents = Vector2( 1500, 3 )
 
 [sub_resource type="CapsuleShape2D" id=14]
 radius = 30.0
-height = 0.0
+height = 60.0
 
 [node name="Volleyball" type="Node2D"]
 
@@ -357,7 +357,7 @@ offset_bottom = 500.0
 color = Color( 1, 0.824, 0.78, 1 )
 
 [node name="Seperator" type="StaticBody2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 8
 
 [node name="Vertical_Boundary" type="CollisionShape2D" parent="Seperator"]
@@ -365,7 +365,7 @@ position = Vector2( 0, -751 )
 shape = SubResource( 15 )
 
 [node name="Horizontal_Boundary4" type="StaticBody2D" parent="Seperator"]
-collision_layer = 0
+collision_layer = 24
 collision_mask = 24
 
 [node name="Horizontal_Boundary3" type="CollisionShape2D" parent="Seperator/Horizontal_Boundary4"]

@@ -97,6 +97,7 @@ anti_aliasing_size = 0.178
 [node name="Target" type="RigidBody2D" groups=["stabb-able"]]
 collision_layer = 3
 mass = 100.0
+linear_damp_mode = 1
 linear_damp = 1.0
 script = ExtResource( 2 )
 
@@ -142,7 +143,7 @@ node_b = NodePath("../Rotor_Housing_Top")
 
 [node name="Rotor_Housing_Top" type="RigidBody2D" parent="."]
 position = Vector2( 0, -125 )
-mode = 2
+lock_rotation = true
 gravity_scale = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rotor_Housing_Top"]
@@ -186,6 +187,7 @@ position = Vector2( 0, -125 )
 collision_layer = 0
 collision_mask = 0
 gravity_scale = 0.0
+angular_damp_mode = 1
 angular_damp = 0.0
 
 [node name="PinJoint2D2" type="PinJoint2D" parent="Rotor_Top"]
@@ -217,7 +219,7 @@ offset_left = -8.0
 offset_top = -37.0
 offset_right = 8.0
 offset_bottom = 39.0
-rotation = 90.0
+rotation = 1.5708
 pivot_offset = Vector2( 8.16739, 37.4048 )
 theme_override_styles/panel = SubResource( 4 )
 

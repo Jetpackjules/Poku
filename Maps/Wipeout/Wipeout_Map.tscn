@@ -45,7 +45,7 @@ position = Vector2( 849, -704 )
 
 [node name="Seperator" type="StaticBody2D" parent="."]
 position = Vector2( 4, 1 )
-collision_layer = 0
+collision_layer = 8
 collision_mask = 8
 
 [node name="Boundary_Right" type="CollisionShape2D" parent="Seperator"]
