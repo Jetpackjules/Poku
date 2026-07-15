@@ -18,6 +18,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GameSettings="*res://Input/GameSettings.gd"
+CameraFeedback="*res://Effects/CameraFeedback.gd"
 SceneSwitcher="*res://Maps/SceneSwitcher.gd"
 ControllerSupport="*res://Input/ControllerSupport.gd"
 PauseMenu="*res://Menus/Pause/PauseMenu.gd"

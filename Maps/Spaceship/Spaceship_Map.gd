@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if round_over:
+	if round_over or not round_active:
 		return
 	if not is_instance_valid(left_ship) or not is_instance_valid(right_ship):
 		return

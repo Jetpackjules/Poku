@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+const FURNACE_ATMOSPHERE = preload("res://Effects/FurnaceAtmosphere.gd")
+
 @export var base_float_height := 100.0
 @export var height_per_coal := 400.0
 @export var maximum_motor_speed := 800.0
@@ -13,6 +15,7 @@ var max_thrusters := 5
 var OG_X := 0.0
 var thrusters_left: Array = []
 var thrusters_right: Array = []
+var furnace_visuals: Node2D
 
 @onready var thruster_left: GPUParticles2D = $Thruster_Left
 @onready var thruster_right: GPUParticles2D = $Thruster_Right
@@ -22,6 +25,10 @@ func _ready() -> void:
 	OG_X = global_position.x
 	thrusters_left = [thruster_left]
 	thrusters_right = [thruster_right]
+	furnace_visuals = FURNACE_ATMOSPHERE.new()
+	furnace_visuals.name = "FurnaceAtmosphere"
+	$Furnace.add_child(furnace_visuals)
+	furnace_visuals.setup($Furnace)
 
 
 func _physics_process(delta: float) -> void:
@@ -69,6 +76,8 @@ func _burn_loaded_coal(delta: float) -> void:
 			coal.queue_free()
 
 	float_height = base_float_height + total_fuel * height_per_coal
+	if is_instance_valid(furnace_visuals):
+		furnace_visuals.set_fuel(total_fuel)
 
 
 func _update_thrusters() -> void:

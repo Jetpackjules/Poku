@@ -20,6 +20,8 @@ func scan_players():
 func increase(amount):
 	if completed:
 		return
+	if SceneSwitcher.current_map and SceneSwitcher.current_map.get("round_active") == false:
+		return
 	score += amount
 	text = str(score)
 	if score >= win_score:

@@ -96,6 +96,8 @@ func _test_mode_configuration() -> void:
 func _test_planes_updraft() -> void:
 	var map = _add_map("Planes")
 	var plane: RigidBody2D = map.get_node("Turn_Brace2")
+	_test_planes_steering_contract(plane)
+	_test_planes_polish_and_jelly(map, plane)
 	plane.global_position = Vector2(0.0, -200.0)
 	plane.linear_velocity = Vector2.ZERO
 	plane.reset_physics_interpolation()
@@ -107,6 +109,50 @@ func _test_planes_updraft() -> void:
 	observations["plane_updraft_rise"] = start_y - plane.global_position.y
 	map.queue_free()
 	await get_tree().physics_frame
+
+
+func _test_planes_steering_contract(plane: RigidBody2D) -> void:
+	var right_force: float = plane.steering_force_for_offset(100.0)
+	var left_force: float = plane.steering_force_for_offset(-100.0)
+	_expect(right_force > 0.0, "Standing right of a plane's center does not drive it right")
+	_expect(left_force < 0.0, "Standing left of a plane's center does not drive it left")
+	_expect(is_equal_approx(right_force, -left_force), "Plane steering is not symmetric across its center")
+	_expect(is_zero_approx(plane.steering_force_for_offset(0.0)), "Standing at the plane center still creates steering force")
+	var right_tilt: float = plane.tilt_for_offset(100.0)
+	var left_tilt: float = plane.tilt_for_offset(-100.0)
+	_expect(right_tilt > 0.0 and is_equal_approx(right_tilt, -left_tilt), "Physical plane tilt is not symmetric with rider weight")
+	_expect(absf(plane.tilt_for_offset(1000.0)) <= plane.maximum_tilt_degrees, "Plane tilt can exceed its physical safety limit")
+	observations["plane_steering_acceleration_at_100px"] = right_force / plane.mass
+	observations["plane_tilt_target_at_100px"] = right_tilt
+
+
+func _test_planes_polish_and_jelly(map: Node, plane: RigidBody2D) -> void:
+	GameSettings.set_preference(&"poku_polish", true, false)
+	_expect(is_instance_valid(map.atmosphere) and map.atmosphere.visible, "Planes polish has no sky/updraft atmosphere")
+	_expect(map.atmosphere.CLOUDS.size() >= 4, "The polished Planes sky has too little cloud depth")
+	_expect(map.updraft_particles.amount > map._original_particle_amount, "Planes polish did not strengthen the updraft particles")
+	_expect(map.left_plane_visual.color != map.right_plane_visual.color, "P1 and P2 planes are still visually identical")
+	var collision: CollisionPolygon2D = plane.get_node("CollisionPolygon2D")
+	var collision_polygon := collision.polygon.duplicate()
+	var visual: Polygon2D = plane.get_node("Plane/Polygon2D")
+	var visual_base: PackedVector2Array = plane._visual_base_polygon.duplicate()
+	plane.linear_velocity = Vector2(500.0, -420.0)
+	plane.desired_tilt_degrees = plane.maximum_tilt_degrees
+	for _step in 30:
+		plane._update_jelly_deformation(1.0 / 120.0)
+	var tip_travel: float = maxf(absf(plane._left_tip_flex), absf(plane._right_tip_flex))
+	_expect(visual.polygon != visual_base, "Fast plane movement did not create springy wing deformation")
+	_expect(tip_travel > 8.0 and tip_travel < 32.0, "Jelly wing travel is imperceptible or unbounded: %.2f" % tip_travel)
+	_expect(collision.polygon == collision_polygon, "Jelly wing visuals changed the stable physical collision polygon")
+	_expect(map.atmosphere.wind_intensity_for(plane) > 0.8, "A rapidly rising plane did not produce strong wind streaks")
+	observations["plane_jelly_tip_travel"] = tip_travel
+
+	GameSettings.set_preference(&"poku_polish", false, false)
+	_expect(not map.atmosphere.visible, "Disabling Poku polish left the Planes atmosphere visible")
+	_expect(visual.polygon != visual_base, "Core jelly-plane response incorrectly depends on the presentation toggle")
+	_expect(map.left_plane_visual.color == map._original_left_color, "Disabling Poku polish did not restore the original plane color")
+	_expect(map.updraft_particles.amount == map._original_particle_amount, "Disabling Poku polish did not restore the original updraft")
+	GameSettings.set_preference(&"poku_polish", true, false)
 
 
 func _add_map(map_name: String) -> Node:

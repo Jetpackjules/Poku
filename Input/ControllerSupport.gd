@@ -5,6 +5,8 @@ signal controllers_changed(connected_count: int)
 const PLAYER_ONE_DEVICE := 0
 const PLAYER_TWO_DEVICE := 1
 
+var last_rumble_request := {}
+
 
 func _enter_tree() -> void:
 	configure_input_map()
@@ -89,6 +91,25 @@ func status_text() -> String:
 	if count == 1:
 		return "CONTROLLER 1 READY    P2 CAN USE ARROW KEYS"
 	return "CONTROLLERS 1 + 2 READY"
+
+
+func rumble_for_action(action: StringName, weak: float, strong: float, duration: float) -> void:
+	if not GameSettings.is_rumble_enabled():
+		return
+	var device := PLAYER_ONE_DEVICE if String(action).begins_with("wasd") else PLAYER_TWO_DEVICE
+	last_rumble_request = {
+		"device": device,
+		"weak": clampf(weak, 0.0, 1.0),
+		"strong": clampf(strong, 0.0, 1.0),
+		"duration": maxf(0.0, duration)
+	}
+	if device in Input.get_connected_joypads():
+		Input.start_joy_vibration(
+			device,
+			last_rumble_request["weak"],
+			last_rumble_request["strong"],
+			last_rumble_request["duration"]
+		)
 
 
 func _on_joy_connection_changed(_device: int, _connected: bool) -> void:

@@ -21,6 +21,14 @@ func _ready() -> void:
 
 
 func _test_mapping_contract() -> void:
+	_expect(
+		Input.joy_connection_changed.is_connected(ControllerSupport._on_joy_connection_changed),
+		"ControllerSupport is not listening for native Godot hot-plug events"
+	)
+	_expect(
+		ControllerSupport.connected_controller_count() == Input.get_connected_joypads().size(),
+		"ControllerSupport does not report Godot's live controller count"
+	)
 	_expect(_has_button(&"wasd_up", 0, JOY_BUTTON_A), "Controller 1 A is not mapped to P1 jump")
 	_expect(_has_button(&"arrow_up", 1, JOY_BUTTON_A), "Controller 2 A is not mapped to P2 jump")
 	_expect(_has_axis(&"wasd_right", 0, JOY_AXIS_LEFT_X, 1.0), "Controller 1 left stick is not mapped to P1 movement")

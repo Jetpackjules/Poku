@@ -6,6 +6,13 @@ var flip := 1
 
 signal switch
 
+
+func _ready() -> void:
+	# Round intros pause gameplay as soon as the new map enters the tree. The
+	# transition must finish uncovering that map even while everything behind it
+	# is frozen, otherwise its pink shader remains stranded over the countdown.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 func _process(delta):
 	
 	time += delta*flip*2

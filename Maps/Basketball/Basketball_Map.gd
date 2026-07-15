@@ -14,3 +14,4 @@ func _ready() -> void:
 func score_changed(left_player_score: int, right_player_score: int) -> void:
 	set_status("P1   %d — %d   P2" % [left_player_score, right_player_score])
 	announce("BUCKET!", 0.65)
+	CameraFeedback.impact(CameraFeedback.Impact.MEDIUM, self)

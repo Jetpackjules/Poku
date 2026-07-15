@@ -15,11 +15,17 @@ var resume_button: Button
 var reset_button: Button
 var main_menu_button: Button
 var controls_tab: Button
+var settings_tab: Button
 var lab_tab: Button
 var controls_page: Control
+var settings_page: Control
 var lab_page: Control
+var all_changes_button: Button
 var experiment_buttons := {}
 var experiment_definitions := {}
+var preference_buttons := {}
+var preference_definitions := {}
+var preference_help_label: Label
 var focus_tweens := {}
 var _opened_from_main_menu := false
 
@@ -29,13 +35,17 @@ func _ready() -> void:
 	layer = 100
 	_build_ui()
 	overlay.visible = false
+	if not GameSettings.experiment_changed.is_connected(_on_shared_setting_changed):
+		GameSettings.experiment_changed.connect(_on_shared_setting_changed)
+	if not GameSettings.preference_changed.is_connected(_on_shared_setting_changed):
+		GameSettings.preference_changed.connect(_on_shared_setting_changed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("escape"):
 		if overlay.visible:
 			close()
-		elif not _is_main_menu():
+		elif not _is_main_menu() and not _round_intro_active():
 			open_pause()
 		get_viewport().set_input_as_handled()
 	elif overlay.visible and event.is_action_pressed("ui_cancel"):
@@ -73,10 +83,12 @@ func _open(from_main_menu: bool) -> void:
 	main_menu_button.visible = not from_main_menu
 	_update_context()
 	_sync_experiment_buttons()
-	_show_page(&"controls")
+	_sync_preference_buttons()
+	_sync_all_changes_button()
+	_show_page(&"settings" if from_main_menu else &"controls")
 	overlay.visible = true
 	get_tree().paused = true
-	controls_tab.call_deferred("grab_focus")
+	(settings_tab if from_main_menu else controls_tab).call_deferred("grab_focus")
 
 
 func _build_ui() -> void:
@@ -133,8 +145,8 @@ func _build_ui() -> void:
 	mode_context_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	mode_context_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	mode_context_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	mode_context_label.add_theme_font_override("font", OPTION_FONT)
-	mode_context_label.add_theme_font_size_override("font_size", 22)
+	mode_context_label.add_theme_font_override("font", BODY_FONT)
+	mode_context_label.add_theme_font_size_override("font_size", 23)
 	mode_context_label.add_theme_color_override("font_color", Color(0.10, 0.29, 0.30))
 	layout.add_child(mode_context_label)
 
@@ -142,7 +154,7 @@ func _build_ui() -> void:
 	tabs.name = "SectionTabs"
 	tabs.custom_minimum_size.y = 72.0
 	tabs.alignment = BoxContainer.ALIGNMENT_CENTER
-	tabs.add_theme_constant_override("separation", 80)
+	tabs.add_theme_constant_override("separation", 34)
 	layout.add_child(tabs)
 
 	controls_tab = Button.new()
@@ -151,6 +163,13 @@ func _build_ui() -> void:
 	controls_tab.pressed.connect(_show_page.bind(&"controls"))
 	_style_tab(controls_tab, Color(0.20, 0.72, 0.32))
 	tabs.add_child(controls_tab)
+
+	settings_tab = Button.new()
+	settings_tab.name = "SettingsTab"
+	settings_tab.text = "SETTINGS"
+	settings_tab.pressed.connect(_show_page.bind(&"settings"))
+	_style_tab(settings_tab, Color(0.04, 0.62, 0.90))
+	tabs.add_child(settings_tab)
 
 	lab_tab = Button.new()
 	lab_tab.name = "PhysicsLabTab"
@@ -169,6 +188,11 @@ func _build_ui() -> void:
 	controls_page.name = "ControlsPage"
 	controls_page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	page_stack.add_child(controls_page)
+
+	settings_page = _build_settings_page()
+	settings_page.name = "SettingsPage"
+	settings_page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	page_stack.add_child(settings_page)
 
 	lab_page = _build_lab_page()
 	lab_page.name = "PhysicsLabPage"
@@ -215,7 +239,8 @@ func _build_controls_page() -> PanelContainer:
 	page.add_child(margin)
 
 	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 18)
+	content.name = "ControlsContent"
+	content.add_theme_constant_override("separation", 12)
 	margin.add_child(content)
 
 	var player_cards := HBoxContainer.new()
@@ -233,11 +258,11 @@ func _build_controls_page() -> PanelContainer:
 
 	controls_label = Label.new()
 	controls_label.name = "Controls"
-	controls_label.custom_minimum_size.y = 52.0
+	controls_label.custom_minimum_size.y = 38.0
 	controls_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	controls_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	controls_label.add_theme_font_override("font", OPTION_FONT)
-	controls_label.add_theme_font_size_override("font_size", 25)
+	controls_label.add_theme_font_override("font", BODY_FONT)
+	controls_label.add_theme_font_size_override("font_size", 22)
 	controls_label.add_theme_color_override("font_color", Color(0.10, 0.34, 0.36))
 	controls_label.text = "PAUSE  ·  ESCAPE ON KEYBOARD  ·  START ON EITHER CONTROLLER"
 	content.add_child(controls_label)
@@ -252,19 +277,19 @@ func _control_card(title: String, title_color: Color, background: Color) -> Pane
 	margin.name = "Margin"
 	margin.add_theme_constant_override("margin_left", 32)
 	margin.add_theme_constant_override("margin_right", 32)
-	margin.add_theme_constant_override("margin_top", 25)
-	margin.add_theme_constant_override("margin_bottom", 25)
+	margin.add_theme_constant_override("margin_top", 20)
+	margin.add_theme_constant_override("margin_bottom", 20)
 	card.add_child(margin)
 	var content := VBoxContainer.new()
 	content.name = "Content"
 	content.alignment = BoxContainer.ALIGNMENT_CENTER
-	content.add_theme_constant_override("separation", 20)
+	content.add_theme_constant_override("separation", 10)
 	margin.add_child(content)
 	var heading := Label.new()
 	heading.text = title
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading.add_theme_font_override("font", OPTION_FONT)
-	heading.add_theme_font_size_override("font_size", 42)
+	heading.add_theme_font_size_override("font_size", 36)
 	heading.add_theme_color_override("font_color", title_color)
 	heading.add_theme_color_override("font_shadow_color", Color(0.12, 0.24, 0.25, 0.25))
 	heading.add_theme_constant_override("shadow_offset_x", 4)
@@ -275,7 +300,7 @@ func _control_card(title: String, title_color: Color, background: Color) -> Pane
 	details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	details.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	details.add_theme_font_override("font", BODY_FONT)
-	details.add_theme_font_size_override("font_size", 32)
+	details.add_theme_font_size_override("font_size", 25)
 	details.add_theme_color_override("font_color", Color(0.08, 0.22, 0.23))
 	content.add_child(details)
 	return card
@@ -292,14 +317,32 @@ func _build_lab_page() -> PanelContainer:
 	page.add_child(margin)
 
 	var content := VBoxContainer.new()
+	content.name = "PhysicsLabContent"
 	content.add_theme_constant_override("separation", 8)
 	margin.add_child(content)
+
+	all_changes_button = Button.new()
+	all_changes_button.name = "AllExperiments"
+	all_changes_button.custom_minimum_size = Vector2(0.0, 62.0)
+	all_changes_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	all_changes_button.add_theme_font_override("font", BODY_FONT)
+	all_changes_button.add_theme_font_size_override("font_size", 30)
+	all_changes_button.add_theme_color_override("font_color", Color(0.10, 0.26, 0.28))
+	all_changes_button.add_theme_color_override("font_focus_color", Color(0.10, 0.26, 0.28))
+	all_changes_button.add_theme_color_override("font_hover_color", Color(0.04, 0.45, 0.50))
+	all_changes_button.add_theme_stylebox_override("normal", _toggle_style(Color(1.0, 0.85, 0.91, 0.86), Color(0.95, 0.40, 0.61, 0.28)))
+	all_changes_button.add_theme_stylebox_override("hover", _toggle_style(Color(1.0, 0.93, 0.66, 0.94), Color(0.94, 0.63, 0.12, 0.48)))
+	all_changes_button.add_theme_stylebox_override("focus", _toggle_style(Color(1.0, 0.93, 0.66, 0.94), Color(0.94, 0.63, 0.12, 0.48)))
+	all_changes_button.pressed.connect(_on_all_changes_pressed)
+	all_changes_button.mouse_entered.connect(_show_all_changes_help)
+	all_changes_button.focus_entered.connect(_show_all_changes_help)
+	content.add_child(all_changes_button)
 
 	var protected_note := Label.new()
 	protected_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	protected_note.text = "TEMPORARY · DEFAULT OFF · CLASSIC LEGS, ARM SPIN, AND PICKUP SNAP STAY PROTECTED"
-	protected_note.add_theme_font_override("font", OPTION_FONT)
-	protected_note.add_theme_font_size_override("font_size", 21)
+	protected_note.add_theme_font_override("font", BODY_FONT)
+	protected_note.add_theme_font_size_override("font_size", 20)
 	protected_note.add_theme_color_override("font_color", Color(0.56, 0.16, 0.30))
 	content.add_child(protected_note)
 
@@ -317,9 +360,9 @@ func _build_lab_page() -> PanelContainer:
 		experiment_definitions[experiment] = definition
 		toggle.name = String(experiment)
 		toggle.toggle_mode = true
-		toggle.custom_minimum_size = Vector2(0.0, 68.0)
+		toggle.custom_minimum_size = Vector2(0.0, 58.0)
 		toggle.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		toggle.add_theme_font_override("font", OPTION_FONT)
+		toggle.add_theme_font_override("font", BODY_FONT)
 		toggle.add_theme_font_size_override("font_size", 25)
 		toggle.add_theme_color_override("font_color", Color(0.13, 0.20, 0.22))
 		toggle.add_theme_color_override("font_hover_color", Color(0.10, 0.17, 0.19))
@@ -327,8 +370,6 @@ func _build_lab_page() -> PanelContainer:
 		toggle.toggled.connect(_on_experiment_toggled.bind(experiment))
 		toggle.mouse_entered.connect(_show_experiment_help.bind(experiment))
 		toggle.focus_entered.connect(_show_experiment_help.bind(experiment))
-		toggle.focus_entered.connect(_animate_focus.bind(toggle, true))
-		toggle.focus_exited.connect(_animate_focus.bind(toggle, false))
 		_style_experiment_toggle(toggle)
 		grid.add_child(toggle)
 		experiment_buttons[experiment] = toggle
@@ -337,11 +378,75 @@ func _build_lab_page() -> PanelContainer:
 	experiment_help_label.custom_minimum_size.y = 40.0
 	experiment_help_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	experiment_help_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	experiment_help_label.add_theme_font_override("font", OPTION_FONT)
-	experiment_help_label.add_theme_font_size_override("font_size", 21)
+	experiment_help_label.add_theme_font_override("font", BODY_FONT)
+	experiment_help_label.add_theme_font_size_override("font_size", 20)
 	experiment_help_label.add_theme_color_override("font_color", Color(0.48, 0.12, 0.29))
 	experiment_help_label.text = "Select an experiment to see what it changes."
 	content.add_child(experiment_help_label)
+	return page
+
+
+func _build_settings_page() -> PanelContainer:
+	var page := PanelContainer.new()
+	page.add_theme_stylebox_override("panel", _soft_page_style(Color(0.90, 0.97, 1.0, 0.90)))
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 28)
+	margin.add_theme_constant_override("margin_bottom", 24)
+	page.add_child(margin)
+
+	var content := VBoxContainer.new()
+	content.name = "SettingsContent"
+	content.add_theme_constant_override("separation", 12)
+	margin.add_child(content)
+
+	var heading := Label.new()
+	heading.text = "POKU PRESENTATION & DISPLAY"
+	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	heading.add_theme_font_override("font", OPTION_FONT)
+	heading.add_theme_font_size_override("font_size", 34)
+	heading.add_theme_color_override("font_color", Color(0.04, 0.52, 0.72))
+	content.add_child(heading)
+
+	var grid := GridContainer.new()
+	grid.name = "PreferenceGrid"
+	grid.columns = 2
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 28)
+	grid.add_theme_constant_override("v_separation", 12)
+	content.add_child(grid)
+
+	for definition in GameSettings.preference_definitions():
+		var preference: StringName = definition["id"]
+		preference_definitions[preference] = definition
+		var button := Button.new()
+		button.name = String(preference)
+		button.custom_minimum_size = Vector2(0.0, 78.0)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.add_theme_font_override("font", BODY_FONT)
+		button.add_theme_font_size_override("font_size", 28)
+		button.add_theme_color_override("font_color", Color(0.08, 0.26, 0.28))
+		button.add_theme_color_override("font_focus_color", Color(0.08, 0.26, 0.28))
+		button.add_theme_color_override("font_hover_color", Color(0.03, 0.42, 0.51))
+		button.add_theme_stylebox_override("normal", _toggle_style(Color(1.0, 1.0, 1.0, 0.66), Color(0.23, 0.72, 0.80, 0.35)))
+		button.add_theme_stylebox_override("hover", _toggle_style(Color(0.98, 0.91, 0.63, 0.90), Color(0.94, 0.63, 0.12, 0.62)))
+		button.add_theme_stylebox_override("focus", _toggle_style(Color(0.98, 0.91, 0.63, 0.90), Color(0.94, 0.63, 0.12, 0.62)))
+		button.pressed.connect(_on_preference_pressed.bind(preference))
+		button.mouse_entered.connect(_show_preference_help.bind(preference))
+		button.focus_entered.connect(_show_preference_help.bind(preference))
+		grid.add_child(button)
+		preference_buttons[preference] = button
+
+	preference_help_label = Label.new()
+	preference_help_label.custom_minimum_size.y = 48.0
+	preference_help_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	preference_help_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	preference_help_label.add_theme_font_override("font", BODY_FONT)
+	preference_help_label.add_theme_font_size_override("font_size", 25)
+	preference_help_label.add_theme_color_override("font_color", Color(0.08, 0.30, 0.34))
+	preference_help_label.text = "Your settings are saved automatically. Physics Lab experiments remain temporary."
+	content.add_child(preference_help_label)
 	return page
 
 
@@ -356,7 +461,7 @@ func _soft_page_style(color: Color) -> StyleBoxFlat:
 
 
 func _style_tab(button: Button, color: Color) -> void:
-	button.custom_minimum_size = Vector2(430.0, 66.0)
+	button.custom_minimum_size = Vector2(340.0, 66.0)
 	button.flat = true
 	button.add_theme_font_override("font", OPTION_FONT)
 	button.add_theme_font_size_override("font_size", 42)
@@ -427,11 +532,15 @@ func _animate_focus(button: BaseButton, focused: bool) -> void:
 
 func _show_page(page: StringName) -> void:
 	var show_controls := page == &"controls"
+	var show_settings := page == &"settings"
+	var show_lab := page == &"lab"
 	controls_page.visible = show_controls
-	lab_page.visible = not show_controls
-	reset_button.visible = not show_controls
+	settings_page.visible = show_settings
+	lab_page.visible = show_lab
+	reset_button.visible = show_lab
 	_set_tab_active(controls_tab, Color(0.20, 0.72, 0.32), show_controls)
-	_set_tab_active(lab_tab, Color(0.60, 0.34, 0.92), not show_controls)
+	_set_tab_active(settings_tab, Color(0.04, 0.62, 0.90), show_settings)
+	_set_tab_active(lab_tab, Color(0.60, 0.34, 0.92), show_lab)
 
 
 func _update_context() -> void:
@@ -482,6 +591,71 @@ func _on_experiment_toggled(enabled: bool, experiment: StringName) -> void:
 	_show_experiment_help(experiment)
 
 
+func _sync_preference_buttons() -> void:
+	for preference in preference_buttons:
+		_update_preference_button_text(preference)
+	_sync_all_changes_button()
+
+
+func _update_preference_button_text(preference: StringName) -> void:
+	var definition: Dictionary = preference_definitions[preference]
+	var value = GameSettings.get_preference(preference)
+	var value_text := ""
+	match preference:
+		&"poku_polish", &"controller_rumble", &"camera_feedback":
+			value_text = "ON" if bool(value) else "OFF"
+		&"fullscreen":
+			value_text = "FULLSCREEN" if bool(value) else "WINDOWED"
+		&"fps_cap":
+			value_text = GameSettings.fps_cap_label()
+	preference_buttons[preference].text = "%s  ·  %s" % [definition["label"], value_text]
+
+
+func _show_preference_help(preference: StringName) -> void:
+	if preference_definitions.has(preference):
+		preference_help_label.text = preference_definitions[preference]["detail"]
+
+
+func _on_preference_pressed(preference: StringName) -> void:
+	if preference == &"fps_cap":
+		var caps := [0, 60, 120, 144]
+		var current_index := caps.find(int(GameSettings.get_preference(preference)))
+		GameSettings.set_preference(preference, caps[(current_index + 1) % caps.size()])
+	else:
+		GameSettings.set_preference(preference, not bool(GameSettings.get_preference(preference)))
+	_update_preference_button_text(preference)
+	_show_preference_help(preference)
+	_sync_all_changes_button()
+
+
+func _sync_all_changes_button() -> void:
+	if not is_instance_valid(all_changes_button):
+		return
+	match GameSettings.all_experiments_state():
+		&"on":
+			all_changes_button.text = "ALL PHYSICS EXPERIMENTS  ·  ON"
+		&"off":
+			all_changes_button.text = "ALL PHYSICS EXPERIMENTS  ·  OFF"
+		_:
+			all_changes_button.text = "ALL PHYSICS EXPERIMENTS  ·  MIXED"
+
+
+func _show_all_changes_help() -> void:
+	experiment_help_label.text = "Toggle every temporary Physics Lab experiment together. Visual and display settings stay untouched."
+
+
+func _on_all_changes_pressed() -> void:
+	var enable_everything := GameSettings.all_experiments_state() != &"on"
+	GameSettings.set_all_experiments_enabled(enable_everything)
+	_sync_experiment_buttons()
+	_sync_all_changes_button()
+	_show_all_changes_help()
+
+
+func _on_shared_setting_changed(_setting: StringName, _value: Variant) -> void:
+	_sync_all_changes_button()
+
+
 func _on_reset_pressed() -> void:
 	GameSettings.reset_experiments()
 	_sync_experiment_buttons()
@@ -495,3 +669,9 @@ func _on_main_menu_pressed() -> void:
 
 func _is_main_menu() -> bool:
 	return is_instance_valid(SceneSwitcher.current_map) and SceneSwitcher.current_map.name == "Main_Menu"
+
+
+func _round_intro_active() -> bool:
+	if not is_instance_valid(SceneSwitcher.current_map):
+		return false
+	return SceneSwitcher.current_map.get("countdown_enabled") == true and SceneSwitcher.current_map.get("round_active") == false

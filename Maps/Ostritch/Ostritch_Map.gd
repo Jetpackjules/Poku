@@ -23,16 +23,17 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if completed:
+	if completed or not round_active:
 		return
 	var remaining := maxi(0, int(finish_x - ostritch_controller.global_position.x))
 	set_status("%d px TO FINISH  →" % remaining)
 	if ostritch_controller.global_position.x >= finish_x:
 		completed = true
-		announce("OSTRITCH COURSE COMPLETE!", 2.0)
+		finish_round(null, "OSTRITCH COURSE COMPLETE!")
 
 
 func _exit_tree() -> void:
+	super._exit_tree()
 	if GameSettings.experiment_changed.is_connected(_on_experiment_changed):
 		GameSettings.experiment_changed.disconnect(_on_experiment_changed)
 

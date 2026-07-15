@@ -36,7 +36,7 @@ func _create_score_zone(zone_name: String, x_position: float, landed_side: int) 
 
 
 func _on_score_zone_entered(body: Node, landed_side: int) -> void:
-	if body != ball or resetting_ball or round_over:
+	if body != ball or resetting_ball or round_over or not round_active:
 		return
 	resetting_ball = true
 	if landed_side < 0:
@@ -45,6 +45,7 @@ func _on_score_zone_entered(body: Node, landed_side: int) -> void:
 	else:
 		left_score += 1
 		announce("P1 POINT!", 0.65)
+	CameraFeedback.impact(CameraFeedback.Impact.MEDIUM, self)
 	_update_score()
 	if left_score >= winning_score:
 		finish_side(-1, "P1 WINS THE RALLY!")

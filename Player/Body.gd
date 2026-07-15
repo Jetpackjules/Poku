@@ -56,6 +56,12 @@ var _experimental_coyote_remaining := 0.0
 var _experimental_jump_buffer_remaining := 0.0
 const EXPERIMENTAL_COYOTE_TIME := 0.1
 const EXPERIMENTAL_JUMP_BUFFER_TIME := 0.12
+const LANDING_DUST = preload("res://Effects/LandingDust.gd")
+const LANDING_FEEDBACK_THRESHOLD := 180.0
+var _landing_was_grounded := true
+var _landing_fall_speed := 0.0
+var _landing_feedback_cooldown := 0.0
+var _last_plane_carrier_velocity := Vector2.ZERO
 
 var float_height := 100.0 # The height at which the character should float
 var float_force := 1000.0  # The force to apply when floating
@@ -127,6 +133,7 @@ func _ready():
 	spine = [spine1, spine2, spine3, spine4, spine5, spine6]
 	legs = [Leg_L_up, Leg_L_down, Leg_R_up, Leg_R_down]
 	_build_experimental_ground_cast()
+	_landing_was_grounded = raycast.is_colliding()
 
 
 	if starts_flipped:
@@ -256,6 +263,7 @@ func _physics_process(_delta):
 
 
 
+	_update_landing_feedback(_delta)
 	_update_experimental_grounding(_delta)
 
 #	debugging, but i dont think its necessary...
@@ -384,16 +392,63 @@ func _physics_process(_delta):
 			arm_collision_recovering = false
 
 	var ground_velocity = Vector2.ZERO
+	var riding_plane_platform := false
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		if collider and collider.is_in_group("move_player"):
-			ground_velocity = Vector2(collider.linear_velocity.x, -collider.linear_velocity.y)
+			if collider.is_in_group("plane_platform") and collider is RigidBody2D:
+				riding_plane_platform = true
+				# Include the velocity created by physical rotation at the exact
+				# contact point, so a rider follows a tilting wing instead of
+				# hovering above it.
+				var contact_radius: Vector2 = raycast.get_collision_point() - collider.global_position
+				var rotational_velocity: Vector2 = Vector2(-contact_radius.y, contact_radius.x) * collider.angular_velocity
+				ground_velocity = collider.linear_velocity + rotational_velocity
+			else:
+				# Preserve the established classic behavior for other old moving
+				# surfaces; only Planes uses the corrected carrier model.
+				ground_velocity = Vector2(collider.linear_velocity.x, -collider.linear_velocity.y)
 
 
 	self.linear_velocity.x = velocity.x + ground_velocity.x
 
 #	self.linear_velocity.x = velocity.x + ground_velocity.x
-	self.linear_velocity.y += ground_velocity.y
+	if riding_plane_platform:
+		# Replace last frame's carrier component instead of adding the whole
+		# platform speed again. The old accumulation became a runaway dive as
+		# soon as crouching disabled the player's hover-height correction.
+		self.linear_velocity.y += ground_velocity.y - _last_plane_carrier_velocity.y
+		_last_plane_carrier_velocity = ground_velocity
+	else:
+		_last_plane_carrier_velocity = Vector2.ZERO
+		self.linear_velocity.y += ground_velocity.y
+
+
+func _update_landing_feedback(delta: float) -> void:
+	_landing_feedback_cooldown = maxf(0.0, _landing_feedback_cooldown - delta)
+	var grounded_now: bool = raycast.is_colliding()
+	if not grounded_now:
+		_landing_fall_speed = maxf(_landing_fall_speed, linear_velocity.y)
+	elif not _landing_was_grounded:
+		var impact_speed := maxf(_landing_fall_speed, linear_velocity.y)
+		if impact_speed >= LANDING_FEEDBACK_THRESHOLD and _landing_feedback_cooldown <= 0.0:
+			_emit_landing_feedback(impact_speed)
+			_landing_feedback_cooldown = 0.22
+		_landing_fall_speed = 0.0
+	_landing_was_grounded = grounded_now
+
+
+func _emit_landing_feedback(impact_speed: float) -> void:
+	if GameSettings.is_poku_polish_enabled():
+		var parent: Node = SceneSwitcher.current_map if is_instance_valid(SceneSwitcher.current_map) else get_parent()
+		if is_instance_valid(parent):
+			var dust := LANDING_DUST.new()
+			dust.name = "LandingDust"
+			parent.add_child(dust)
+			dust.global_position = raycast.get_collision_point() if raycast.is_colliding() else global_position + Vector2(0.0, 115.0)
+			dust.setup(impact_speed)
+	var strength := clampf(inverse_lerp(LANDING_FEEDBACK_THRESHOLD, 1000.0, impact_speed), 0.0, 1.0)
+	ControllerSupport.rumble_for_action(spin, 0.05 + strength * 0.10, 0.08 + strength * 0.20, 0.07 + strength * 0.05)
 
 
 func _build_experimental_ground_cast() -> void:

@@ -9,6 +9,7 @@ var living_players := 0
 
 var players_moved_count := 0
 var start := false
+var _requested_main_menu_page := ""
 
 signal players_moved
 
@@ -99,6 +100,17 @@ func change_map(next_map_name: String) -> void:
 		
 	scene_manager.add_child(next_map)
 
+
+func change_to_game_select() -> void:
+	_requested_main_menu_page = "menu_2"
+	change_map("Main_Menu")
+
+
+func take_requested_main_menu_page() -> String:
+	var requested := _requested_main_menu_page
+	_requested_main_menu_page = ""
+	return requested
+
 	
 
 
@@ -133,6 +145,7 @@ func move_players() -> void:
 		var target_position = spawn_location.global_position
 		
 		var player_tween = scene_manager.create_tween()
+		player_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 		player_tween.tween_property(curr_player, "global_position", target_position, 1.0).from(curr_player.global_position)
 		player_tween.finished.connect(player_move_done.bind(curr_player))
 
@@ -170,8 +183,8 @@ func player_move_done(curr_player) -> void:
 		
 	players_moved_count += 1
 	if players_moved_count == player_count:
-		emit_signal("players_moved")
 		start = true
+		emit_signal("players_moved")
 		print("all_moved")
 
 func make_player(player_number: int) -> void:

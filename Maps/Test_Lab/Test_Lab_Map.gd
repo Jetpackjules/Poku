@@ -20,6 +20,7 @@ var random := RandomNumberGenerator.new()
 func _init() -> void:
 	mode_title = "CHAOS LAB"
 	objective = "An endless rain of balls, weapons, coal, and targets for testing every Physics Lab toggle."
+	countdown_enabled = false
 
 
 func _ready() -> void:

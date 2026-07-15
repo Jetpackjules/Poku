@@ -8,8 +8,6 @@ extends Node2D
 @export var y_height_end := -350.0
 @export var spawn_interval := 0.7
 
-@onready var camera = get_node("../Camera2D")
-
 var loaded_props: Array[PackedScene] = []
 var active_targets := 0
 var maximum_targets := 6
@@ -49,8 +47,7 @@ func _spawn_target(side: int) -> void:
 
 func _on_target_hit(target: Node) -> void:
 	active_targets = maxi(0, active_targets - 1)
-	if is_instance_valid(camera) and camera.has_method("shake"):
-		camera.shake(0.2, 8.0)
+	CameraFeedback.impact(CameraFeedback.Impact.LIGHT, self)
 	if is_instance_valid(target):
 		var replacement_delay := get_tree().create_timer(0.55)
 		await replacement_delay.timeout

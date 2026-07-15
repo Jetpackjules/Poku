@@ -14,10 +14,12 @@ GODOT = Path(os.environ.get("GODOT4", "/usr/local/bin/godot"))
 SCENES = (
     "res://polish_tests/classic_physics_contract_test.tscn",
     "res://polish_tests/pause_options_test.tscn",
+    "res://polish_tests/presentation_flow_test.tscn",
     "res://polish_tests/experimental_features_test.tscn",
     "res://polish_tests/test_lab_test.tscn",
     "res://polish_tests/spaceship_coal_test.tscn",
     "res://polish_tests/mode_rules_test.tscn",
+    "res://polish_tests/planes_interaction_test.tscn",
     "res://polish_tests/controller_input_test.tscn",
     "res://polish_tests/map_smoke_test.tscn",
     "res://polish_tests/ostritch_route_test.tscn",
@@ -44,7 +46,8 @@ def main() -> int:
             timeout=45,
         )
         print(completed.stdout, end="")
-        if completed.returncode != 0 or '"passed":true' not in completed.stdout:
+        runtime_error = "SCRIPT ERROR:" in completed.stdout or "\nERROR:" in completed.stdout
+        if completed.returncode != 0 or '"passed":true' not in completed.stdout or runtime_error:
             failed = True
 
     print("POLISH SUITE PASS" if not failed else "POLISH SUITE FAIL")
