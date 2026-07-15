@@ -18,16 +18,24 @@ signal players_moved
 
 @onready var transition = load("res://Menus/Transitions/Diamond_Transition.tscn")
 
-var gamemodes := ["Wipeout", "Basketball", "Vertical_Parkour"]
+var gamemodes := [
+	"Basketball",
+	"Volleyball",
+	"Vertical_Parkour",
+	"Spaceship",
+	"Wipeout",
+	"Planes",
+	"Targets"
+]
 
 func _input(event):
-	if event.is_action_pressed("escape"):
-		change_map("Main_Menu")
 	if event.is_action_pressed("random_map"):
 		random_map()
 
 
 func _ready():
+	if OS.get_environment("POKU_POLISH_TEST") == "1":
+		return
 	randomize()
 	
 	change_map("Main_Menu")
@@ -42,6 +50,8 @@ func _ready():
 
 
 func _process(_delta) -> void:
+	if OS.get_environment("POKU_POLISH_TEST") == "1":
+		return
 	if start == false:
 		for curr_player in get_players():
 			if curr_player.controllable == true:
@@ -80,9 +90,11 @@ func change_map(next_map_name: String) -> void:
 	if current_map:
 		current_map.queue_free()
 	current_map = next_map
-	
-#	if not "Menu" in next_map_name:
-	move_players()
+
+	if _map_uses_poku_players(next_map):
+		move_players()
+	else:
+		park_players()
 		
 		
 	scene_manager.add_child(next_map)
@@ -102,7 +114,9 @@ func move_players() -> void:
 
 
 	for curr_player in get_players():
+		curr_player.visible = true
 		for part in curr_player.body:
+			part.freeze = false
 			part.set_collision_layer_value(2, false)
 			part.set_collision_mask_value(1, false)
 			part.set_collision_mask_value(10, false)
@@ -121,7 +135,22 @@ func move_players() -> void:
 		var player_tween = scene_manager.create_tween()
 		player_tween.tween_property(curr_player, "global_position", target_position, 1.0).from(curr_player.global_position)
 		player_tween.finished.connect(player_move_done.bind(curr_player))
-		
+
+
+func park_players() -> void:
+	start = false
+	for curr_player in get_players():
+		curr_player.win(false)
+		curr_player.controllable = false
+		curr_player.visible = false
+		curr_player.stop()
+		for part in curr_player.body:
+			part.freeze = true
+
+
+func _map_uses_poku_players(map: Node) -> bool:
+	var configured_value = map.get("uses_poku_players")
+	return true if configured_value == null else bool(configured_value)
 
 
 
@@ -183,14 +212,19 @@ func check_living():
 	print("ALIVE: ", living_players)
 	if living_players <= 1:
 		print("ALL DEAD")
+		var survivor = null
 		for curr_player in get_players():
 			if !curr_player.dead:
-				print(curr_player.name, " WINS!")
-				curr_player.win(true)
-				print("WAITING")
-				await get_tree().create_timer(5.0).timeout
-				print("NEEEXT")
-				random_map()
+				survivor = curr_player
+				break
+		if current_map and current_map.has_method("on_last_player_standing"):
+			current_map.on_last_player_standing(survivor)
+			return
+		if survivor:
+			print(survivor.name, " WINS!")
+			survivor.win(true)
+			await get_tree().create_timer(5.0).timeout
+			random_map()
 
 func get_players():
 	var test = scene_manager.get_node("Players").get_children()

@@ -1,120 +1,103 @@
 extends RigidBody2D
 
-var float_height : float = 0.0
-var coal_objects : Array = []
-var max_thrusters : int = 5
+@export var base_float_height := 100.0
+@export var height_per_coal := 400.0
+@export var maximum_motor_speed := 800.0
+@export var motor_response := 5.0
+@export var maximum_motor_acceleration := 2100.0
 
+var float_height := 100.0
+var total_fuel := 0.0
+var coal_objects: Array = []
+var max_thrusters := 5
 var OG_X := 0.0
+var thrusters_left: Array = []
+var thrusters_right: Array = []
 
-var thrusters_left : Array = []
-var thrusters_right : Array = []
+@onready var thruster_left: GPUParticles2D = $Thruster_Left
+@onready var thruster_right: GPUParticles2D = $Thruster_Right
 
-@onready var thruster_left = get_node("Thruster_Left")
-@onready var thruster_right = get_node("Thruster_Right")
 
-var new_desired_angle := get_global_transform().get_rotation()
-
-func _ready():
+func _ready() -> void:
 	OG_X = global_position.x
-	
-func _physics_process(_delta):
-	var current_angle = get_global_transform().get_rotation()
-	var angle_difference = abs(fmod((current_angle - new_desired_angle + PI), (2*PI)) - PI)
-#	print("----")
-#	print(rad2deg(angle_difference))
-#	print(rad2deg(get_global_transform().get_rotation()))
-#	if angle_difference:  # Adjust this value to change the size of the dead zone
-#		print(rad2deg(new_desired_angle))
-	angular_velocity = lerp_angle(current_angle, new_desired_angle, (100)* _delta)
-#	print("++++")
+	thrusters_left = [thruster_left]
+	thrusters_right = [thruster_right]
 
 
-	
-	# Calculate the target position
-	var target_position = Vector2(OG_X, -float_height)
+func _physics_process(delta: float) -> void:
+	_burn_loaded_coal(delta)
+	_update_thrusters()
 
-	# Calculate the direction to the target position
-	var direction = (target_position - global_position).normalized()
 
-	# Calculate the distance to the target position
-	var distance = global_position.distance_to(target_position)
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	# A bounded spring motor lets the ship feel physical when players and coal
+	# land on it, instead of replacing its velocity every frame.
+	var target := Vector2(OG_X, -float_height)
+	var position_error := target - state.transform.origin
+	var desired_velocity := position_error * 1.8
+	if desired_velocity.length() > maximum_motor_speed:
+		desired_velocity = desired_velocity.normalized() * maximum_motor_speed
+	var acceleration := (desired_velocity - state.linear_velocity) * motor_response
+	if acceleration.length() > maximum_motor_acceleration:
+		acceleration = acceleration.normalized() * maximum_motor_acceleration
+	state.linear_velocity += acceleration * state.step
 
-	# Calculate the speed based on the distance
-	var speed = clamp(distance * 0.5, 0, 800)  # Adjust the maximum speed as needed
+	var angle_error := wrapf(-state.transform.get_rotation(), -PI, PI)
+	var angular_acceleration := angle_error * 28.0 - state.angular_velocity * 9.0
+	state.angular_velocity += clampf(angular_acceleration, -45.0, 45.0) * state.step
 
-	# Set the velocity to move towards the target position
-	linear_velocity = direction * speed
 
-	# Remove burned coal
-	var total_fuel := 0.0
-	for coal in coal_objects:
-		total_fuel += coal.burn_time/coal.burn_time_for_scale
-		
+func _burn_loaded_coal(delta: float) -> void:
+	total_fuel = 0.0
+	for coal in coal_objects.duplicate():
+		if not is_instance_valid(coal) or coal.is_done:
+			coal_objects.erase(coal)
+			continue
 		if coal.held:
 			coal.release()
-		
 		coal.available = false
 		coal.cooldown = true
-		coal.cooltime_wait -= _delta
-		coal.burn_time -= _delta
-		
-		# Calculate the coal_size using a square root function
-		var coal_size = sqrt(coal.burn_time/coal.burn_time_for_scale)
-		coal.scale = Vector2(coal_size, coal_size)
-		
-		if coal.burn_time <= 0:
+		coal.burn_time = maxf(0.0, coal.burn_time - delta)
+		var fuel_fraction: float = coal.burn_time / coal.burn_time_for_scale
+		total_fuel += fuel_fraction
+		var coal_scale := sqrt(maxf(fuel_fraction, 0.0))
+		coal.scale = Vector2.ONE * coal_scale
+		if coal.burn_time <= 0.0:
 			coal_objects.erase(coal)
-			coal.emit_signal("done", coal)
+			coal.is_done = true
+			coal.done.emit(coal)
 			coal.queue_free()
-		
-#	Make ship float based off of fuel:
-	float_height = 100 + total_fuel * 400.0  # Adjust the multiplier as needed
-	
-#	Change thruster power based off of fuel:
-#	thruster.process_material.set("speed_scale", 1 * total_fuel/10 + 1)
+
+	float_height = base_float_height + total_fuel * height_per_coal
 
 
-#	20 * total_fuel +20
-#	thruster.speed_scale = 1 * total_fuel/1.25 + 1
+func _update_thrusters() -> void:
+	var desired_count := clampi(maxi(1, int(ceil(total_fuel))), 1, max_thrusters)
+	_resize_thruster_side(thrusters_left, thruster_left, desired_count)
+	_resize_thruster_side(thrusters_right, thruster_right, desired_count)
+	var intensity := 1.0 + total_fuel * 0.8
+	for thruster in thrusters_left + thrusters_right:
+		if is_instance_valid(thruster):
+			thruster.speed_scale = intensity
+			thruster.emitting = total_fuel > 0.02
 
-	# Change the speed_scale of all current thrusters
-	var speed_scale = 1 * total_fuel/1.25 + 1
-	for thruster in thrusters_left:
-		thruster.speed_scale = speed_scale
-	for thruster in thrusters_right:
-		thruster.speed_scale = speed_scale
 
-	# Determine the number of thrusters to create
-	var num_thrusters = max(1, int(total_fuel))
+func _resize_thruster_side(thrusters: Array, source: GPUParticles2D, desired_count: int) -> void:
+	while thrusters.size() > desired_count:
+		var extra = thrusters.pop_back()
+		if extra != source:
+			extra.queue_free()
+	while thrusters.size() < desired_count:
+		var duplicate := source.duplicate() as GPUParticles2D
+		add_child(duplicate)
+		thrusters.append(duplicate)
 
-	# Delete extra thrusters
-	while thrusters_left.size() > num_thrusters:
-		var thruster_to_delete = thrusters_left.pop_back()
-		thruster_to_delete.queue_free()
-	while thrusters_right.size() > num_thrusters:
-		var thruster_to_delete = thrusters_right.pop_back()
-		thruster_to_delete.queue_free()
 
-	# Create new thrusters
-	while thrusters_left.size() < num_thrusters:
-		var new_thruster = thruster_left.duplicate()
-		add_child(new_thruster)
-		thrusters_left.append(new_thruster)
-	while thrusters_right.size() < num_thrusters:
-		var new_thruster = thruster_right.duplicate()
-		add_child(new_thruster)
-		thrusters_right.append(new_thruster)
-		
-		
-		
-
-	
-func _on_Furnace_body_entered(body):
-	if body.is_in_group("flammable"):
+func _on_Furnace_body_entered(body: Node) -> void:
+	if body.is_in_group("flammable") and body not in coal_objects and not body.is_done:
 		coal_objects.append(body)
 
 
-func _on_Furnace_body_exited(body):
-	if body.is_in_group("flammable"):
+func _on_Furnace_body_exited(body: Node) -> void:
+	if body in coal_objects:
 		coal_objects.erase(body)
-		

@@ -51,6 +51,11 @@ var ragdolled := false
 
 @onready var raycast = get_node("RayCast2D")
 @onready var pickup_zone = get_node("Pickup_range")
+var _experimental_ground_cast: ShapeCast2D
+var _experimental_coyote_remaining := 0.0
+var _experimental_jump_buffer_remaining := 0.0
+const EXPERIMENTAL_COYOTE_TIME := 0.1
+const EXPERIMENTAL_JUMP_BUFFER_TIME := 0.12
 
 var float_height := 100.0 # The height at which the character should float
 var float_force := 1000.0  # The force to apply when floating
@@ -121,6 +126,7 @@ func _ready():
 	body = [spine1, spine2, spine3, spine4, spine5, spine6, self, Leg_L_up, Leg_L_down, Leg_R_up, Leg_R_down]
 	spine = [spine1, spine2, spine3, spine4, spine5, spine6]
 	legs = [Leg_L_up, Leg_L_down, Leg_R_up, Leg_R_down]
+	_build_experimental_ground_cast()
 
 
 	if starts_flipped:
@@ -207,14 +213,19 @@ func _input(event):
 			grabbed_item.new_desired_angle = deg_to_rad(0)
 
 
-	if event.is_action_released(jump) and raycast.is_colliding() and controllable:
-		auto_balance_timeout = 0.5
-		var change_power = (110-float_height)
-		linear_velocity.y = 0
+	if event.is_action_released(jump) and controllable:
+		if GameSettings.is_enabled(&"jump_grounding"):
+			_experimental_jump_buffer_remaining = EXPERIMENTAL_JUMP_BUFFER_TIME
+			if _experimental_coyote_remaining > 0.0 or _experimental_is_grounded():
+				_perform_experimental_jump()
+		elif raycast.is_colliding():
+			auto_balance_timeout = 0.5
+			var change_power = (110-float_height)
+			linear_velocity.y = 0
 
 
-		self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
-		float_height = 100
+			self.apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
+			float_height = 100
 
 	elif event.is_action_pressed(crouch) and controllable:
 		if raycast.is_colliding():
@@ -244,6 +255,8 @@ func _physics_process(_delta):
 
 
 
+
+	_update_experimental_grounding(_delta)
 
 #	debugging, but i dont think its necessary...
 	if str(grabbed_item) == "[Deleted Object]":
@@ -350,7 +363,10 @@ func _physics_process(_delta):
 		auto_balance_timeout -= _delta #(0.0166666666)
 #		print(auto_balance_timeout)
 
-	if Input.is_action_pressed(jump) and controllable and raycast.is_colliding():
+	if Input.is_action_pressed(jump) and controllable and (
+		raycast.is_colliding()
+		or (GameSettings.is_enabled(&"jump_grounding") and _experimental_coyote_remaining > 0.0)
+	):
 #		self.mode = RigidBody2D.MODE_RIGID
 		float_height = max(0, float_height-1)
 
@@ -378,6 +394,52 @@ func _physics_process(_delta):
 
 #	self.linear_velocity.x = velocity.x + ground_velocity.x
 	self.linear_velocity.y += ground_velocity.y
+
+
+func _build_experimental_ground_cast() -> void:
+	_experimental_ground_cast = ShapeCast2D.new()
+	_experimental_ground_cast.name = "ExperimentalGroundCast"
+	var foot_shape := RectangleShape2D.new()
+	foot_shape.size = Vector2(48.0, 8.0)
+	_experimental_ground_cast.shape = foot_shape
+	_experimental_ground_cast.target_position = Vector2(0.0, 134.0)
+	_experimental_ground_cast.collision_mask = 513
+	_experimental_ground_cast.exclude_parent = true
+	_experimental_ground_cast.enabled = true
+	add_child(_experimental_ground_cast)
+
+
+func _update_experimental_grounding(delta: float) -> void:
+	if not GameSettings.is_enabled(&"jump_grounding"):
+		_experimental_coyote_remaining = 0.0
+		_experimental_jump_buffer_remaining = 0.0
+		return
+	_experimental_ground_cast.global_rotation = 0.0
+	_experimental_ground_cast.force_shapecast_update()
+	if _experimental_is_grounded():
+		_experimental_coyote_remaining = EXPERIMENTAL_COYOTE_TIME
+	else:
+		_experimental_coyote_remaining = maxf(0.0, _experimental_coyote_remaining - delta)
+	if _experimental_jump_buffer_remaining > 0.0:
+		_experimental_jump_buffer_remaining = maxf(0.0, _experimental_jump_buffer_remaining - delta)
+		if _experimental_coyote_remaining > 0.0:
+			_perform_experimental_jump()
+
+
+func _experimental_is_grounded() -> bool:
+	return raycast.is_colliding() or (
+		is_instance_valid(_experimental_ground_cast) and _experimental_ground_cast.is_colliding()
+	)
+
+
+func _perform_experimental_jump() -> void:
+	_experimental_jump_buffer_remaining = 0.0
+	_experimental_coyote_remaining = 0.0
+	auto_balance_timeout = 0.5
+	var change_power = (110-float_height)
+	linear_velocity.y = 0
+	apply_central_impulse(Vector2(0, jump_power*-1*(3+min(change_power/20, 5))))
+	float_height = 100
 
 
 var stabbed_bodies := []

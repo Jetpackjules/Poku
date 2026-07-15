@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Maps/Player_test/Test_Trigger.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Prefabs/Danger_Warning.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Props/Target.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Items/Shuriken.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Maps/Player_test/Player_test_Map.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )
@@ -17,6 +18,7 @@ extents = Vector2( 3, 1000 )
 extents = Vector2( 10, 160 )
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( 7 )
 
 [node name="Floor" type="StaticBody2D" parent="."]
 collision_mask = 0

@@ -18,7 +18,8 @@ func _on_Border_Removal_body_entered(body):
 		body.emit_signal("done")
 		body.queue_free()
 	if body.is_in_group("ship"):
-		print("DEATH")
+		if get_parent().has_method("ship_destroyed"):
+			get_parent().ship_destroyed(body)
 		body.queue_free()
 	if body.is_in_group("player"):
 		pass

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Prefabs/Score_Counter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Prefabs/Tool_Spawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Prefabs/Death_Zone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Maps/Targets/Target_Launcher.gd" type="Script" id=6]
+[ext_resource path="res://Maps/Targets/Targets_Map.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 304.375, 250 )
@@ -19,6 +20,7 @@ extents = Vector2( 485.5, 2000.5 )
 extents = Vector2( 3, 1000 )
 
 [node name="Targets_Map" type="Node2D"]
+script = ExtResource( 7 )
 
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2( 0, 490 )
@@ -59,11 +61,13 @@ color = Color( 1, 0.824, 0.78, 1 )
 
 [node name="Tool_Spawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( -1332, -731 )
+tool_names = [ "Spear", "Shuriken" ]
 initial_spawn = 1
 spawn_at_point = true
 
 [node name="Tool_Spawner2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 1287, -731 )
+tool_names = [ "Spear", "Shuriken" ]
 initial_spawn = 1
 spawn_at_point = true
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Prefabs/Death_Zone.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Vertical_Parkour/Platform_Generator.gd" type="Script" id=2]
 [ext_resource path="res://fonts/kirifont/KiriFont.otf" type="FontFile" id=3]
+[ext_resource path="res://Maps/Vertical_Parkour/Vertical_Parkour_Map.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1875, 250 )
@@ -16,6 +17,7 @@ spacing_bottom = 20
 extents = Vector2( 3791, 920 )
 
 [node name="Vertical_Parkour" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="Floor" type="StaticBody2D" parent="."]
 collision_mask = 0

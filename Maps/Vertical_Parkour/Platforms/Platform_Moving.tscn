@@ -25,16 +25,14 @@ script = ExtResource( 1 )
 position = Vector2( -1084, 0 )
 rotate = false
 
-[node name="Platform_Small_Moving" type="RigidBody2D" parent="PathFollow2D" groups=["move_player"]]
-freeze = true
-freeze_mode = 1
+[node name="Platform_Small_Moving" type="AnimatableBody2D" parent="." groups=["move_player"]]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PathFollow2D/Platform_Small_Moving"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platform_Small_Moving"]
 position = Vector2( -201, -35 )
 rotation = 0.000901724
 polygon = PackedVector2Array( 401, 0, 398, 14, 392, 31, 384, 44, 367, 60, 350, 67, 332, 70, 67, 70, 50, 68, 34, 61, 14, 42, 4, 25, 1, 0 )
 
-[node name="Panel" type="Panel" parent="PathFollow2D/Platform_Small_Moving"]
+[node name="Panel" type="Panel" parent="Platform_Small_Moving"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

@@ -58,5 +58,4 @@ func follow_target(target_position: Vector2, target_scale: Vector2, duration: fl
 	follow_tween.tween_property(rigidbody, "scale", target_scale, duration)
 
 func ingested():
-	print("Powerup has been ingested!")  # replace with your own logic
 	queue_free()

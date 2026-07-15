@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Maps/Basketball/Hoop.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Basketball/Score.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=5]
 [ext_resource path="res://Maps/Basketball/Progress_Goal.tres" type="Material" id=6]
 [ext_resource path="res://Prefabs/Death_Zone.gd" type="Script" id=7]
+[ext_resource path="res://Maps/Basketball/Basketball_Map.gd" type="Script" id=8]
 
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 3, 1000 )
@@ -48,8 +49,7 @@ anti_aliasing = false
 
 [sub_resource type="PhysicsMaterial" id=28]
 rough = true
-bounce = 37.04
-absorbent = true
+bounce = 0.35
 
 [sub_resource type="StyleBoxFlat" id=23]
 bg_color = Color( 1, 0.870588, 0.34902, 1 )
@@ -66,6 +66,7 @@ extents = Vector2( 2308, 690.5 )
 
 [node name="Stadium" type="Node2D"]
 position = Vector2( 0, -370 )
+script = ExtResource( 8 )
 
 [node name="Left_Background" type="ColorRect" parent="."]
 offset_top = -1565.0

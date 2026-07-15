@@ -39,15 +39,17 @@ func _ready():
 
 func stabbed(body):
 	if !dead:
-		print("STABBED BY: ", body.target_node.owner)
-		body.target_node.owner.emit_signal("increase_score", value)
+		if is_instance_valid(body.target_node):
+			body.target_node.owner.emit_signal("increase_score", value)
 		emit_signal("done")
 		dead = true
 		rotor_top.angular_damp = 2
-		print("STABBED")
 		self.modulate = Color(0.5, 0.5, 0.5) # Change color to grey
 		self.gravity_scale = 0.5 # Fall down
 		smoke_particles.emitting = true # Start smoking
+		await get_tree().create_timer(4.0).timeout
+		if is_inside_tree():
+			queue_free()
 
 
 func _integrate_forces(state):

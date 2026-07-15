@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Maps/Spaceship/SpaceShip_Thrusters.tres" type="Material" id=1]
 [ext_resource path="res://Maps/Spaceship/Ship.gd" type="Script" id=2]
 [ext_resource path="res://Prefabs/Tool_Spawner.gd" type="Script" id=3]
 [ext_resource path="res://Maps/Spaceship/Cloud.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Maps/Spaceship/Border_Removal.gd" type="Script" id=5]
+[ext_resource path="res://Maps/Spaceship/Spaceship_Map.gd" type="Script" id=6]
 
 [sub_resource type="PhysicsMaterial" id=2]
 bounce = 0.33
@@ -26,16 +27,17 @@ extents = Vector2( 180, 12 )
 extents = Vector2( 5000, 138.5 )
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( 6 )
 
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2( 0, 490 )
 
 [node name="P1_Spawn" type="Marker2D" parent="Spawns"]
-position = Vector2( -70, -991 )
+position = Vector2( -1136, -643 )
 scale = Vector2( -1, 1 )
 
 [node name="P2_Spawn" type="Marker2D" parent="Spawns"]
-position = Vector2( 1136, -498 )
+position = Vector2( 1136, -643 )
 
 [node name="Spaceship_Right" type="RigidBody2D" parent="." groups=["move_player", "ship"]]
 position = Vector2( 1136, 200 )
@@ -61,6 +63,8 @@ color = Color( 0.33, 0.33, 0.33, 1 )
 
 [node name="Furnace" type="Area2D" parent="Spaceship_Right"]
 position = Vector2( -7.40002, 207 )
+collision_layer = 0
+collision_mask = 32
 
 [node name="Burn Zone" type="CollisionShape2D" parent="Spaceship_Right/Furnace"]
 position = Vector2( 8, -4 )
@@ -173,6 +177,8 @@ color = Color( 0.33, 0.33, 0.33, 1 )
 
 [node name="Furnace" type="Area2D" parent="Spaceship_Left"]
 position = Vector2( -7.40002, 207 )
+collision_layer = 0
+collision_mask = 32
 
 [node name="Burn Zone" type="CollisionShape2D" parent="Spaceship_Left/Furnace"]
 position = Vector2( 8, -4 )
@@ -265,6 +271,15 @@ color = Color( 0.647059, 0.647059, 0.647059, 1 )
 position = Vector2( -0.229797, -428 )
 enabled = true
 zoom = Vector2( 0.588235, 0.588235 )
+
+[node name="LiftGoal" type="ColorRect" parent="."]
+z_index = -2
+offset_left = -1875.0
+offset_top = -428.0
+offset_right = 1875.0
+offset_bottom = -412.0
+color = Color(1, 0.76, 0.18, 0.78)
+mouse_filter = 2
 
 [node name="Tool_Spawner" type="Node2D" parent="."]
 position = Vector2( 0, -1336 )

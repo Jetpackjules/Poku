@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends AnimatableBody2D
 
 
 @export var gap = 10.0
@@ -26,5 +26,8 @@ func adjust() -> void:
 #	print(offset)
 
 
-func _physics_process(delta):
-	linear_velocity = velocity
+func _physics_process(delta: float) -> void:
+	constant_linear_velocity = velocity
+	position += velocity * delta
+	if position.x < -2600.0:
+		queue_free()

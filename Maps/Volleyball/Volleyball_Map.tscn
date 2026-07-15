@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Maps/Basketball/Net_Panel.tres" type="StyleBox" id=1]
 [ext_resource path="res://Maps/Basketball/Bouncy_End_Bits.tres" type="StyleBox" id=2]
-[ext_resource path="res://Items/item.gd" type="Script" id=3]
+[ext_resource path="res://Items/Ball.gd" type="Script" id=3]
+[ext_resource path="res://Maps/Volleyball/Volleyball_Map.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 191.936, 1295.5 )
@@ -26,12 +27,15 @@ extents = Vector2( 3, 1000 )
 extents = Vector2( 1500, 3 )
 
 [sub_resource type="PhysicsMaterial" id=13]
+bounce = 0.68
+friction = 0.25
 
 [sub_resource type="CapsuleShape2D" id=14]
 radius = 30.0
 height = 60.0
 
 [node name="Volleyball" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="Left_Background" type="ColorRect" parent="."]
 offset_top = -1935.0
@@ -391,10 +395,13 @@ zoom = Vector2( 0.588235, 0.588235 )
 position = Vector2( -240, -588 )
 collision_layer = 19
 collision_mask = 19
-mass = 0.00102041
+mass = 0.045
 physics_material_override = SubResource( 13 )
-gravity_scale = 0.5
+gravity_scale = 0.72
 can_sleep = false
+continuous_cd = 2
+max_contacts_reported = 4
+contact_monitor = true
 script = ExtResource( 3 )
 usable = false
 

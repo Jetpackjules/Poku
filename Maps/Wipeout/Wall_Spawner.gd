@@ -1,62 +1,48 @@
 extends Node2D
 
 @export var Wall = preload("res://Maps/Wipeout/Wall.tscn")
-@export var time_until_next_wall = 4.0
-@export var max_gap_size = 600
-@export var min_gap_size = 100
-@export var num_walls_spawned = 0  # Use this to shrink the gap size
-@export var gap_shrink_speed = 80  # How fast the gap shrinks
-var speed = 100
+@export var minimum_spawn_time := 3.6
+@export var maximum_spawn_time := 5.0
+@export var max_gap_size := 650.0
+@export var min_gap_size := 300.0
+@export var gap_shrink_speed := 32.0
+@export var starting_speed := 150.0
+@export var speed_gain_per_second := 10.0
+@export var playable_top := -1450.0
+@export var playable_bottom := 180.0
 
-func _physics_process(delta):
+var time_until_next_wall := 1.8
+var num_walls_spawned := 0
+var speed := 150.0
+
+
+func _ready() -> void:
+	speed = starting_speed
+
+
+func _physics_process(delta: float) -> void:
 	time_until_next_wall -= delta
-
-	if time_until_next_wall <= 0:
-		time_until_next_wall = 5  # Randomize time until next wall
+	speed += speed_gain_per_second * delta
+	if time_until_next_wall <= 0.0:
+		time_until_next_wall = randf_range(minimum_spawn_time, maximum_spawn_time)
 		spawn_wall()
-		
-	speed += 0.1
-#	print(speed)
 
-func spawn_wall():
+
+func current_gap_size() -> float:
+	return maxf(max_gap_size - gap_shrink_speed * num_walls_spawned, min_gap_size)
+
+
+func spawn_wall() -> void:
 	var wall = Wall.instantiate()
-	var spawn_position = Vector2.ZERO
-	var rand_side = randi() % 1 + 1
-
-	# Determine spawn position based on random side
-	
-	
-	match rand_side:
-		0:  # Top
-			spawn_position = Vector2(0, -get_viewport().size.y) # arbitrary offscreen value
-			wall.rotation_degrees = 90
-		1:  # Right
-			spawn_position = Vector2(get_viewport().size.x/2 + 500, 0)  # arbitrary offscreen value
-		2:  # Left
-			spawn_position = Vector2(-get_viewport().size.x/2 - 500, 0)  # arbitrary offscreen value
-			
-#	wall.global_position = spawn_position
-	# Determine the gap size
-	var gap_size = max(max_gap_size - gap_shrink_speed * num_walls_spawned, min_gap_size)
-	
-	print(gap_shrink_speed * num_walls_spawned)
-	
-	
-	print(gap_size)
-	wall.gap = gap_size  # Set the gap size of the wall
-	
+	var gap_size := current_gap_size()
+	var half_gap := gap_size * 0.5
+	wall.gap = gap_size
 	wall.speed = speed
-	# Set a random offset for the wall
-	var wall_offset = randf_range(-550, 1000)  # Set a random offset for the wall
-	wall.offset = wall_offset
-	
+	# Keep every opening fully inside the playable vertical corridor. The old
+	# offset range frequently placed the entire gap under the floor.
+	wall.offset = randf_range(playable_top + half_gap, playable_bottom - half_gap)
 	add_child(wall)
-	
-	wall.position = Vector2(2*(get_viewport().size.x/2 * 1.7), 0)
-	
-	
+	wall.position = Vector2(get_viewport().size.x * 1.7, 0.0)
 	wall.adjust()
-	
-#	print(gap_size)
-	
+	wall.reset_physics_interpolation()
 	num_walls_spawned += 1

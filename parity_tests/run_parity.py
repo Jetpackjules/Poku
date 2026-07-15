@@ -41,7 +41,7 @@ THROW_SCENARIOS = (
     "spear_negative_60", "spear_negative_120", "spear_positive_120",
     "spear_negative_180", "shuriken_negative_120", "shuriken_positive_120",
 )
-MAP_SCENARIOS = ("Main_Menu", "Basketball", "Planes", "Player_test", "Spaceship", "Tanks", "Targets", "Vertical_Parkour", "Volleyball", "Wipeout")
+MAP_SCENARIOS = ("Main_Menu", "Basketball", "Planes", "Player_test", "Spaceship", "Targets", "Vertical_Parkour", "Volleyball", "Wipeout")
 LEGACY_KEYCODE_ALIASES = {
     16777217: 4194305, 16777220: 4194308,
     16777231: 4194319, 16777232: 4194320, 16777233: 4194321,

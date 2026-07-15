@@ -12,7 +12,8 @@ var platform_scenes = [
 var last_platform_position = Vector2(0, 0) # Keep track of the last platform's position
 var x_range = Vector2(-1500, 1500) # The range on the x-axis where platforms can be generated
 var y_gap = Vector2(200, 400) # The range of possible gaps between platforms on the y-axis
-var cam_speed := 1.0
+var cam_speed := 60.0
+var camera_acceleration := 1.35
 var last_platform_type = "normal" # Initialize with the type of the first platform
 
 
@@ -33,8 +34,8 @@ func _process(delta):
 	if last_platform_position.y > camera.position.y-1000:
 		generate_platform(last_platform_position)
 
-	camera.position.y -= cam_speed
-	cam_speed += delta/45
+	camera.position.y -= cam_speed * delta
+	cam_speed += camera_acceleration * delta
 #
 	if !players:
 		players = get_tree().get_root().get_node("Scene_Manager/Players").get_children()
@@ -86,18 +87,27 @@ func generate_platform(position):
 	add_child(new_platform)
 
 
-	# Calculate a new position for the platform
-	var new_x = randf_range(x_range.x, x_range.y)
+	# Calculate a reachable new position. The original selected the full screen
+	# width independently every time, producing jumps of nearly 3000 px.
+	var new_y = position.y - randf_range(adjusted_y_gap.x, adjusted_y_gap.y)
+	var vertical_gap: float = position.y - new_y
+	var horizontal_reach := clampf(360.0 + vertical_gap * 1.1, 480.0, 850.0)
+	var new_x = clampf(
+		position.x + randf_range(-horizontal_reach, horizontal_reach),
+		x_range.x,
+		x_range.y
+	)
 
 	if platform_type == "moving":
-		new_x = clamp(new_x, -300, 300)  # Keep moving platforms 200 units away from the edges
+		new_x = clampf(new_x, -1200.0, 1200.0)
 
 		new_platform.get_node("PathFollow2D").progress_ratio = randf()
 
 
 
-	var new_y = position.y - randf_range(adjusted_y_gap.x, adjusted_y_gap.y)
 	new_platform.position = Vector2(new_x, new_y)
+	if platform_type == "moving":
+		new_platform.get_node("Platform_Small_Moving").reset_physics_interpolation()
 
 
 

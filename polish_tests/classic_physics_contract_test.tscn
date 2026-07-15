@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://polish_tests/classic_physics_contract_test.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Player/Player.tscn" id="2"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(2400, 40)
+
+[node name="Scene_Manager" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="Tools" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 230)
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("1")
+
+[node name="Body" parent="Players" instance=ExtResource("2")]
+position = Vector2(0, 80)

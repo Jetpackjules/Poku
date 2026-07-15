@@ -1,76 +1,57 @@
 extends Node2D
 
+@export var props := ["Target"]
+@export var initial_spawn := 3
+@export var x_range_start := 280.0
+@export var x_range_end := 1180.0
+@export var y_height_start := -1250.0
+@export var y_height_end := -350.0
+@export var spawn_interval := 0.7
+
 @onready var camera = get_node("../Camera2D")
 
-@export var props = ["Target"]
-
-var loaded_props := []
-
-@export var initial_spawn := 2
-
-@export var spawn_at_point := false
-
-@export var x_range_start := -1000
-@export var x_range_end := 1000
-@export var y_height_start := -1000
-@export var y_height_end := 1000
-
+var loaded_props: Array[PackedScene] = []
+var active_targets := 0
+var maximum_targets := 6
 var spawn_timer: Timer
-var spawn_count := 0
-var heights: Array
-
-# In the game script
-var player_scores = {1: 0, 2: 0, 3: 0, 4: 0} # or however you're keeping track of player scores
 
 
-
-func _ready():
-	var size = range(props.size())
-	for index in size:
-		print("INDEX: ",index)
-		props[index] = load("res://Props/"+props[index]+".tscn")
-
-	heights = generate_heights()
-	heights.sort()
-#	heights.reverse()
-
+func _ready() -> void:
+	for prop_name in props:
+		loaded_props.append(load("res://Props/%s.tscn" % prop_name) as PackedScene)
+	maximum_targets = maxi(2, initial_spawn * 2)
 	spawn_timer = Timer.new()
-	spawn_timer.wait_time = 1.0
-	spawn_timer.one_shot = false
+	spawn_timer.wait_time = spawn_interval
 	spawn_timer.autostart = true
-	spawn_timer.connect("timeout", Callable(self, "_spawn_new_prop"))
+	spawn_timer.timeout.connect(_maintain_targets)
 	add_child(spawn_timer)
+	_maintain_targets()
 
-func _spawn_new_prop(item = null):
-	camera.shake(0.25, 10)
-	if spawn_count < initial_spawn:
-		var new_prop1 = props[randi() % props.size()].instantiate()
-		var new_prop2 = props[randi() % props.size()].instantiate()
 
-		new_prop1.connect("done", Callable(self, "_spawn_new_prop"))
-		new_prop2.connect("done", Callable(self, "_spawn_new_prop"))
+func _maintain_targets() -> void:
+	if active_targets > maximum_targets - 2 or loaded_props.is_empty():
+		return
+	_spawn_target(-1)
+	_spawn_target(1)
 
-		new_prop1.launch_force = randi() % 1300 + 200
-		new_prop2.launch_force = randi() % 1500 + 500
-		add_child(new_prop1)
-		add_child(new_prop2)
 
-		var rand_x = randf_range(x_range_start, x_range_end)
-		var y_height = heights.pop_back() if heights.size() > 0 else y_height_end
+func _spawn_target(side: int) -> void:
+	var target = loaded_props.pick_random().instantiate()
+	add_child(target)
+	var x := randf_range(x_range_start, x_range_end) * side
+	var y := randf_range(y_height_start, y_height_end)
+	target.global_position = Vector2(x, y)
+	target.launch_force = randf_range(500.0, 1500.0)
+	target.done.connect(_on_target_hit.bind(target))
+	target.reset_physics_interpolation()
+	active_targets += 1
 
-		if spawn_at_point:
-			new_prop1.global_position = self.global_position + Vector2(-rand_x, y_height)
-			new_prop2.global_position = self.global_position + Vector2(rand_x, y_height)
-		else:
-			new_prop1.global_position = Vector2(-rand_x, y_height)
-			new_prop2.global_position = Vector2(rand_x, y_height)
 
-		spawn_count += 1
-	else:
-		spawn_timer.stop()
-
-func generate_heights():
-	var heights_array: Array = []
-	for i in range(initial_spawn):
-		heights_array.append(randf_range(y_height_start, y_height_end))
-	return heights_array
+func _on_target_hit(target: Node) -> void:
+	active_targets = maxi(0, active_targets - 1)
+	if is_instance_valid(camera) and camera.has_method("shake"):
+		camera.shake(0.2, 8.0)
+	if is_instance_valid(target):
+		var replacement_delay := get_tree().create_timer(0.55)
+		await replacement_delay.timeout
+		_maintain_targets()

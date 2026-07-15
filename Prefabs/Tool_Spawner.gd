@@ -55,6 +55,7 @@ func _spawn_new_tool(item = null):
 
 	if new_tool.global_position.x > 0:
 		new_tool.rotation_degrees = 180
+	new_tool.reset_physics_interpolation()
 
 
 

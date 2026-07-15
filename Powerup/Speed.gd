@@ -1,7 +1,6 @@
 extends "res://Powerup/Powerup.gd"
 
 func ingested():
-	print("Powerup has been ingested 2!")  # replace with your own logic
 	target_body.speed *= 2
 	
 #	queue_free()

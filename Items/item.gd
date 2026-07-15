@@ -11,6 +11,7 @@ var held := false
 @export var indicator := true
 
 @export var sharp := false
+@export var tip_offset := Vector2.ZERO
 
 var power := 600
 signal done(item)
@@ -33,6 +34,10 @@ var speed := 500
 
 
 var available := false
+var _experimental_tip_cast: ShapeCast2D
+var _sampled_holder_velocity := Vector2.ZERO
+var _last_holder_position := Vector2.ZERO
+var _holder_sample_ready := false
 
 func _ready():
 	if physics_material_override:
@@ -41,6 +46,7 @@ func _ready():
 		physics_material_override = PhysicsMaterial.new()
 	if sharp:
 		connect("body_entered", Callable(self, "_on_body_entered"))
+		_build_experimental_tip_cast()
 
 func set_item_physics(friction_value: float, bounce_value: float) -> void:
 	physics_material_override.friction = friction_value
@@ -139,6 +145,9 @@ func _physics_process(_delta):
 			breakpoint
 			linear_velocity = Vector2.ZERO
 
+	_update_experimental_holder_velocity(_delta)
+	_update_experimental_tip_cast(_delta)
+
 
 
 
@@ -146,6 +155,10 @@ func _physics_process(_delta):
 func grab():
 	locked = true
 	held = true
+	_sampled_holder_velocity = Vector2.ZERO
+	_holder_sample_ready = is_instance_valid(target_node)
+	if _holder_sample_ready:
+		_last_holder_position = target_node.global_position
 #	available = false
 	set_item_physics(1.0, 0.0)
 
@@ -159,6 +172,7 @@ func release():
 	set_item_physics(1.0, 0.3)
 	mass = 1
 	apply_central_impulse(Vector2(linear_velocity.x/800,0))
+	_apply_experimental_throw_velocity()
 
 func is_stationary() -> bool:
 #	print(linear_velocity.length())
@@ -197,9 +211,86 @@ func impale(body, colliding_point, direction):
 	joint2.softness = 0
 
 
+func _update_experimental_holder_velocity(delta: float) -> void:
+	if not GameSettings.is_enabled(&"throw_momentum") or not held or not is_instance_valid(target_node):
+		return
+	var holder_position := target_node.global_position
+	if _holder_sample_ready and delta > 0.0:
+		var measured_velocity := (holder_position - _last_holder_position) / delta
+		var sample_weight := clampf(delta * 18.0, 0.0, 1.0)
+		_sampled_holder_velocity = _sampled_holder_velocity.lerp(measured_velocity, sample_weight)
+	else:
+		_holder_sample_ready = true
+	_last_holder_position = holder_position
+
+
+func _apply_experimental_throw_velocity() -> void:
+	if GameSettings.is_enabled(&"throw_momentum") and _holder_sample_ready:
+		linear_velocity = _sampled_holder_velocity * 0.95
+	_holder_sample_ready = false
+
+
+func _build_experimental_tip_cast() -> void:
+	_experimental_tip_cast = ShapeCast2D.new()
+	_experimental_tip_cast.name = "ExperimentalTipCast"
+	var tip_shape := CircleShape2D.new()
+	tip_shape.radius = 4.0
+	_experimental_tip_cast.shape = tip_shape
+	_experimental_tip_cast.enabled = true
+	_experimental_tip_cast.exclude_parent = true
+	_experimental_tip_cast.collision_mask = collision_mask
+	add_child(_experimental_tip_cast)
+
+
+func _update_experimental_tip_cast(delta: float) -> void:
+	if not GameSettings.is_enabled(&"weapon_tip_casting") or not is_instance_valid(_experimental_tip_cast):
+		return
+	if not sharp or available or snap or held or impaled or linear_velocity.length() < 240.0:
+		return
+	if not is_instance_valid(target_node):
+		return
+	_experimental_tip_cast.position = tip_offset
+	_experimental_tip_cast.collision_mask = collision_mask
+	var local_motion := linear_velocity.rotated(-global_rotation) * delta * 1.35
+	_experimental_tip_cast.target_position = local_motion.limit_length(180.0)
+	_experimental_tip_cast.force_shapecast_update()
+	for collision_index in _experimental_tip_cast.get_collision_count():
+		var body_hit := _experimental_tip_cast.get_collider(collision_index)
+		if not is_instance_valid(body_hit) or not body_hit.is_in_group("stabb-able"):
+			continue
+		var thrower = target_node.owner
+		if body_hit == thrower or body_hit.owner == thrower:
+			continue
+		impale(
+			body_hit,
+			_experimental_tip_cast.get_collision_point(collision_index),
+			_experimental_tip_cast.get_collision_normal(collision_index)
+		)
+		done.emit(self)
+		is_done = true
+		_notify_experimental_stab(body_hit)
+		break
+
+
+func _notify_experimental_stab(body_hit: Node) -> void:
+	if body_hit is StaticBody2D:
+		set_collision_layer_value(2, true)
+	else:
+		var victim: Node = body_hit
+		if not victim.has_method("stabbed") and is_instance_valid(body_hit.owner):
+			victim = body_hit.owner
+		if victim.has_method("stabbed"):
+			victim.stabbed(self)
+		set_collision_mask_value(2, false)
+		set_collision_layer_value(2, false)
+	set_collision_mask_value(1, true)
+
+
 func _on_body_entered(body):
 	if sharp and !available and !snap and !held:
 		locked = false
+		if not is_instance_valid(target_node):
+			return
 		if body.is_in_group("stabb-able") and (target_node.owner != body.owner) and (target_node.owner != body):
 			if !impaled:
 				var result = PhysicsTestMotionResult2D.new()
@@ -276,5 +367,3 @@ func _on_body_entered(body):
 #					body.get_node("Panel").modulate = Color.red
 #				elif body.get_node("Polygon2D"):
 #					body.get_node("Polygon2D").modulate = Color.red
-
-

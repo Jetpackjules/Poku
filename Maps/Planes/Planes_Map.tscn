@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Maps/Planes/Plane.gd" type="Script" id=1]
 [ext_resource path="res://Maps/Game_Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Maps/Planes/Planes_Map.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 123, 837.5 )
@@ -69,6 +70,7 @@ extents = Vector2( 211, 86 )
 extents = Vector2( 1875, 250 )
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0.770203, -538 )
@@ -77,11 +79,11 @@ position = Vector2( 0.770203, -538 )
 position = Vector2( 0, 490 )
 
 [node name="P1_Spawn" type="Marker2D" parent="Spawns"]
-position = Vector2( -735.046, -643.866 )
+position = Vector2( -1204, -643.866 )
 scale = Vector2( -1, 1 )
 
 [node name="P2_Spawn" type="Marker2D" parent="Spawns"]
-position = Vector2( -200, -748 )
+position = Vector2( 1167, -643.866 )
 
 [node name="Updraft" type="Area2D" parent="."]
 position = Vector2( -2, 4 )
@@ -285,6 +287,15 @@ offset_left = -1875.0
 offset_right = 1875.0
 offset_bottom = 500.0
 color = Color( 1, 0.824, 0.78, 1 )
+
+[node name="AltitudeGoal" type="ColorRect" parent="."]
+z_index = -2
+offset_left = -1875.0
+offset_top = -1133.0
+offset_right = 1875.0
+offset_bottom = -1117.0
+color = Color(1, 0.76, 0.18, 0.78)
+mouse_filter = 2
 
 [connection signal="body_entered" from="Updraft" to="Turn_Brace" method="_on_Updraft_body_entered"]
 [connection signal="body_entered" from="Updraft" to="Turn_Brace2" method="_on_Updraft_body_entered"]

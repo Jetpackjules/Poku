@@ -9,3 +9,8 @@ func grab() -> void:
 func release() -> void:
 	super.release()
 	inertia = 0.0
+	if GameSettings.is_enabled(&"shuriken_spin"):
+		var spin_direction := signf(linear_velocity.x)
+		if is_zero_approx(spin_direction):
+			spin_direction = 1.0
+		angular_velocity = 18.0 * spin_direction

@@ -22,6 +22,7 @@ max_contacts_reported = 3
 contact_monitor = true
 script = ExtResource( 1 )
 sharp = true
+tip_offset = Vector2( 116, 0 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="."]
 position = Vector2( 45.8422, 0 )
